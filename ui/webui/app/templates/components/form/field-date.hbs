@@ -1,0 +1,9 @@
+{{pikaday-input class='form-control input-sm' placeholder=placeholder value=currentValue
+                onSelection=(action 'onSelectDate')}}
+{{#if errors}}
+    <span class="help-block">
+        {{#each errors as |error|}}
+            {{error}}<br>
+        {{/each}}
+    </span>
+{{/if}}

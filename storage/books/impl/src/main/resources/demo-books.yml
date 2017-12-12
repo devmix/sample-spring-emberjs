@@ -1,0 +1,83 @@
+books:
+  - title: "Effective Java (2nd Edition)"
+    language: en
+    publishDate: 2017-12-15
+    isnb13: 978-0321356680
+    genre: SCIENCE
+    description: |
+      Are you looking for a deeper understanding of the Java™ programming language so that you can write code that is clearer, more correct, more robust, and more reusable? Look no further! Effective Java™, Second Edition, brings together seventy-eight indispensable programmer’s rules of thumb: working, best-practice solutions for the programming challenges you encounter every day.
+    authors:
+      - &AUTHOR_JOSHUA_BLOCH
+        firstName: Joshua
+        lastName: Bloch
+
+  - title: "Effective Java (3rd Edition)"
+    language: en
+    publishDate: 2017-12-15
+    isnb13: 978-0134685991
+    genre: SCIENCE
+    description: |
+      Java has changed dramatically since the previous edition of Effective Java was published shortly after the release of Java 6. This Jolt award-winning classic has now been thoroughly updated to take full advantage of the latest language and library features. The support in modern Java for multiple paradigms increases the need for specific best-practices advice, and this book delivers.
+
+      As in previous editions, each chapter of Effective Java, Third Edition, consists of several “items,” each presented in the form of a short, stand-alone essay that provides specific advice, insight into Java platform subtleties, and updated code examples. The comprehensive descriptions and explanations for each item illuminate what to do, what not to do, and why.
+
+      The third edition covers language and library features added in Java 7, 8, and 9, including the functional programming constructs that were added to its object-oriented roots. Many new items have been added, including a chapter devoted to lambdas and streams.
+
+      New coverage includes
+      Functional interfaces, lambda expressions, method references, and streams
+      Default and static methods in interfaces
+      Type inference, including the diamond operator for generic types
+      The @SafeVarargs annotation
+      The try-with-resources statement
+      New library features such as the Optional interface, java.time, and the convenience factory methods for collections
+      Register your product at informit.com/register for convenient access to the web edition eBook, updates, and/or corrections as they become available.
+    authors:
+      - *AUTHOR_JOSHUA_BLOCH
+
+  - title: "Clean Code: A Handbook of Agile Software Craftsmanship"
+    language: en
+    publishDate: 2017-12-15
+    isnb13: 978-0132350884
+    genre: SCIENCE
+    description: |
+      Even bad code can function. But if code isn’t clean, it can bring a development organization to its knees. Every year, countless hours and significant resources are lost because of poorly written code. But it doesn’t have to be that way.
+
+      Noted software expert Robert C. Martin presents a revolutionary paradigm with Clean Code: A Handbook of Agile Software Craftsmanship . Martin has teamed up with his colleagues from Object Mentor to distill their best agile practice of cleaning code “on the fly” into a book that will instill within you the values of a software craftsman and make you a better programmer—but only if you work at it.
+
+      What kind of work will you be doing? You’ll be reading code—lots of code. And you will be challenged to think about what’s right about that code, and what’s wrong with it. More importantly, you will be challenged to reassess your professional values and your commitment to your craft.
+
+      Clean Code is divided into three parts. The first describes the principles, patterns, and practices of writing clean code. The second part consists of several case studies of increasing complexity. Each case study is an exercise in cleaning up code—of transforming a code base that has some problems into one that is sound and efficient. The third part is the payoff: a single chapter containing a list of heuristics and “smells” gathered while creating the case studies. The result is a knowledge base that describes the way we think when we write, read, and clean code.
+
+      Readers will come away from this book understanding
+      How to tell the difference between good and bad code
+      How to write good code and how to transform bad code into good code
+      How to create good names, good functions, good objects, and good classes
+      How to format code for maximum readability
+      How to implement complete error handling without obscuring code logic
+      How to unit test and practice test-driven development
+      This book is a must for any developer, software engineer, project manager, team lead, or systems analyst with an interest in producing better code.
+    authors:
+      - &AUTHOR_ROBERT_C_MARTIN
+        firstName: Robert
+        middleName: Cecil
+        lastName: Martin
+
+  - title: "Clean Architecture: A Craftsman's Guide to Software Structure and Design"
+    language: en
+    publishDate: 2017-12-15
+    isnb13: 978-0134494166
+    genre: SCIENCE
+    description: |
+      By applying universal rules of software architecture, you can dramatically improve developer productivity throughout the life of any software system. Now, building upon the success of his best-selling books Clean Code and The Clean Coder, legendary software craftsman Robert C. Martin (“Uncle Bob”) reveals those rules and helps you apply them.
+
+      Martin’s Clean Architecture doesn’t merely present options. Drawing on over a half-century of experience in software environments of every imaginable type, Martin tells you what choices to make and why they are critical to your success. As you’ve come to expect from Uncle Bob, this book is packed with direct, no-nonsense solutions for the real challenges you’ll face—the ones that will make or break your projects.
+      Learn what software architects need to achieve—and core disciplines and practices for achieving it
+      Master essential software design principles for addressing function, component separation, and data management
+      See how programming paradigms impose discipline by restricting what developers can do
+      Understand what’s critically important and what’s merely a “detail”
+      Implement optimal, high-level structures for web, database, thick-client, console, and embedded applications
+      Define appropriate boundaries and layers, and organize components and services
+      See why designs and architectures go wrong, and how to prevent (or fix) these failures
+      Clean Architecture is essential reading for every current or aspiring software architect, systems analyst, system designer, and software manager—and for every programmer who must execute someone else’s designs.
+    authors:
+      - *AUTHOR_ROBERT_C_MARTIN

@@ -1,0 +1,12 @@
+{{#if multiple}}
+    {{#power-select-multiple options=internalOptions searchField=searchField selected=currentValue
+                             onchange=(action (mut currentValue)) as |item|}}
+        {{yield item}}
+        <!--{{item.name}}-->
+    {{/power-select-multiple}}
+{{else}}
+    {{#power-select options=internalOptions searchField=searchField selected=currentValue
+                    onchange=(action (mut currentValue)) as |item|}}
+        {{item.name}}
+    {{/power-select}}
+{{/if}}

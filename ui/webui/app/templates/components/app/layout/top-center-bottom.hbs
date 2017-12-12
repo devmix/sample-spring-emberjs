@@ -1,0 +1,7 @@
+{{#layout/vertical-box class='component-app-layout-top-center-bottom'}}
+    {{yield (hash
+                    top=(component 'layout/vertical-box/row' class='section-top')
+                    center=(component 'layout/vertical-box/row' class='section-center')
+                    bottom=(component 'layout/vertical-box/row' class='section-bottom')
+            ) this}}
+{{/layout/vertical-box}}

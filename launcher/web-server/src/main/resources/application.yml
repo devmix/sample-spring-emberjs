@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+management:
+  security:
+    enabled: false
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql: TRACE
+
+spring:
+  jpa:
+    generate-ddl: true
+    hibernate.ddl-auto: update
+
+  datasource:
+    url: jdbc:h2:./db/sam
+    platform: h2
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
+      path: /console
+      settings:
+        trace: false
+        web-allow-others: false

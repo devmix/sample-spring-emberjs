@@ -1,0 +1,43 @@
+{{#app/layout/top-center-bottom as |layout|}}
+    {{#layout.top}}
+        <div>
+            <div class="input-group input-group-sm" style="flex-grow:1">
+                {{input type='text' class='form-control' placeholder='Search for...' value=searchText
+                        keyPress=(action 'searchKeyPress')}}
+                <span class="input-group-btn">
+                    {{elements/button-default icon='search' action='search'}}
+                    {{elements/button-default icon='remove' action='reset' hidden=hasSearchText}}
+                </span>
+            </div>
+        </div>
+    {{/layout.top}}
+
+    {{#layout.center class='storage-books-book-list'}}
+        {{#each list as |item|}}
+            {{app/books/book-card model=item}}
+        {{else}}
+            {{elements/loading-indicator}}
+        {{/each}}
+    {{/layout.center}}
+
+    {{#layout.bottom}}
+        {{#layout/horizontal-box class='components-elements-pagin-bar'}}
+            {{#layout/horizontal-box/column class='left'}}
+                <div class="btn-group btn-group-sm dropup" role="group" aria-label="...">
+                    {{elements/button-default icon='plus' action='create'}}
+                    {{elements/button-default icon='import' action='create'}}
+                    {{elements/button-default icon='export' action='create'}}
+                </div>
+            {{/layout/horizontal-box/column}}
+            {{#layout/horizontal-box/column class='center'}}
+                {{elements/paging-bar/nav current=page total=pages}}
+            {{/layout/horizontal-box/column}}
+            {{#layout/horizontal-box/column class='right'}}
+                <div class="btn-group btn-group-sm dropup" role="group" aria-label="...">
+                    {{elements/button-default icon='refresh' action='refresh'}}
+                    {{elements/paging-bar/size value=size}}
+                </div>
+            {{/layout/horizontal-box/column}}
+        {{/layout/horizontal-box}}
+    {{/layout.bottom}}
+{{/app/layout/top-center-bottom}}

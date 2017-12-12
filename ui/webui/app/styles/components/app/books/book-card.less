@@ -1,0 +1,76 @@
+@import 'mixins/flexbox';
+
+.component-app-books-book-card {
+  width: 150px;
+  height: 200px;
+  min-width: 150px;
+  min-height: 200px;
+  border: 1px solid @primary-border-color;
+  .flex-display;
+  .flex-direction(column);
+  position:relative;
+
+  .title {
+    font-size: 85%;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #F9F9F9;
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    animation: fadeOut .5s;
+  }
+
+  .image {
+    .flex-grow(1);
+    img {
+      max-height: 100%;
+      max-width: 100%;
+    }
+  }
+
+  .authors {
+    font-size: 70%;
+    padding-top: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    position: absolute;
+    background-color: #F9F9F9;
+    opacity: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    animation: fadeOut .5s;
+  }
+
+  &:hover {
+    .title {
+      opacity: 1;
+      animation: fadeIn .5s;
+    }
+    .authors {
+      opacity: 1;
+      animation: fadeIn .5s;
+    }
+  }
+
+  @keyframes fadeIn {
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+  }
+
+  @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+}

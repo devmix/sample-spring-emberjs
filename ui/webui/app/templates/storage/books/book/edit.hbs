@@ -1,0 +1,38 @@
+{{#app/layout/top-center-bottom as |layout|}}
+    {{#layout.top}}
+        {{#link-to 'storage.books.book'}}Books{{/link-to}} {{elements/glyph-icon icon='chevron-right'}} {{model.title}}
+    {{/layout.top}}
+
+    {{#layout.center}}
+        {{#form/fields-container model=model register=(action 'registerFields')
+                                 unregister=(action 'unregisterFields') as |form|}}
+            <dl class="dl-horizontal">
+                <dt>Title:</dt>
+                <dd>{{form.text value=model.title required=true}}</dd>
+
+                <dt>ISNB-13:</dt>
+                <dd>{{form.text value=model.isnb13 required=true}}</dd>
+
+                <dt>Publish date:</dt>
+                <dd>{{form.date value=model.publishDate}}</dd>
+
+                <dt>Authors:</dt>
+                <dd>
+                    {{#form.select value=model.authors multiple=true modelName='books-author' as |item|}}
+                        {{item.firstName}} {{item.middleName}} {{item.lastName}}
+                    {{/form.select}}
+                </dd>
+
+                <dt>Description:</dt>
+                <dd>{{form.textarea value=model.description rows=15}}</dd>
+            </dl>
+        {{/form/fields-container}}
+    {{/layout.center}}
+
+    {{#layout.bottom}}
+        <div class="btn-group btn-group-sm">
+            {{#elements/button-default icon='plus' action='commit'}}Save{{/elements/button-default}}
+            {{#elements/button-default icon='remove' action='cancel'}}Close{{/elements/button-default}}
+        </div>
+    {{/layout.bottom}}
+{{/app/layout/top-center-bottom}}

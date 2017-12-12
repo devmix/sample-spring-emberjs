@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>ui</artifactId>
+    <groupId>com.gitlab.devmix.warehouse</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>ui-webui</artifactId>
+  <packaging>jar</packaging>
+
+  <name>Warehouse :: UI : WebUI</name>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>dist</directory>
+        <targetPath>webapp/webui</targetPath>
+      </resource>
+    </resources>
+
+    <plugins>
+      <!-- https://mvnrepository.com/artifact/com.github.eirslett/frontend-maven-plugin -->
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>1.6</version>
+        <executions>
+          <execution>
+            <id>install node and npm</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <configuration>
+              <nodeVersion>v8.9.3</nodeVersion>
+              <npmVersion>5.5.1</npmVersion>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>install ember-cli</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>install ember-cli@2.15</arguments>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>build</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>ember</goal>
+            </goals>
+            <configuration>
+              <arguments>build --env production</arguments>
+              <!--<arguments>build</arguments>-->
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

@@ -1,0 +1,17 @@
+{{yield (hash
+                text=(component 'form/field-text'
+                        register=(action 'registerField')
+                        unregister=(action 'unregisterField'))
+
+                textarea=(component 'form/field-textarea'
+                        register=(action 'registerField')
+                        unregister=(action 'unregisterField'))
+
+                select=(component 'form/field-select'
+                        register=(action 'registerField')
+                        unregister=(action 'unregisterField'))
+
+                date=(component 'form/field-date'
+                        register=(action 'registerField')
+                        unregister=(action 'unregisterField'))
+        ) this}}

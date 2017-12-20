@@ -19,7 +19,7 @@ export default Ember.Controller.extend({
     },
 
     cancel() {
-      this.get('fields').cancel(() => history.back());
+      this.get('fields').cancel().then(() => history.back());
     }
   }
 });

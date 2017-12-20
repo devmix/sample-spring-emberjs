@@ -1,0 +1,11 @@
+{{#if hasBlock}}
+  {{yield (hash
+            header=(component 'e-searching/bar' target=this)
+            table=(component 'e-table/table' columnsConfig=columnsConfig rows=computedRows grid=this)
+            footer=(component 'e-paging/bar' target=this)
+          ) this}}
+{{else}}
+  {{component 'e-searching/bar' target=this}}
+  {{component 'e-table/table' columnsConfig=columnsConfig rows=computedRows grid=this}}
+  {{component 'e-paging/bar' target=this}}
+{{/if}}

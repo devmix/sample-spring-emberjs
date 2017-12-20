@@ -1,0 +1,11 @@
+{{#if hasBlock}}
+  {{yield (hash
+            controls=(component 'e-searching/controls' target=this.target)
+            search=(component 'e-searching/search' target=this.target)
+          ) this}}
+{{else}}
+  {{#unless noControls}}
+    {{component 'e-searching/controls' target=this.target}}
+  {{/unless}}
+  {{component 'e-searching/search' target=this.target}}
+{{/if}}

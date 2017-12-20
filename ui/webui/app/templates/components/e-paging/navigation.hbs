@@ -1,0 +1,34 @@
+<!-- PAGES -->
+
+<span class="glyphicon glyphicon-chevron-left" {{action 'prev'}}></span>
+&nbsp;
+<div class="numbers">
+  {{currentPage}} / {{pages}}
+</div>
+&nbsp;
+<span class="glyphicon glyphicon-chevron-right" {{action 'next'}}></span>
+&nbsp;
+
+<!-- PAGE SIZE -->
+
+<div class="btn-group btn-group-sm dropup">
+
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    {{pageSize}} <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-right btn-size">
+    {{#each pageSizes as |size|}}
+      <li>
+        <a href="#" {{action 'selectPageSize' size.value}}>
+          <span class="glyphicon glyphicon-ok {{unless size.checked 'invisible'}}"></span>
+          {{size.value}}
+        </a>
+      </li>
+    {{/each}}
+  </ul>
+
+  {{e-button/standard icon='refresh' action='refresh'}}
+
+  {{yield this}}
+
+</div>

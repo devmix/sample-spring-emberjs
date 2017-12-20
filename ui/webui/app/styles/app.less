@@ -1,18 +1,27 @@
 @import "ember-power-select";
 // app
 @import 'variables';
+@import 'mixins/flexbox';
+@import 'commons';
 @import 'components/vendor/ember-power-select';
 @import 'components/vendor/pikaday-input';
-@import 'components/elements/paging-bar/size';
-@import 'components/elements/paging-bar/nav';
-@import 'components/elements/paging-bar';
+
+@import 'components/e-dialog/all-in-one';
+@import 'components/e-paging/all-in-one';
+@import 'components/e-searching/all-in-one';
+@import 'components/e-form/all-in-one';
+@import 'components/e-table/all-in-one';
+
 @import 'components/page/app-header';
 @import 'components/menu/menu-item';
+
 @import 'components/layout/vertical-box';
 @import 'components/layout/horizontal-box';
-@import 'components/form/fields-container';
+
+@import 'components/e-app/commons/table/cell-entity-buttons';
 @import 'components/app/layout/top-center-bottom';
 @import 'components/app/books/book-card';
+
 @import 'templates/storage/books/book/index';
 @import 'templates/storage/books/book/new';
 
@@ -32,6 +41,10 @@ body {
 
 textarea {
   resize: none;
+}
+
+.dl-horizontal {
+  margin: 0;
 }
 
 .application-viewport {

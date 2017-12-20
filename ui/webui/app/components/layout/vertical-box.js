@@ -1,13 +1,8 @@
 import Ember from 'ember';
+import StyleableMixin from '../../mixins/components/styleable';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(StyleableMixin, {
 
-  classNames: ['component-layout-vertical-box'],
-  attributeBindings: ['computeStyle:style'],
+  classNames: ['component-layout-vertical-box']
 
-  computeStyle: Ember.computed('padding', function() {
-    return Ember.String.htmlSafe(
-      'padding:' + this.getWithDefault('padding', 0)
-    );
-  })
 });

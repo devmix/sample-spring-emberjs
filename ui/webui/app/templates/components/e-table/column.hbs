@@ -1,0 +1,8 @@
+{{#if hasBlock}}
+  {{yield this}}
+{{else}}
+  {{title}}
+  {{#if sortable}}
+    {{e-icon/glyph class='sort-icon' icon='sort'}}
+  {{/if}}
+{{/if}}

@@ -77,7 +77,20 @@ public class EntityApiManager {
     private Endpoint author() {
         return builder("/books/author")
                 .add(list(Author.class)
-                        .run(query -> authorRepository.findAll(query.asPageable())).build())
+                        .run(query -> authorRepository.findPagedByDeletedFalse(query.asPageable())).build())
+
+                .add(create(Author.class)
+                        .run(entity -> authorRepository.save(entity)).build())
+
+                .add(read(Author.class)
+                        .run(id -> authorRepository.findByIdAndDeletedFalse(UUID.fromString(id))).build())
+
+                .add(update(Author.class)
+                        .run((id, entity) -> authorRepository.save(entity)).build())
+
+                .add(delete(Author.class)
+                        .run(id -> authorRepository.delete(UUID.fromString(id))).build())
+
                 .build();
     }
 

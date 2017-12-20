@@ -1,0 +1,9 @@
+{{#if hasBlock}}
+  {{yield (hash
+            controls=(component 'e-paging/controls' target=this.target)
+            navigation=(component 'e-paging/navigation' target=this.target)
+          ) this}}
+{{else}}
+  {{component 'e-paging/controls' target=this.target}}
+  {{component 'e-paging/navigation' target=this.target}}
+{{/if}}

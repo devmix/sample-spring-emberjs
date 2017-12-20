@@ -1,0 +1,9 @@
+{{#if column.cellView}}
+  {{component column.cellView cell=(hash column=column row=row)}}
+{{else}}
+  {{#if hasBlock}}
+    {{yield this}}
+  {{else}}
+    {{value}}
+  {{/if}}
+{{/if}}

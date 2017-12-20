@@ -8,7 +8,7 @@ export default Ember.Mixin.create({
     this.setStyleAttribute(key, this.get(key));
   }),
 
-  didRender() {
+  didInsertElement() {
     this._super(...arguments);
     this.notifyPropertyChange('width');
     this.notifyPropertyChange('height');

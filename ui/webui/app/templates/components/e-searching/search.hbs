@@ -1,0 +1,12 @@
+<div class="input-group input-group-sm">
+  {{input type='text' class='form-control'
+          placeholder='Search for...'
+          value=searchText
+          keyPress=(action 'searchKeyPress')}}
+  <span class="input-group-btn">
+    {{e-button/standard icon='search' action='search'}}
+    {{#if searchedText}}
+      {{e-button/standard icon='remove' action='reset' }}
+    {{/if}}
+  </span>
+</div>

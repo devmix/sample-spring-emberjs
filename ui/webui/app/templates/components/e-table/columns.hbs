@@ -1,0 +1,9 @@
+<tr>
+  {{#each items as |item index|}}
+    {{#if hasBlock}}
+      {{yield (hash column=(component 'e-table/column' config=item index=index parent=this)) this}}
+    {{else}}
+      {{component 'e-table/column' config=item index=index parent=this}}
+    {{/if}}
+  {{/each}}
+</tr>

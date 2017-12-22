@@ -3,7 +3,7 @@
 - Maven v3.x
 - H2
 - Spring Boot v1.5.9 
-- EmberJS v2.15 
+- EmberJS v2.17
 
 ## Build
 ```

@@ -3,6 +3,6 @@
 {{else}}
   {{title}}
   {{#if sortable}}
-    {{e-icon/glyph class='sort-icon' icon='sort'}}
+    {{e-icon/glyph class='sort-icon' icon=sortIcon action=(action 'onSortClick')}}
   {{/if}}
 {{/if}}

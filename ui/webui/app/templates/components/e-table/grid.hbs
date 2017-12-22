@@ -1,0 +1,15 @@
+{{#each cells as |cell index|}}
+  {{#if hasBlock}}
+    {{yield (hash cell=(component 'e-table/grid-cell' model=cell index=index grid=this)) this}}
+  {{else}}
+    {{component 'e-table/grid-cell' model=cell index=index grid=this}}
+  {{/if}}
+{{else}}
+  {{#if cells.isPending}}
+    {{e-progress/loading}}
+  {{else if list.isRejected}}
+    Fail
+  {{else}}
+    No data
+  {{/if}}
+{{/each}}

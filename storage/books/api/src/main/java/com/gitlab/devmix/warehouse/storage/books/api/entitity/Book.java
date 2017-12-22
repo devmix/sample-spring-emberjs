@@ -8,16 +8,15 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Sergey Grachev
@@ -29,7 +28,8 @@ import java.util.List;
 @ToString(callSuper = true)
 @NamedEntityGraph(name = "booksBook.list",
         attributeNodes = {
-                @NamedAttributeNode(value = "authors")
+                @NamedAttributeNode(value = "authors"),
+                @NamedAttributeNode(value = "genres")
         })
 public class Book extends AbstractEntity {
 
@@ -44,10 +44,6 @@ public class Book extends AbstractEntity {
     @Column(name = "PUBLISH_DATE")
     private Date publishDate;
 
-    @Column(name = "GENRE")
-    @Enumerated(EnumType.STRING)
-    private Genre genre;
-
     @Column(name = "ISBN13", length = 14)
     private String isnb13;
 
@@ -57,6 +53,15 @@ public class Book extends AbstractEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "BOOKS_BOOK_AUTHORS")
     @Where(clause = "deleted = false")
-    private List<Author> authors;
+    private Set<Author> authors;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "BOOKS_BOOK_GENRES")
+    @Where(clause = "deleted = false")
+    private Set<Genre> genres;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Where(clause = "deleted = false")
+    private Publisher publisher;
 
 }

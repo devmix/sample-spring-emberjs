@@ -1,0 +1,14 @@
+{{e-table/standard attributesConfig=columns modelName=modelName
+                   onCustomAction=(action 'onCustomAction')
+                   register=(action 'registerTable')
+}}
+
+{{e-dialog/modal-frame id='edit'
+                       bodyFrame=editorFrame
+                       width='95%'
+                       owner=this}}
+
+{{e-dialog/modal-frame id='remove-confirm'
+                       title='Confirm'
+                       bodyText='Are you sure?'
+                       owner=this}}

@@ -7,7 +7,7 @@ export default Ember.Component.extend({
   searchText: undefined,
   searchedText: undefined,
 
-  notHasSearchText: Ember.computed('searchText', function() {
+  notHasSearchText: Ember.computed('searchText', function () {
     return !this.get('searchText');
   }),
 
@@ -33,7 +33,7 @@ export default Ember.Component.extend({
     },
 
     searchKeyPress(e) {
-      if (e.keyCode == 13 && this.get('search') !== this.get('searchText')) {
+      if (e.keyCode === 13 && this.get('search') !== this.get('searchText')) {
         this.doSearch();
       }
     }

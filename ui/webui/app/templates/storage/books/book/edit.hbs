@@ -4,17 +4,15 @@
   {{/layout.top}}
 
   {{#layout.center}}
-    {{#e-form/fields model=model register=(action 'registerFields')
-                     unregister=(action 'unregisterFields') as |form|}}
+    {{#e-form/fields model=model register=(action 'registerFields') as |form|}}
       <dl class="dl-horizontal">
         <dt>Title:</dt>
         <dd>{{form.text value=model.title required=true}}</dd>
 
-        <dt>ISNB-13:</dt>
-        <dd>{{form.text value=model.isnb13 required=true}}</dd>
-
-        <dt>Publish date:</dt>
-        <dd>{{form.date value=model.publishDate}}</dd>
+        <dt>Genres:</dt>
+        <dd>
+          {{form.select value=model.genres multiple=true modelName='books-genre'}}
+        </dd>
 
         <dt>Authors:</dt>
         <dd>
@@ -22,6 +20,17 @@
             {{item.firstName}} {{item.middleName}} {{item.lastName}}
           {{/form.select}}
         </dd>
+
+        <dt>Publish date:</dt>
+        <dd>{{form.date value=model.publishDate}}</dd>
+
+        <dt>Publisher:</dt>
+        <dd>
+          {{form.select value=model.publisher modelName='books-publisher'}}
+        </dd>
+
+        <dt>ISNB-13:</dt>
+        <dd>{{form.text value=model.isnb13 required=true}}</dd>
 
         <dt>Description:</dt>
         <dd>{{form.textarea value=model.description rows=15}}</dd>

@@ -1,11 +1,11 @@
 <table class='table table-bordered table-condensed'>
   {{#if hasBlock}}
     {{yield (hash
-              columns=(component 'e-table/columns' items=columnsConfig grid=grid table=this)
-              rows=(component 'e-table/rows' items=rows grid=grid table=this)
+              columns=(component 'e-table/columns' items=attributesConfig table=this)
+              rows=(component 'e-table/rows' items=rows component=component table=this)
             ) this}}
   {{else}}
-    {{component 'e-table/columns' items=columnsConfig grid=grid table=this}}
-    {{component 'e-table/rows' items=rows grid=grid table=this}}
+    {{component 'e-table/columns' items=attributesConfig table=this}}
+    {{component 'e-table/rows' items=rows component=component table=this}}
   {{/if}}
 </table>

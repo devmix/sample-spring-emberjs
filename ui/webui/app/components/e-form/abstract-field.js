@@ -7,7 +7,6 @@ export default Ember.Component.extend(/*Validation,*/ {
   classNameBindings: ['invalid:has-error'],
 
   buffered: false,
-  currentValue: undefined,
   valid: true,
   required: false,
   errors: [],
@@ -41,7 +40,7 @@ export default Ember.Component.extend(/*Validation,*/ {
   },
 
   invalid: Ember.computed('valid', function () {
-      return !this.get('valid');
+    return !this.get('valid');
   }),
 
   validationCustom(errors) {

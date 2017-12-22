@@ -1,29 +1,32 @@
 @import "ember-power-select";
-// app
+// vars
 @import 'variables';
-@import 'mixins/flexbox';
-@import 'commons';
+// mixins
+@import 'mixins/vendor/flexbox';
+@import 'mixins/vendor/material-shadows';
+@import 'mixins/vendor/tricks';
+@import 'mixins/commons';
+//vendor
+@import 'components/vendor/bootstrap';
 @import 'components/vendor/ember-power-select';
 @import 'components/vendor/pikaday-input';
-
+// global
+@import 'commons';
+// app
 @import 'components/e-dialog/all-in-one';
 @import 'components/e-paging/all-in-one';
 @import 'components/e-searching/all-in-one';
 @import 'components/e-form/all-in-one';
 @import 'components/e-table/all-in-one';
-
-@import 'components/page/app-header';
-@import 'components/menu/menu-item';
-
+@import 'components/e-app/commons/page/header';
+@import 'components/e-menu/item';
 @import 'components/layout/vertical-box';
 @import 'components/layout/horizontal-box';
-
 @import 'components/e-app/commons/table/cell-entity-buttons';
+@import 'components/e-app/commons/page/header';
 @import 'components/app/layout/top-center-bottom';
 @import 'components/app/books/book-card';
-
 @import 'templates/storage/books/book/index';
-@import 'templates/storage/books/book/new';
 
 html, body {
   height: 100%;
@@ -32,11 +35,11 @@ html, body {
 }
 
 body {
-   > div.ember-view {
-     height: 100%;
-     display: flex;
-     flex-direction: column;
-   }
+  > div.ember-view {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 textarea {

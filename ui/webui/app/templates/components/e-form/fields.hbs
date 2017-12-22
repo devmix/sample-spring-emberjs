@@ -1,17 +1,6 @@
 {{yield (hash
-          text=(component 'e-form/text'
-            register=(action 'registerField')
-            unregister=(action 'unregisterField'))
-
-          textarea=(component 'e-form/textarea'
-            register=(action 'registerField')
-            unregister=(action 'unregisterField'))
-
-          select=(component 'e-form/select'
-            register=(action 'registerField')
-            unregister=(action 'unregisterField'))
-
-          date=(component 'e-form/date'
-            register=(action 'registerField')
-            unregister=(action 'unregisterField'))
+          text=(component 'e-form/text' register=(action 'registerField'))
+          textarea=(component 'e-form/textarea' register=(action 'registerField'))
+          select=(component 'e-form/select' register=(action 'registerField'))
+          date=(component 'e-form/date' register=(action 'registerField'))
         ) this}}

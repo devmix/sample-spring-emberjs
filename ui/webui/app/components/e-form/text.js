@@ -1,6 +1,3 @@
-import Ember from 'ember';
 import AbstractField from './abstract-field';
 
-export default AbstractField.extend({
-
-});
+export default AbstractField.extend({});

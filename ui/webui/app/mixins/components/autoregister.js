@@ -6,7 +6,7 @@ export default Ember.Mixin.create({
     this._super(...arguments);
     const action = this.get('register');
     if (action) {
-      this.sendAction('register', this)
+      this.sendAction('register', this, true);
     }
   },
 
@@ -14,7 +14,7 @@ export default Ember.Mixin.create({
     this._super(...arguments);
     const action = this.get('unregister');
     if (action) {
-      this.sendAction('unregister', this)
+      this.sendAction('register', this, false);
     }
   }
 

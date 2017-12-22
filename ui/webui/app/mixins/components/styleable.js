@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Mixin.create({
 
-  __styleAttributesObserver: Ember.observer('style.{$,display,width,height,padding,margin,flexGrow}', function(sender, key) {
+  __styleAttributesObserver: Ember.observer('style.{$,display,width,height,padding,margin,flexGrow}', function (sender, key) {
     const style = this.get('style');
 
     if (!style) {

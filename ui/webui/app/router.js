@@ -6,15 +6,16 @@ const Router = Ember.Router.extend({
   rootURL: config.rootURL
 });
 
-Router.map(function() {
-  this.route('playground');
-  this.route('storage', function() {
-    this.route('books', function() {
-      this.route('book', function() {
+Router.map(function () {
+  this.route('storage', function () {
+    this.route('books', function () {
+      this.route('book', function () {
         this.route('new');
         this.route('edit', {path: 'edit/:id'});
       });
       this.route('author');
+      this.route('genre');
+      this.route('publisher');
     });
   });
 });

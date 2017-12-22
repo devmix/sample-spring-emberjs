@@ -1,0 +1,6 @@
+{{#e-form/fields model=params.model register=(action 'registerFields') as |form|}}
+  <dl class="dl-horizontal">
+    <dt>Name:</dt>
+    <dd>{{form.text value=params.model.name required=true}}</dd>
+  </dl>
+{{/e-form/fields}}

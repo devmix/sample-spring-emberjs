@@ -4,16 +4,12 @@ export default Ember.Controller.extend({
   fields: undefined,
 
   actions: {
-    registerFields(field) {
-      this.set('fields', field);
-    },
-
-    unregisterFields(field) {
-      this.set('fields', undefined);
+    registerFields(field, register) {
+      this.set('fields', register ? field : undefined);
     },
 
     commit() {
-      this.get('fields').commit().then((model) => {
+      this.get('fields').commit().then(() => {
         this.transitionToRoute('storage.books.book');
       });
     },

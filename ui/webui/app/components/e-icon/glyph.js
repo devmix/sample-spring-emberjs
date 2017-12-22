@@ -6,11 +6,11 @@ export default Ember.Component.extend({
   classNames: ['glyphicon'],
   classNameBindings: ['iconClass'],
 
-  iconClass: Ember.computed('icon', function() {
+  iconClass: Ember.computed('icon', function () {
     return 'glyphicon-' + this.get('icon');
   }),
 
-  click(e) {
+  click() {
     this.sendAction();
   }
 });

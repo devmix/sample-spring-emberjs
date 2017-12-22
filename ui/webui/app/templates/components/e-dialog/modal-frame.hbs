@@ -16,10 +16,7 @@
         {{#if bodyText}}
           {{bodyText}}
         {{else}}
-          {{component bodyFrame
-                      params=params
-                      register=(action 'registerFrame')
-                      unregister=(action 'unregisterFrame')}}
+          {{component bodyFrame params=params register=(action 'registerFrame')}}
         {{/if}}
       </div>
       <div class="modal-footer">

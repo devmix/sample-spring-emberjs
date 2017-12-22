@@ -1,4 +1,4 @@
-{{#each grid.table.columns.list as |column index|}}
+{{#each component.table.columns.list as |column index|}}
   {{#if hasBlock}}
     {{yield (hash cell=(component 'e-table/cell' column=column row=this)) this}}
   {{else}}

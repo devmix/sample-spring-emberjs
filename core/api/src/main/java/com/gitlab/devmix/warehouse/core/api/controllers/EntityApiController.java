@@ -1,5 +1,6 @@
 package com.gitlab.devmix.warehouse.core.api.controllers;
 
+import com.gitlab.devmix.warehouse.core.api.web.entity.RestQuery;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * @author Sergey Grachev
@@ -19,7 +19,7 @@ public interface EntityApiController {
     String API_CORE_ENTITY = "/api/core/entity";
 
     @GetMapping("/**")
-    ResponseEntity<?> get(Map<String, Object> query, HttpServletRequest request);
+    ResponseEntity<?> get(RestQuery query, HttpServletRequest request);
 
     @PostMapping("/**")
     ResponseEntity<?> post(String json, HttpServletRequest request);

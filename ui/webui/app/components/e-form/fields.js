@@ -60,12 +60,12 @@ export default Ember.Component.extend(AutoRegisterMixin, {
   },
 
   actions: {
-    registerField(field) {
-      this.get('fields')[field.get('elementId')] = field;
-    },
-
-    unregisterField(field) {
-      delete this.get('fields')[field.get('elementId')];
+    registerField(field, register) {
+      if (register) {
+        this.get('fields')[field.get('elementId')] = field;
+      } else {
+        delete this.get('fields')[field.get('elementId')];
+      }
     }
   }
 });

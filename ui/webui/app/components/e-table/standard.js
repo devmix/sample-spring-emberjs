@@ -4,37 +4,46 @@ import SearchableMixin from '../../mixins/components/e-searching/searchable';
 import StyleableMixin from '../../mixins/components/styleable';
 import AutoRegisterMixin from '../../mixins/components/autoregister'
 
-const { computed } = Ember;
+const {computed} = Ember;
 
 export default Ember.Component.extend(StyleableMixin, PageableMixin, SearchableMixin, AutoRegisterMixin, {
 
   classNames: ['components-e-table', 'components-e-table-standard'],
 
   // properties
-  columnsConfig: [],
-  rows: [],
+  attributesConfig: [],
+  items: [],
   modelName: undefined,
-  filter: undefined,
+  type: 'table',
+  gridCellFrame: '',
 
   //
   table: undefined,
   store: Ember.inject.service(),
 
-  computedRows: computed('rows', 'modelName', 'filter', function() {
+  computedItems: computed('items', 'modelName', 'filter', function () {
     const modelName = this.get('modelName');
     if (modelName) {
       return this.watchPaging(this.get('store').query(modelName, this.get('filter')));
     }
-    return this.get('rows');
+    return this.get('items');
   }),
 
-  filter: computed('search', 'page', 'pageSize', function() {
+  filter: computed('search', 'page', 'pageSize', 'sort', function () {
     return {
       page: this.get('page'),
-      size: this.get('pageSize'),
-      search: this.get('search')
-    }
-    return {};
+      pageSize: this.get('pageSize'),
+      search: this.get('search'),
+      sort: this.get('sort')
+    };
+  }),
+
+  isTable: computed('type', function () {
+    return this.get('type') === 'table';
+  }),
+
+  isGrid: computed('type', function () {
+    return this.get('type') === 'grid';
   }),
 
   onRefresh() {

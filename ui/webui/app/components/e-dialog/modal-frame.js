@@ -54,9 +54,9 @@ export default Ember.Component.extend({
     if (frame) {
       this.get('frame')
         .onDialogAction(name)
-        .then((action) => {
+        .then(() => {
           this.$().modal('hide');
-          if ('cancel' == name) {
+          if ('cancel' === name) {
             this.callbackReject && this.callbackReject(name)
           } else {
             this.callbackResolve && this.callbackResolve(name);
@@ -64,7 +64,7 @@ export default Ember.Component.extend({
         }, () => this.callbackReject && this.callbackReject(name));
     } else {
       this.$().modal('hide');
-      if ('cancel' == name) {
+      if ('cancel' === name) {
         this.callbackReject && this.callbackReject(name);
       } else {
         this.callbackResolve && this.callbackResolve(name);
@@ -73,12 +73,8 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    registerFrame(frame) {
-      this.set('frame', frame);
-    },
-
-    unregisterFrame() {
-      this.set('frame', undefined);
+    registerFrame(frame, register) {
+      this.set('frame', register ? frame : undefined);
     },
 
     cancel() {

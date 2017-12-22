@@ -17,7 +17,7 @@ export default Ember.Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-    const parent = this.get('grid');
+    const parent = this.get('component');
     if (parent) {
       parent.registerTableComponent(this)
     }
@@ -25,7 +25,7 @@ export default Ember.Component.extend({
 
   willDestroyElement() {
     this._super(...arguments);
-    const parent = this.get('grid');
+    const parent = this.get('component');
     if (parent) {
       parent.unregisterTableComponent(this)
     }

@@ -1,19 +1,21 @@
-@import 'mixins/flexbox';
-
 .component-app-layout-top-center-bottom {
   .section-top {
-    border-bottom: 1px solid @primary-border-color;
+    .flex-shrink(0);
+    .z-depth-2dp();
+    z-index: 1;
     background-color: lighten(@primary-border-color, 10%);
-    padding: 4px
+    padding: 2px
   }
   .section-center {
     .flex-grow(1);
     overflow: auto;
   }
   .section-bottom {
-    border-top: 1px solid @primary-border-color;
+    .flex-shrink(0);
+    .z-depth-2dp-inverse();
+    z-index: 1;
     background-color: lighten(@primary-border-color, 10%);
-    padding: 4px;
+    padding: 2px;
     font-size: 95%;
   }
 }

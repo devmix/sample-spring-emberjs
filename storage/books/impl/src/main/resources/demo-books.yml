@@ -3,19 +3,24 @@ books:
     language: en
     publishDate: 2017-12-15
     isnb13: 978-0321356680
-    genre: SCIENCE
+    genres:
+      - &GENRE_SCIENCE
+        name: Science
     description: |
       Are you looking for a deeper understanding of the Java™ programming language so that you can write code that is clearer, more correct, more robust, and more reusable? Look no further! Effective Java™, Second Edition, brings together seventy-eight indispensable programmer’s rules of thumb: working, best-practice solutions for the programming challenges you encounter every day.
     authors:
       - &AUTHOR_JOSHUA_BLOCH
         firstName: Joshua
         lastName: Bloch
+    publisher: &PUBLISHER_ADDISON_WESLEY
+      name: Addison-Wesley
 
   - title: "Effective Java (3rd Edition)"
     language: en
     publishDate: 2017-12-15
     isnb13: 978-0134685991
-    genre: SCIENCE
+    genres:
+      - *GENRE_SCIENCE
     description: |
       Java has changed dramatically since the previous edition of Effective Java was published shortly after the release of Java 6. This Jolt award-winning classic has now been thoroughly updated to take full advantage of the latest language and library features. The support in modern Java for multiple paradigms increases the need for specific best-practices advice, and this book delivers.
 
@@ -33,12 +38,14 @@ books:
       Register your product at informit.com/register for convenient access to the web edition eBook, updates, and/or corrections as they become available.
     authors:
       - *AUTHOR_JOSHUA_BLOCH
+    publisher: *PUBLISHER_ADDISON_WESLEY
 
   - title: "Clean Code: A Handbook of Agile Software Craftsmanship"
     language: en
     publishDate: 2017-12-15
     isnb13: 978-0132350884
-    genre: SCIENCE
+    genres:
+      - *GENRE_SCIENCE
     description: |
       Even bad code can function. But if code isn’t clean, it can bring a development organization to its knees. Every year, countless hours and significant resources are lost because of poorly written code. But it doesn’t have to be that way.
 
@@ -61,12 +68,15 @@ books:
         firstName: Robert
         middleName: Cecil
         lastName: Martin
+    publisher: &PUBLISHER_PRENTICE_HALL
+      name: Prentice Hall
 
   - title: "Clean Architecture: A Craftsman's Guide to Software Structure and Design"
     language: en
     publishDate: 2017-12-15
     isnb13: 978-0134494166
-    genre: SCIENCE
+    genres:
+      - *GENRE_SCIENCE
     description: |
       By applying universal rules of software architecture, you can dramatically improve developer productivity throughout the life of any software system. Now, building upon the success of his best-selling books Clean Code and The Clean Coder, legendary software craftsman Robert C. Martin (“Uncle Bob”) reveals those rules and helps you apply them.
 
@@ -81,3 +91,4 @@ books:
       Clean Architecture is essential reading for every current or aspiring software architect, systems analyst, system designer, and software manager—and for every programmer who must execute someone else’s designs.
     authors:
       - *AUTHOR_ROBERT_C_MARTIN
+    publisher: *PUBLISHER_PRENTICE_HALL

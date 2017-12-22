@@ -6,8 +6,6 @@ export default Ember.Component.extend({
 
   target: undefined,
 
-  actions: {
-
-  }
+  actions: {}
 
 });

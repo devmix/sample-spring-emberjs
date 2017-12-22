@@ -1,10 +1,8 @@
 import Ember from 'ember';
 
-const { computed, observer } = Ember;
-
 export default Ember.Mixin.create({
 
-  __styleObserver: observer('width', 'height', function(sender, key) {
+  __styleObserver: Ember.observer('width', 'height', function (sender, key) {
     this.setStyleAttribute(key, this.get(key));
   }),
 

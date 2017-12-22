@@ -2,7 +2,7 @@ import Ember from 'ember';
 import MixinComponentBase from '../../../mixins/components/base';
 import ENV from '../../../config/environment';
 
-const { computed, observer } = Ember;
+const {computed, observer} = Ember;
 
 export default Ember.Component.extend(MixinComponentBase, {
 

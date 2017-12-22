@@ -1,0 +1,28 @@
+{{#each menu as |item|}}
+  {{#if item.menu}}
+    <li class="dropdown-submenu">
+      {{#if item.route}}
+        {{#link-to item.route}}{{item.name}}{{/link-to}}
+      {{else}}
+        {{#if item.link}}
+          <a tabindex="-1" href="{{item.link}}">{{item.name}}</a>
+        {{else}}
+          <a tabindex="-1" href="#" onclick="e.preventDefault()">{{item.name}}</a>
+        {{/if}}
+      {{/if}}
+      <ul class="dropdown-menu">
+        {{e-menu/item menu=item.menu}}
+      </ul>
+    </li>
+  {{else}}
+    {{#if item.separator}}
+      <li role="separator" class="divider"></li>
+    {{else if item.route}}
+      <li>{{#link-to item.route}}{{item.name}}{{/link-to}}</li>
+    {{else if item.link}}
+      <li><a tabindex="-1" href="{{item.link}}">{{item.name}}</a></li>
+    {{else}}
+      <li><a tabindex="-1" href="#" onclick="e.preventDefault()">{{item.name}}</a></li>
+    {{/if}}
+  {{/if}}
+{{/each}}

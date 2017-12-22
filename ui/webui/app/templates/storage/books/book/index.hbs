@@ -1,34 +1,5 @@
-{{#app/layout/top-center-bottom as |layout|}}
-  {{#layout.top}}
-    {{e-searching/bar noControls=true target=this}}
-  {{/layout.top}}
-
-  {{#layout.center class='storage-books-book-list'}}
-    {{#each list as |item|}}
-      {{app/books/book-card model=item}}
-    {{else}}
-      {{#if list.isPending}}
-        {{elements/loading-indicator}}
-      {{else if list.isRejected}}
-        Fail
-      {{else}}
-        No data
-      {{/if}}
-    {{/each}}
-  {{/layout.center}}
-
-  {{#layout.bottom}}
-    {{#layout/horizontal-box class='components-elements-pagin-bar'}}
-      {{#layout/horizontal-box/column style=(hash flexGrow=1)}}
-        <div class="btn-group btn-group-sm dropup" role="group" aria-label="...">
-          {{e-button/standard icon='plus' action='create'}}
-          {{e-button/standard icon='import' action='create'}}
-          {{e-button/standard icon='export' action='create'}}
-        </div>
-      {{/layout/horizontal-box/column}}
-      {{#layout/horizontal-box/column}}
-        {{e-paging/navigation target=this}}
-      {{/layout/horizontal-box/column}}
-    {{/layout/horizontal-box}}
-  {{/layout.bottom}}
-{{/app/layout/top-center-bottom}}
+{{e-table/standard class='storage-books-book-index'
+                   modelName='books-book'
+                   type='grid' gridCellFrame='app/books/book-card'
+                   onCustomAction=(action 'onCustomAction')
+}}

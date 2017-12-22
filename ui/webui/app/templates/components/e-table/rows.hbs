@@ -1,7 +1,7 @@
 {{#each items as |item index|}}
   {{#if hasBlock}}
-    {{yield (hash row=(component 'e-table/row' model=item index=index grid=grid)) this}}
+    {{yield (hash row=(component 'e-table/row' model=item index=index component=component)) this}}
   {{else}}
-    {{component 'e-table/row' model=item index=index grid=grid}}
+    {{component 'e-table/row' model=item index=index component=component}}
   {{/if}}
 {{/each}}

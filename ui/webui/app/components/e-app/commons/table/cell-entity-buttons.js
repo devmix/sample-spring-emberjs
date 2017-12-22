@@ -6,11 +6,11 @@ export default Ember.Component.extend({
 
   actions: {
     edit() {
-      this.get('cell.row.grid').invokeAction('cell-button-edit', this.get('cell'));
+      this.get('cell.row.component').invokeAction('cell-button-edit', this.get('cell'));
     },
 
     remove() {
-      this.get('cell.row.grid').invokeAction('cell-button-remove', this.get('cell'));
+      this.get('cell.row.component').invokeAction('cell-button-remove', this.get('cell'));
     }
   }
 });

@@ -17,13 +17,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,11 +42,11 @@ public class EntityApiControllerImpl implements EntityApiController {
     @Inject
     private EntityRestRegistry apiRegistry;
 
-    private static final Pattern PATTERN_ENTITY_ID = Pattern.compile("\\/(.*)(?<!\\/)$");
+    private static final Pattern PATTERN_ENTITY_ID = Pattern.compile("/(.*)(?<!/)$");
 
     @SuppressWarnings("unchecked")
     @Override
-    public ResponseEntity<?> get(@RequestParam final Map<String, Object> query, final HttpServletRequest request) {
+    public ResponseEntity<?> get(final RestQuery restQuery, final HttpServletRequest request) {
         final String requestUri = parseRequestUri(request);
         final Endpoint endpoint = apiRegistry.findEndpoint(requestUri);
         if (endpoint == null) {
@@ -69,8 +67,6 @@ public class EntityApiControllerImpl implements EntityApiController {
         } else { // LIST
             final ListOperation operation = (ListOperation) endpoint.findOperation(LIST);
             if (operation != null) {
-                final Class queryClass = operation.getQueryClass() == null ? RestQuery.class : operation.getQueryClass();
-                final RestQuery restQuery = (RestQuery) OBJECT_MAPPER.convertValue(query, queryClass);
                 final Page page = operation.getRun().handle(restQuery);
                 final Response list = Response.of(operation.getEntityClass())
                         .include(operation.getRelationships()).add(page).list();

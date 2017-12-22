@@ -1,13 +1,13 @@
 <div class="title">
-  {{model.title}}
+  {{cell.model.title}}
 </div>
 <div class="image">
-  {{#link-to "storage.books.book.edit" model.id}}
-    <img src="{{fileStorageUrl}}{{model.id}}">
+  {{#link-to "storage.books.book.edit" cell.model.id}}
+    <img src="{{fileStorageUrl}}{{cell.model.id}}">
   {{/link-to}}
 </div>
 <div class="authors">
-  {{#each model.authors as |author|}}
+  {{#each cell.model.authors as |author|}}
     {{author.firstName}} {{author.middleName}} {{author.lastName}},
   {{/each}}
 </div>

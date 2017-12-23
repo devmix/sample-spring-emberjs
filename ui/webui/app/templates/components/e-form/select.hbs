@@ -1,12 +1,25 @@
 {{#if multiple}}
-  {{#power-select-multiple options=internalOptions searchField=searchField selected=currentValue
+  {{#if label}}
+    <label>{{label}}</label>
+  {{/if}}
+  {{#power-select-multiple class='select' options=internalOptions searchField=searchField selected=currentValue
                            onchange=(action (mut currentValue)) as |item|}}
-    {{yield item}}
-    <!--{{item.name}}-->
+    {{#if hasBlock}}
+      {{yield item this}}
+    {{else}}
+      {{item.name}}
+    {{/if}}
   {{/power-select-multiple}}
 {{else}}
+  {{#if label}}
+    <label>{{label}}</label>
+  {{/if}}
   {{#power-select options=internalOptions searchField=searchField selected=currentValue
                   onchange=(action (mut currentValue)) as |item|}}
-    {{item.name}}
+    {{#if hasBlock}}
+      {{yield item this}}
+    {{else}}
+      {{item.name}}
+    {{/if}}
   {{/power-select}}
 {{/if}}

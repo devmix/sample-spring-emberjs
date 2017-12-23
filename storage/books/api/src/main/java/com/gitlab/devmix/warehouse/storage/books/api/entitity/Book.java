@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.Table;
 import java.util.Date;
 import java.util.Set;
@@ -26,11 +27,18 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@NamedEntityGraph(name = "booksBook.list",
-        attributeNodes = {
-                @NamedAttributeNode(value = "authors"),
-                @NamedAttributeNode(value = "genres")
-        })
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "booksBook.list",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "authors"),
+                }),
+        @NamedEntityGraph(name = "booksBook.read",
+                attributeNodes = {
+//                        @NamedAttributeNode(value = "authors"),
+//                        @NamedAttributeNode(value = "genres"),
+//                        @NamedAttributeNode(value = "publisher"),
+                })
+})
 public class Book extends AbstractEntity {
 
     public static final String ENTITY = "booksBook";

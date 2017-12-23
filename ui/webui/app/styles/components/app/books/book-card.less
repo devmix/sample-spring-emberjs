@@ -1,65 +1,50 @@
 .component-app-books-book-card {
-  .flex-display;
-  .flex-direction(column);
-  .z-depth(4);
-
-  width: 150px;
-  height: 200px;
-  min-width: 150px;
-  min-height: 200px;
-  position: relative;
-  margin: 4px;
+  width: 200px !important;
+  height: 270px !important;
+  min-width: 200px !important;
+  min-height: 270px !important;
+  margin: 4px !important;
   overflow: hidden;
+  position: relative;
 
-  .title {
-    .pointer-none();
-    font-size: 85%;
-    padding-left: 4px;
-    padding-right: 4px;
-    background-color: #F9F9F9;
+  .content {
+    padding: 5px !important;
+    font-size: 85% !important;
     position: absolute;
     opacity: 0;
+    animation: fadeOut .5s;
+    pointer-events: none;
+    background-color: #F9F9F9 !important;
+    z-index: 1;
+    left: 0;
+    right: 0;
+  }
+
+  .top {
     top: 0;
-    left: 0;
-    right: 0;
-    animation: fadeOut .5s;
   }
 
-  .image {
-    .flex-grow(1);
-    .flex-display;
-    .justify-content(center);
-    .flex-direction(column);
-
-    img {
-      max-height: 100%;
-      max-width: 100%;
-    }
-  }
-
-  .authors {
-    .pointer-none();
-    font-size: 70%;
-    padding-top: 2px;
-    padding-left: 4px;
-    padding-right: 4px;
-    position: absolute;
-    background-color: #F9F9F9;
-    opacity: 0;
+  .bottom {
     bottom: 0;
-    left: 0;
-    right: 0;
-    animation: fadeOut .5s;
   }
 
   &:hover {
-    .title {
+    .top, .bottom {
       opacity: 1;
       animation: fadeIn .5s;
     }
-    .authors {
-      opacity: 1;
-      animation: fadeIn .5s;
+  }
+
+  .image {
+    .flex-grow(1) !important;
+    .flex-display !important;
+    .justify-content(center) !important;
+    .flex-direction(column) !important;
+
+    img {
+      padding: 2px;
+      max-height: 100%;
+      max-width: 100%;
     }
   }
 

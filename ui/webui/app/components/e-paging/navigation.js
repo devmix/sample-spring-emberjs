@@ -1,10 +1,10 @@
 import Ember from 'ember';
 
-const {computed} = Ember;
+const {computed, sendEvent} = Ember;
 
 export default Ember.Component.extend({
 
-  classNames: ['components-e-paging-navigation'],
+  classNames: ['e-paging-navigation'],
 
   pageSizeVariants: '5 10 20 40 80', // selectable variants of page size
 
@@ -64,10 +64,7 @@ export default Ember.Component.extend({
     },
 
     refresh() {
-      const owner = this.get('target');
-      if (owner && owner.onRefresh) {
-        owner.onRefresh();
-      }
+      sendEvent(this.get('target'), 'refresh');
     }
   }
 

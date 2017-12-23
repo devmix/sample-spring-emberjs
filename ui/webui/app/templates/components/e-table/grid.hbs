@@ -7,7 +7,7 @@
 {{else}}
   {{#if cells.isPending}}
     {{e-progress/loading}}
-  {{else if list.isRejected}}
+  {{else if cells.isRejected}}
     Fail
   {{else}}
     No data

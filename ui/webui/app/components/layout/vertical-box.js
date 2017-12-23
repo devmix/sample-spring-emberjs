@@ -1,8 +1,9 @@
 import Ember from 'ember';
-import StyleableMixin from '../../mixins/components/styleable';
+import StyleableMixin from 'webui/mixins/components/styleable';
 
 export default Ember.Component.extend(StyleableMixin, {
 
-  classNames: ['component-layout-vertical-box']
+  classNames: ['component-layout-vertical-box'],
+  classNameBindings: ['extraClass']
 
 });

@@ -1,34 +1,32 @@
-<!-- PAGES -->
+<i class="left chevron icon link" {{action 'prev'}}></i>
 
-<span class="glyphicon glyphicon-chevron-left" {{action 'prev'}}></span>
 &nbsp;
+
 <div class="numbers">
   {{currentPage}} / {{pages}}
 </div>
+
 &nbsp;
-<span class="glyphicon glyphicon-chevron-right" {{action 'next'}}></span>
+
+<i class="right chevron icon link" {{action 'next'}}></i>
+
 &nbsp;
 
-<!-- PAGE SIZE -->
-
-<div class="btn-group btn-group-sm dropup">
-
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    {{pageSize}} <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu dropdown-menu-right btn-size">
-    {{#each pageSizes as |size|}}
-      <li>
-        <a href="#" {{action 'selectPageSize' size.value}}>
-          <span class="glyphicon glyphicon-ok {{unless size.checked 'invisible'}}"></span>
-          {{size.value}}
-        </a>
-      </li>
+{{#ui-dropdown class="selection compact" selected=pageSize onChange=(action 'selectPageSize')}}
+  <div class="default text">Page Size</div>
+  <i class="dropdown icon"></i>
+  <div class="menu">
+    {{#each pageSizes as |item|}}
+      <div class="item" data-value="{{item.value}}">
+        {{item.value}}
+      </div>
     {{/each}}
-  </ul>
+  </div>
+{{/ui-dropdown}}
 
-  {{e-button/standard icon='refresh' action='refresh'}}
 
-  {{yield this}}
+&nbsp;
 
-</div>
+{{e-button/standard icon='refresh' action='refresh'}}
+
+{{yield this}}

@@ -3,4 +3,6 @@ import StyleableMixin from '../../../mixins/components/styleable';
 
 const {computed, observer} = Ember;
 
-export default Ember.Component.extend(StyleableMixin, {});
+export default Ember.Component.extend(StyleableMixin, {
+  classNameBindings: ['extraClass']
+});

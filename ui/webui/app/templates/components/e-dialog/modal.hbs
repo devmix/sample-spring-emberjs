@@ -1,0 +1,21 @@
+{{#if _visible}}
+  <i class="close icon" {{action 'e-dialog-modal-cancel'}}></i>
+  <div class="header">
+    {{_title}}
+  </div>
+  <div class="content scrolling">
+    {{#if hasBlock}}
+      {{yield this _data}}
+    {{else}}
+      {{_message}}
+    {{/if}}
+  </div>
+  <div class="actions">
+    {{#e-button/standard class='primary' action=(action 'e-dialog-modal-accept')}}
+      {{_btnAccept}}
+    {{/e-button/standard}}
+    {{#e-button/standard action=(action 'e-dialog-modal-cancel')}}
+      {{_btnCancel}}
+    {{/e-button/standard}}
+  </div>
+{{/if}}

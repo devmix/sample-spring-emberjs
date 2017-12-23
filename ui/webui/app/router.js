@@ -18,6 +18,10 @@ Router.map(function () {
       this.route('publisher');
     });
   });
+
+  this.route('core', function() {
+    this.route('login');
+  });
 });
 
 export default Router;

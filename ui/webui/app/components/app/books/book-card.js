@@ -6,7 +6,7 @@ const {computed, observer} = Ember;
 
 export default Ember.Component.extend(MixinComponentBase, {
 
-  classNames: ['component-app-books-book-card'],
+  classNames: ['ui card', 'component-app-books-book-card'],
 
   fileStorageUrl: (ENV.host || '') + '/api/core/storage/file/get/storage/books/book/cover/',
 

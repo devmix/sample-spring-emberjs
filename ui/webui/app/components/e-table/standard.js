@@ -2,13 +2,13 @@ import Ember from 'ember';
 import PageableMixin from '../../mixins/components/e-paging/pageable';
 import SearchableMixin from '../../mixins/components/e-searching/searchable';
 import StyleableMixin from '../../mixins/components/styleable';
-import AutoRegisterMixin from '../../mixins/components/autoregister'
+import AutoRegisterMixin from '../../mixins/components/autoregister';
 
-const {computed} = Ember;
+const {computed, on} = Ember;
 
 export default Ember.Component.extend(StyleableMixin, PageableMixin, SearchableMixin, AutoRegisterMixin, {
 
-  classNames: ['components-e-table', 'components-e-table-standard'],
+  classNames: ['e-table', 'e-table-standard'],
 
   // properties
   attributesConfig: [],
@@ -16,15 +16,25 @@ export default Ember.Component.extend(StyleableMixin, PageableMixin, SearchableM
   modelName: undefined,
   type: 'table',
   gridCellFrame: '',
+  persistent: undefined,
 
   //
   table: undefined,
   store: Ember.inject.service(),
+  persistence: Ember.inject.service('core/config'),
+
+  /** @override */
+  init() {
+    this._super(...arguments);
+    this.restoreState();
+  },
 
   computedItems: computed('items', 'modelName', 'filter', function () {
     const modelName = this.get('modelName');
     if (modelName) {
-      return this.watchPaging(this.get('store').query(modelName, this.get('filter')));
+      const filter = this.get('filter');
+      this.persistState(this.get('persistent'), filter);
+      return this.watchPaging(this.get('store').query(modelName, filter));
     }
     return this.get('items');
   }),
@@ -46,8 +56,27 @@ export default Ember.Component.extend(StyleableMixin, PageableMixin, SearchableM
     return this.get('type') === 'grid';
   }),
 
-  onRefresh() {
+  onRefreshEvent: on('refresh', function () {
     this.notifyPropertyChange('filter');
+  }),
+
+  persistState(key, data) {
+    key && this.get('persistence').set(key, data);
+  },
+
+  restoreState() {
+    const key = this.get('persistent');
+    if (key) {
+      const data = this.get('persistence').get(key);
+      if (data) {
+        this.setProperties({
+          page: data.page,
+          pageSize: data.pageSize,
+          search: data.search,
+          sort: data.sort
+        })
+      }
+    }
   },
 
   invokeAction(action, data) {

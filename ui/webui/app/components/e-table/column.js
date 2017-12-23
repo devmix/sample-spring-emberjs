@@ -25,8 +25,8 @@ export default Ember.Component.extend({
 
   sortIcon: computed('direction', function () {
     const direction = this.get('direction');
-    return direction === 'asc' ? 'sort-by-attributes'
-      : (direction === 'desc' ? 'sort-by-attributes-alt' : undefined) || 'sort';
+    return direction === 'asc' ? 'sort content ascending'
+      : (direction === 'desc' ? 'sort content descending' : undefined) || 'sort';
   }),
 
   applySortConfig(result) {

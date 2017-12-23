@@ -4,3 +4,15 @@
           select=(component 'e-form/select' register=(action 'registerField'))
           date=(component 'e-form/date' register=(action 'registerField'))
         ) this}}
+
+<!-- TODO component-->
+{{#unless valid}}
+  <div class="ui error message">
+    <div class="header">Could you check something!</div>
+    <ul class="list">
+      {{#each errors as |error|}}
+        <li>{{error}}</li>
+      {{/each}}
+    </ul>
+  </div>
+{{/unless}}

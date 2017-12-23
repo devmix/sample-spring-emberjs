@@ -120,7 +120,8 @@ public class DemoManager {
                         .map(id -> em.getReference(Author.class, id))
                         .collect(toSet()));
 
-                book.setPublisher(em.getReference(Publisher.class, publishers.get(book.getPublisher())));
+                book.setPublisher(em.getReference(Publisher.class, publishers.keySet().stream()
+                        .filter(e -> e.getName().equals(book.getPublisher().getName())).findFirst().orElse(null)));
             });
 
             bookRepository

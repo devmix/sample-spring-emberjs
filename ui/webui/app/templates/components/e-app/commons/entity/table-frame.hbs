@@ -1,14 +1,12 @@
 {{e-table/standard attributesConfig=columns modelName=modelName
                    onCustomAction=(action 'onCustomAction')
-                   register=(action 'registerTable')
-}}
+                   bindTo=table
+                   persistent=persistent}}
 
-{{e-dialog/modal-frame id='edit'
-                       bodyFrame=editorFrame
-                       width='95%'
-                       owner=this}}
+{{#e-dialog/modal autoClose=false fullscreen=true bindTo=editDialog
+                  action=(action 'onEditDialogAction') as |dialog model|}}
+  {{component editorFrame model=model bindTo=editor}}
+{{/e-dialog/modal}}
 
-{{e-dialog/modal-frame id='remove-confirm'
-                       title='Confirm'
-                       bodyText='Are you sure?'
-                       owner=this}}
+{{e-dialog/modal title='Confirm' message='Are you sure?' size='tiny' bindTo=removeDialog
+                 action=(action 'onRemoveDialogAction')}}

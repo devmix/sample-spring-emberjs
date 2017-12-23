@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['components-e-paging-controls'],
+  classNames: ['e-paging-controls'],
 
   actions: {
     invoke() {

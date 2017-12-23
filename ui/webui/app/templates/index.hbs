@@ -1,9 +1,25 @@
-<div class="container-fluid" style="margin-top: 20px">
-  <div class="jumbotron">
-    <h1>Warehouse!</h1>
-    <p>This is a sample application that shows how Spring and EmberJS can works together.</p>
-    <p>
-      {{#link-to 'storage.books.book' class='btn btn-primary btn-lg'}}Learn more{{/link-to}}
-    </p>
-  </div>
+<div class="ui raised segment" style="margin: 30px">
+  <h1>Warehouse!</h1>
+  <p>This is a sample application that shows how Spring and EmberJS can works together.</p>
+
+  {{#link-to 'storage.books.book'}}
+    <div class="ui animated fade large button">
+      <div class="visible content">Books</div>
+      <div class="hidden content">Browse</div>
+    </div>
+  {{/link-to}}
+
+  {{#link-to 'storage.books.author'}}
+    <div class="ui animated fade large button">
+      <div class="visible content">Dictionary</div>
+      <div class="hidden content">Authors</div>
+    </div>
+  {{/link-to}}
+
+  {{#link-to 'core.login'}}
+    <div class="ui animated fade large button">
+      <div class="visible content">Login</div>
+      <div class="hidden content">Sample</div>
+    </div>
+  {{/link-to}}
 </div>

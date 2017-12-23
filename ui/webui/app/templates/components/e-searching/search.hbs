@@ -1,12 +1,11 @@
-<div class="input-group input-group-sm">
-  {{input type='text' class='form-control'
+<div class="ui action fluid input small e-searching-buttons">
+  {{input type='text'
           placeholder='Search for...'
           value=searchText
           keyPress=(action 'searchKeyPress')}}
-  <span class="input-group-btn">
+  {{#if searchedText}}
+    {{e-button/standard icon='remove' action='reset'}}
+  {{else}}
     {{e-button/standard icon='search' action='search'}}
-    {{#if searchedText}}
-      {{e-button/standard icon='remove' action='reset' }}
-    {{/if}}
-  </span>
+  {{/if}}
 </div>

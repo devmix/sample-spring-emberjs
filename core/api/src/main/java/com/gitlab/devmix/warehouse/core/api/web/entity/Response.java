@@ -1,6 +1,7 @@
 package com.gitlab.devmix.warehouse.core.api.web.entity;
 
 import lombok.Value;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 
 import javax.annotation.Nullable;
@@ -192,14 +193,15 @@ public final class Response<E> extends HashMap<String, Object> {
         }
 
         private Class findActualClass(final Object o) {
-            if (Proxy.isProxyClass(o.getClass())) {
+            final Class actualClass = Hibernate.getClass(o);
+            if (Proxy.isProxyClass(actualClass)) {
                 for (final Class i : o.getClass().getInterfaces()) {
                     if (Metadata.of(i).isEntity()) {
                         return i;
                     }
                 }
             }
-            return o.getClass();
+            return actualClass;
         }
 
         private List<Payload> ensureEntitiesOf(final Class<?> entityClass, final Response<E> response) {

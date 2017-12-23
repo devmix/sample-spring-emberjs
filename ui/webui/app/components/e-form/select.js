@@ -23,6 +23,5 @@ export default AbstractField.extend({
     }
 
     return [];
-  }),
-
+  })
 });

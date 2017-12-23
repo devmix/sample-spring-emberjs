@@ -1,0 +1,11 @@
+{{#e-form/fields model=model bindTo=fields style=(hash padding='8px') as |form|}}
+  {{form.text label='Title' value=model.title required=true}}
+  {{form.select label='Genres' value=model.genres multiple=true modelName='books-genre'}}
+  {{#form.select label='Authors' value=model.authors multiple=true modelName='books-author' as |item|}}
+    {{item.firstName}} {{item.middleName}} {{item.lastName}}
+  {{/form.select}}
+  {{form.date label='Publish date' value=model.publishDate}}
+  {{form.select label='Publisher' value=model.publisher modelName='books-publisher'}}
+  {{form.text label='ISNB-13' value=model.isnb13 required=true}}
+  {{form.textarea label='Description' value=model.description rows=15}}
+{{/e-form/fields}}

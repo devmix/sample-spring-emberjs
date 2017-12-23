@@ -1,47 +1,18 @@
-{{#app/layout/top-center-bottom as |layout|}}
-  {{#layout.top}}
-    {{#link-to 'storage.books.book'}}Books{{/link-to}} {{e-icon/glyph icon='chevron-right'}} {{model.title}}
+{{#e-layout/top-center-bottom class='storage-books-edit' as |layout|}}
+  {{#layout.top class='ui segment'}}
+    <div class="ui breadcrumb">
+      {{#link-to 'storage.books.book' class="section"}}Books{{/link-to}}
+      <span class="divider">/</span>
+      <div class="active section">{{model.title}}</div>
+    </div>
   {{/layout.top}}
 
   {{#layout.center}}
-    {{#e-form/fields model=model register=(action 'registerFields') as |form|}}
-      <dl class="dl-horizontal">
-        <dt>Title:</dt>
-        <dd>{{form.text value=model.title required=true}}</dd>
-
-        <dt>Genres:</dt>
-        <dd>
-          {{form.select value=model.genres multiple=true modelName='books-genre'}}
-        </dd>
-
-        <dt>Authors:</dt>
-        <dd>
-          {{#form.select value=model.authors multiple=true modelName='books-author' as |item|}}
-            {{item.firstName}} {{item.middleName}} {{item.lastName}}
-          {{/form.select}}
-        </dd>
-
-        <dt>Publish date:</dt>
-        <dd>{{form.date value=model.publishDate}}</dd>
-
-        <dt>Publisher:</dt>
-        <dd>
-          {{form.select value=model.publisher modelName='books-publisher'}}
-        </dd>
-
-        <dt>ISNB-13:</dt>
-        <dd>{{form.text value=model.isnb13 required=true}}</dd>
-
-        <dt>Description:</dt>
-        <dd>{{form.textarea value=model.description rows=15}}</dd>
-      </dl>
-    {{/e-form/fields}}
+    {{e-app/books/book/edit-frame model=model bindTo=editFrame}}
   {{/layout.center}}
 
-  {{#layout.bottom}}
-    <div class="btn-group btn-group-sm">
-      {{#e-button/standard icon='plus' action='commit'}}Save{{/e-button/standard}}
-      {{#e-button/standard icon='remove' action='cancel'}}Close{{/e-button/standard}}
-    </div>
+  {{#layout.bottom class='ui segment'}}
+    {{#e-button/standard icon='plus' action='commit'}}Save{{/e-button/standard}}
+    {{#e-button/standard icon='remove' action='cancel'}}Close{{/e-button/standard}}
   {{/layout.bottom}}
-{{/app/layout/top-center-bottom}}
+{{/e-layout/top-center-bottom}}

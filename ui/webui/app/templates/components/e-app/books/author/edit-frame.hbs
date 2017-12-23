@@ -1,12 +1,5 @@
-{{#e-form/fields model=params.model register=(action 'registerFields') as |form|}}
-  <dl class="dl-horizontal">
-    <dt>First Name:</dt>
-    <dd>{{form.text value=params.model.firstName required=true}}</dd>
-
-    <dt>Last Name:</dt>
-    <dd>{{form.text value=params.model.lastName required=true}}</dd>
-
-    <dt>Middle Name:</dt>
-    <dd>{{form.text value=params.model.middleName}}</dd>
-  </dl>
+{{#e-form/fields model=model bindTo=fields as |form|}}
+  {{form.text label='First Name' value=model.firstName required=true}}
+  {{form.text label='Last Name' value=model.lastName required=true}}
+  {{form.text label='Middle Name' value=model.middleName}}
 {{/e-form/fields}}

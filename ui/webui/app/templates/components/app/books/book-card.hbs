@@ -1,4 +1,5 @@
-<div class="title">
+<div class="content top">
+  <div class="right floated meta"><i class="remove icon link"></i></div>
   {{cell.model.title}}
 </div>
 <div class="image">
@@ -6,7 +7,7 @@
     <img src="{{fileStorageUrl}}{{cell.model.id}}">
   {{/link-to}}
 </div>
-<div class="authors">
+<div class="content bottom">
   {{#each cell.model.authors as |author|}}
     {{author.firstName}} {{author.middleName}} {{author.lastName}},
   {{/each}}

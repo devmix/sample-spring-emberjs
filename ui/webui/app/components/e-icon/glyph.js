@@ -2,12 +2,12 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 
-  tagName: 'span',
-  classNames: ['glyphicon'],
-  classNameBindings: ['iconClass'],
+  tagName: 'i',
+  classNames: ['icon'],
+  classNameBindings: ['iconClass', 'link:link'],
 
   iconClass: Ember.computed('icon', function () {
-    return 'glyphicon-' + this.get('icon');
+    return this.get('icon');
   }),
 
   click() {

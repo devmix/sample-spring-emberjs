@@ -1,12 +1,9 @@
 {{#if static}}
   <p class="form-control-static">{{currentValue}}</p>
 {{else}}
-  {{input type='text' class="form-control input-sm" placeholder=placeholder value=currentValue}}
-  {{#if errors}}
-    <span class="help-block">
-      {{#each errors as |error|}}
-        {{error}}<br>
-      {{/each}}
-    </span>
+  {{#if label}}
+    <label>{{label}}</label>
   {{/if}}
+
+  {{input type='text' placeholder=placeholder value=currentValue}}
 {{/if}}

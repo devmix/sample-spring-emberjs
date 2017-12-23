@@ -1,28 +1,20 @@
 {{#each menu as |item|}}
   {{#if item.menu}}
-    <li class="dropdown-submenu">
-      {{#if item.route}}
-        {{#link-to item.route}}{{item.name}}{{/link-to}}
-      {{else}}
-        {{#if item.link}}
-          <a tabindex="-1" href="{{item.link}}">{{item.name}}</a>
-        {{else}}
-          <a tabindex="-1" href="#" onclick="e.preventDefault()">{{item.name}}</a>
-        {{/if}}
-      {{/if}}
-      <ul class="dropdown-menu">
+    <div class="item">
+      <i class="dropdown icon"></i> {{item.name}}
+      <div class="menu">
         {{e-menu/item menu=item.menu}}
-      </ul>
-    </li>
+      </div>
+    </div>
+  {{else if item.separator}}
+    <div class="divider"></div>
+  {{else if item.header}}
+    <div class="header">{{item.name}}</div>
+  {{else if item.route}}
+    {{#link-to item.route class='item'}}{{item.name}}{{/link-to}}
+  {{else if item.link}}
+    <a class='item' href="{{item.link}}">{{item.name}}</a>
   {{else}}
-    {{#if item.separator}}
-      <li role="separator" class="divider"></li>
-    {{else if item.route}}
-      <li>{{#link-to item.route}}{{item.name}}{{/link-to}}</li>
-    {{else if item.link}}
-      <li><a tabindex="-1" href="{{item.link}}">{{item.name}}</a></li>
-    {{else}}
-      <li><a tabindex="-1" href="#" onclick="e.preventDefault()">{{item.name}}</a></li>
-    {{/if}}
+    <a class='item' href="#" onclick="e.preventDefault()">{{item.name}}</a>
   {{/if}}
 {{/each}}

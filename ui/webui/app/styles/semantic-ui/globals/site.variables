@@ -1,3 +1,8 @@
 /*******************************
      User Global Variables
 *******************************/
+
+// @inputVerticalPadding   : @relative8px;
+// @inputHorizontalPadding : @relative10px;
+
+

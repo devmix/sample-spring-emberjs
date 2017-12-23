@@ -1,10 +1,11 @@
 import Ember from 'ember';
+import AutoRegisterMixin from 'webui/mixins/components/autoregister'
 
 //noinspection JSUnusedLocalSymbols
-export default Ember.Component.extend(/*Validation,*/ {
+export default Ember.Component.extend(AutoRegisterMixin, /*Validation,*/ {
 
-  classNames: ['form-group', 'form-group-sm'],
-  classNameBindings: ['invalid:has-error'],
+  classNames: ['e-form-field', 'ui small field'],
+  classNameBindings: ['invalid:error'],
 
   buffered: false,
   valid: true,
@@ -23,22 +24,6 @@ export default Ember.Component.extend(/*Validation,*/ {
     }
   }),
 
-  didInsertElement() {
-    this._super(...arguments);
-    const action = this.get('register');
-    if (action) {
-      this.sendAction('register', this)
-    }
-  },
-
-  willDestroyElement() {
-    this._super(...arguments);
-    const action = this.get('unregister');
-    if (action) {
-      this.sendAction('unregister', this)
-    }
-  },
-
   invalid: Ember.computed('valid', function () {
     return !this.get('valid');
   }),
@@ -52,17 +37,18 @@ export default Ember.Component.extend(/*Validation,*/ {
     this.set('errors', []);
   },
 
-  validate() {
+  validate(allErrors = []) {
     let valid = true, errors = [], value = this.get('currentValue');
     if (this.get('required') && !value) {
       valid = false;
-      errors.push('The value of field is required');
+      const error = 'The value of field `' + this.get('label') + '` is required';
+      errors.push(error);
+      allErrors.push(error);
     }
 
     valid &= this.validationCustom(errors);
 
-    this.set('errors', errors);
-    this.set('valid', valid);
+    this.setProperties({errors, valid});
 
     return valid;
   }

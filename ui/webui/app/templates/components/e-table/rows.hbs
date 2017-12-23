@@ -4,4 +4,12 @@
   {{else}}
     {{component 'e-table/row' model=item index=index component=component}}
   {{/if}}
+{{else}}
+  {{#if items.isPending}}
+    {{e-progress/loading}}
+  {{else if items.isRejected}}
+    Fail
+  {{else}}
+    No data
+  {{/if}}
 {{/each}}

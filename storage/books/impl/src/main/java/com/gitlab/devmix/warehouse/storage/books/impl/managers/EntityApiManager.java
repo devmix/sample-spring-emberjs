@@ -85,7 +85,9 @@ public class EntityApiManager {
     private Book updateBookRelationships(final Book book) {
         book.setAuthors(getReferenceSet(book.getAuthors(), Author.class, em));
         book.setGenres(getReferenceSet(book.getGenres(), Genre.class, em));
-        book.setPublisher(em.getReference(Publisher.class, book.getPublisher().getId()));
+        if (book.getPublisher() != null) {
+            book.setPublisher(em.getReference(Publisher.class, book.getPublisher().getId()));
+        }
         return book;
     }
 

@@ -1,9 +1,11 @@
 import Ember from 'ember';
-import AutoRegisterMixin from '../../mixins/components/autoregister'
+import AutoRegisterMixin from 'webui/mixins/components/autoregister'
+import StyleableMixin from 'webui/mixins/components/styleable';
 
-export default Ember.Component.extend(AutoRegisterMixin, {
+export default Ember.Component.extend(AutoRegisterMixin, StyleableMixin, {
 
-  classNames: ['component-e-form-fields'],
+  classNames: ['e-form-fields', 'ui small form'],
+  classNameBindings: ['valid::error'],
 
   fields: {},
   valid: true,
@@ -38,14 +40,13 @@ export default Ember.Component.extend(AutoRegisterMixin, {
 
     for (let id in fields) {
       if (fields.hasOwnProperty(id)) {
-        valid &= fields[id].validate();
+        valid &= fields[id].validate(errors);
       }
     }
 
     valid &= this.validationCustom(errors);
 
-    this.set('errors', errors);
-    this.set('valid', valid);
+    this.setProperties({errors, valid});
 
     return valid;
   },

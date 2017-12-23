@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Entity(name = Author.ENTITY)
 @Table(name = "BOOKS_AUTHOR")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class Author extends AbstractEntity {
 

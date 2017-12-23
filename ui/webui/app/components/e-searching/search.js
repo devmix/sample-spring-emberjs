@@ -2,10 +2,19 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 
-  classNames: ['components-e-searching-search'],
+  classNames: ['e-searching-search'],
 
   searchText: undefined,
   searchedText: undefined,
+
+  init() {
+    this._super(...arguments);
+    const search = this.get('target.search');
+    if (search) {
+      this.searchText = search;
+      this.searchedText = search;
+    }
+  },
 
   notHasSearchText: Ember.computed('searchText', function () {
     return !this.get('searchText');

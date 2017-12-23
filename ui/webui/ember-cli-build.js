@@ -6,20 +6,7 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 module.exports = function(defaults) {
   let app = new EmberApp(defaults, {
     // Add options here
-    autoprefixer: {
-      browsers: ['last 2 ios version'],
-      cascade: false
-    }
   });
-
-    app.import('vendor/bootstrap/fonts/glyphicons-halflings-regular.ttf', {destDir: 'fonts'});
-    app.import('vendor/bootstrap/fonts/glyphicons-halflings-regular.woff', {destDir: 'fonts'});
-    app.import('vendor/bootstrap/fonts/glyphicons-halflings-regular.woff2', {destDir: 'fonts'});
-    app.import('vendor/bootstrap/fonts/glyphicons-halflings-regular.svg', {destDir: 'fonts'});
-    app.import('vendor/bootstrap/fonts/glyphicons-halflings-regular.eot', {destDir: 'fonts'});
-
-    app.import('vendor/bootstrap/css/bootstrap-theme-sandtone.min.css');
-    app.import('vendor/bootstrap/js/bootstrap.min.js');
 
   // Use `app.import` to add additional libraries to the generated
   // output files.

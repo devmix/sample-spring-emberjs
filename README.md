@@ -7,7 +7,7 @@
 
 ## Build
 ```
-mvn clean install -Pui -T4
+mvn clean install -Pui
 ```
 
 ## Run
@@ -15,13 +15,37 @@ mvn clean install -Pui -T4
 java -jar launcher/web-server/target/launcher-web-server-1.0-SNAPSHOT.jar
 ```
 
-## EmberJS debug mode
+## EmberJS
+ 
+### Debug mode
 
 Run the command below in the folder `ui/webui`.
 ```
 ember serve
 ```
 The page will be available at http://localhost:4200
+
+### Semantic UI 
+
+#### Build
+
+```
+npm run-script semantic-ui-build
+```
+or
+```
+gulp build --gulpfile vendor/semantic-ui/gulpfile.js
+```
+
+#### Watching for changes
+
+```
+npm run-script semantic-ui-watch
+```
+or
+```
+gulp watch --gulpfile vendor/semantic-ui/gulpfile.js
+```
 
 ## H2 Console
 

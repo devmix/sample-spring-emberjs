@@ -42,7 +42,7 @@
           </execution>
 
           <execution>
-            <id>install dependencies</id>
+            <id>install npm dependencies</id>
             <goals>
               <goal>npm</goal>
             </goals>
@@ -52,12 +52,22 @@
           </execution>
 
           <execution>
-            <id>install ember-cli</id>
+            <id>install bower dependencies</id>
+            <goals>
+              <goal>bower</goal>
+            </goals>
+            <configuration>
+              <arguments>install</arguments>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>build semantic ui</id>
             <goals>
               <goal>npm</goal>
             </goals>
             <configuration>
-              <arguments>install ember-cli@2.17</arguments>
+              <arguments>run-script semantic-ui-build</arguments>
             </configuration>
           </execution>
 
@@ -69,7 +79,6 @@
             </goals>
             <configuration>
               <arguments>build --env production</arguments>
-              <!--<arguments>build</arguments>-->
             </configuration>
           </execution>
         </executions>

@@ -55,10 +55,15 @@ gulp watch --gulpfile vendor/semantic-ui/gulpfile.js
 
 ## Screenshots
 
-### Browse
-
-![alt Browse](screenshots/storage-books-browse.png)
-
-### Edit
-
-![alt Edit](screenshots/storage-books-edit.png)
+### Books : Index
+![alt Books : Index](screenshots/storage-books-book-index.png)
+### Books : Edit
+![alt Books : Edit](screenshots/storage-books-book-edit.png)
+### Author : Index
+![alt Author : Index](screenshots/storage-books-author-index.png)
+### Author : Edit
+![alt Author : Edit](screenshots/storage-books-author-edit.png)
+### Index
+![alt Index](screenshots/index.png)
+### Login
+![alt Login](screenshots/login.png)

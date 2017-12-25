@@ -1,5 +1,7 @@
 {{#e-form/fields model=model bindTo=fields as |form|}}
-  {{form.text label='First Name' value=model.firstName required=true}}
-  {{form.text label='Last Name' value=model.lastName required=true}}
-  {{form.text label='Middle Name' value=model.middleName}}
+  <div class="three fields">
+    {{form.text label='First Name' value=model.firstName required=true}}
+    {{form.text label='Last Name' value=model.lastName required=true}}
+    {{form.text label='Middle Name' value=model.middleName}}
+  </div>
 {{/e-form/fields}}

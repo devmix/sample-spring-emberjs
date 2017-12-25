@@ -1,7 +1,8 @@
 package com.gitlab.devmix.warehouse.storage.books.impl.managers;
 
-import com.gitlab.devmix.warehouse.core.api.entity.FileEntity;
 import com.gitlab.devmix.warehouse.core.api.services.FileStorageService;
+import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStorageOutputStream;
+import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStreamSelector;
 import com.gitlab.devmix.warehouse.storage.books.api.entitity.Author;
 import com.gitlab.devmix.warehouse.storage.books.api.entitity.Book;
 import com.gitlab.devmix.warehouse.storage.books.api.entitity.Genre;
@@ -12,6 +13,9 @@ import com.gitlab.devmix.warehouse.storage.books.api.repository.GenreRepository;
 import com.gitlab.devmix.warehouse.storage.books.api.repository.PublisherRepository;
 import com.gitlab.devmix.warehouse.storage.books.impl.listeners.StorageBooksStartupListener;
 import lombok.Data;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -21,6 +25,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -37,6 +42,7 @@ import static java.util.stream.Collectors.toSet;
 @Component
 @Scope("prototype")
 public class DemoManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DemoManager.class);
 
     private static final String STORAGE_BOOKS_BOOK_COVER = "storage/books/book/cover/";
 
@@ -77,7 +83,7 @@ public class DemoManager {
         authorRepository.deleteAll();
         genreRepository.deleteAll();
         publisherRepository.deleteAll();
-        storage.removeAll(STORAGE_BOOKS_BOOK_COVER);
+        storage.removeAll(FileStreamSelector.builder().folder(STORAGE_BOOKS_BOOK_COVER).build());
 
         for (int i = 0; i < REPEAT; i++) {
             final Demo demo = (Demo) new Yaml(new Constructor(Demo.class))
@@ -121,17 +127,25 @@ public class DemoManager {
                         .collect(toSet()));
 
                 book.setPublisher(em.getReference(Publisher.class, publishers.keySet().stream()
-                        .filter(e -> e.getName().equals(book.getPublisher().getName())).findFirst().orElse(null)));
+                        .filter(e -> e.getName().equals(book.getPublisher().getName()))
+                        .map(Publisher::getId)
+                        .findFirst().orElse(null)));
             });
 
             bookRepository
                     .save(demo.books)
                     .forEach(book -> {
-                        final FileEntity file = new FileEntity();
-                        file.setId(STORAGE_BOOKS_BOOK_COVER + book.getId().toString());
-                        file.setFileName(book.getIsnb13() + ".jpg");
-                        storage.saveStream(file,
-                                this.getClass().getResourceAsStream("/demo/books/covers/" + file.getFileName()));
+                        final FileStreamSelector selector = FileStreamSelector.builder()
+                                .folder(STORAGE_BOOKS_BOOK_COVER).file(book.getId().toString())
+                                .name(book.getIsnb13() + ".jpg").build();
+                        try (final FileStorageOutputStream stream = storage.openOutputStream(selector)) {
+                            final String name = "/demo/books/covers/" + selector.getName();
+                            try (final InputStream resource = this.getClass().getResourceAsStream(name)) {
+                                IOUtils.copy(resource, stream.getOutputStream());
+                            }
+                        } catch (final Exception e) {
+                            LOGGER.error("Fail to upload file", e);
+                        }
                     });
         }
     }

@@ -1,5 +1,6 @@
 package com.gitlab.devmix.warehouse.core.api.web.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import static org.apache.commons.collections4.MapUtils.isNotEmpty;
  * @author Sergey Grachev
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class RestQuery {
 
     private int page = 0;

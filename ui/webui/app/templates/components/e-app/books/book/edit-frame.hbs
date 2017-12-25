@@ -1,11 +1,29 @@
 {{#e-form/fields model=model bindTo=fields style=(hash padding='8px') as |form|}}
   {{form.text label='Title' value=model.title required=true}}
-  {{form.select label='Genres' value=model.genres multiple=true modelName='books-genre'}}
-  {{#form.select label='Authors' value=model.authors multiple=true modelName='books-author' as |item|}}
-    {{item.firstName}} {{item.middleName}} {{item.lastName}}
-  {{/form.select}}
-  {{form.date label='Publish date' value=model.publishDate}}
-  {{form.select label='Publisher' value=model.publisher modelName='books-publisher'}}
-  {{form.text label='ISNB-13' value=model.isnb13 required=true}}
+  <div class="two fields">
+    {{form.select label='Genres' value=model.genres multiple=true modelName='books-genre'}}
+    {{#form.select label='Authors' value=model.authors multiple=true modelName='books-author' as |item|}}
+      {{item.firstName}} {{item.middleName}} {{item.lastName}}
+    {{/form.select}}
+  </div>
+  <div class="three fields">
+    {{form.date label='Publish date' value=model.publishDate}}
+    {{form.select label='Publisher' value=model.publisher modelName='books-publisher'}}
+    {{form.text label='ISNB-13' value=model.isnb13 required=true}}
+  </div>
+
   {{form.textarea label='Description' value=model.description rows=15}}
+
+  {{#unless model.isNew}}
+    <div class="ui small field">
+      <label>
+        {{#file-upload name="covers" accept="image/*" onfileadd=(action "uploadImage")}}
+          <a id="upload-image">
+            Add/replace cover
+            <img name="cover" class="ui medium bordered image" src="{{fileStorageUrl}}{{model.id}}?{{imgVersion}}">
+          </a>
+        {{/file-upload}}
+      </label>
+    </div>
+  {{/unless}}
 {{/e-form/fields}}

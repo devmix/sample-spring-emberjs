@@ -17,6 +17,7 @@ export default Ember.Component.extend(StyleableMixin, PageableMixin, SearchableM
   type: 'table',
   gridCellFrame: '',
   persistent: undefined,
+  staticFilter: undefined,
 
   //
   table: undefined,
@@ -40,12 +41,12 @@ export default Ember.Component.extend(StyleableMixin, PageableMixin, SearchableM
   }),
 
   filter: computed('search', 'page', 'pageSize', 'sort', function () {
-    return {
+    return Object.assign({}, this.get('staticFilter') || {}, {
       page: this.get('page'),
       pageSize: this.get('pageSize'),
       search: this.get('search'),
       sort: this.get('sort')
-    };
+    });
   }),
 
   isTable: computed('type', function () {

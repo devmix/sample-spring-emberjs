@@ -1,5 +1,6 @@
 package com.gitlab.devmix.warehouse.core.impl.controlles;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gitlab.devmix.warehouse.core.api.controllers.EntityApiController;
 import com.gitlab.devmix.warehouse.core.api.services.EntityRestRegistry;
@@ -13,15 +14,22 @@ import com.gitlab.devmix.warehouse.core.api.web.entity.operations.DeleteOperatio
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.ListOperation;
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.ReadOperation;
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.UpdateOperation;
+import org.apache.commons.lang3.time.StopWatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,6 +46,7 @@ import static com.gitlab.devmix.warehouse.core.api.web.entity.Operation.Type.UPD
 public class EntityApiControllerImpl implements EntityApiController {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final Logger LOGGER = LoggerFactory.getLogger(EntityApiControllerImpl.class);
 
     @Inject
     private EntityRestRegistry apiRegistry;
@@ -46,7 +55,11 @@ public class EntityApiControllerImpl implements EntityApiController {
 
     @SuppressWarnings("unchecked")
     @Override
-    public ResponseEntity<?> get(final RestQuery restQuery, final HttpServletRequest request) {
+    public ResponseEntity<?> get(@RequestParam final Map<String, Object> query, final HttpServletRequest request) {
+        LOGGER.trace("get: request");
+
+        final StopWatch stopWatch = StopWatch.createStarted();
+
         final String requestUri = parseRequestUri(request);
         final Endpoint endpoint = apiRegistry.findEndpoint(requestUri);
         if (endpoint == null) {
@@ -59,18 +72,57 @@ public class EntityApiControllerImpl implements EntityApiController {
             final String id = matcher.group(1);
             final ReadOperation operation = (ReadOperation) endpoint.findOperation(READ);
             if (operation != null) {
-                return ResponseEntity.ok(Response.of(operation.getEntityClass())
-                        .addIfNotNull(operation.getRun().handle(id))
+                stopWatch.split();
+                LOGGER.trace("get: operation found {}ms", stopWatch.getSplitTime());
+
+                final Object handle = operation.getRun().handle(id);
+
+                stopWatch.split();
+                LOGGER.trace("get: handler finished {}ms", stopWatch.getSplitTime());
+
+                final Response single = Response.of(operation.getEntityClass())
+                        .addIfNotNull(handle)
                         .include(operation.getRelationships())
-                        .single());
+                        .single();
+
+                stopWatch.split();
+                LOGGER.trace("get: single created {}ms", stopWatch.getSplitTime());
+
+                final ResponseEntity<Response> response = ResponseEntity.ok(single);
+
+                stopWatch.split();
+                LOGGER.trace("get: response created {}ms", stopWatch.getSplitTime());
+
+                LOGGER.trace("get: total time {}ms", stopWatch.getTime());
+
+                return response;
             }
         } else { // LIST
             final ListOperation operation = (ListOperation) endpoint.findOperation(LIST);
             if (operation != null) {
+                stopWatch.split();
+                LOGGER.trace("get: operation found {}ms", stopWatch.getSplitTime());
+
+                final Class queryClass = operation.getQueryClass() == null ? RestQuery.class : operation.getQueryClass();
+                final RestQuery restQuery = (RestQuery) OBJECT_MAPPER.convertValue(query, queryClass);
                 final Page page = operation.getRun().handle(restQuery);
+
+                stopWatch.split();
+                LOGGER.trace("get: handler finished {}ms", stopWatch.getSplitTime());
+
                 final Response list = Response.of(operation.getEntityClass())
                         .include(operation.getRelationships()).add(page).list();
-                return ResponseEntity.ok(list);
+
+                stopWatch.split();
+                LOGGER.trace("get: list created {}ms", stopWatch.getSplitTime());
+
+                final ResponseEntity<?> response = ResponseEntity.ok(list);
+
+                stopWatch.split();
+                LOGGER.trace("get: response created {}ms", stopWatch.getSplitTime());
+                LOGGER.trace("get: total time {}ms", stopWatch.getTime());
+
+                return response;
             }
         }
 

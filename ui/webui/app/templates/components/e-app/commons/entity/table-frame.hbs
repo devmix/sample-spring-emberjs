@@ -1,9 +1,10 @@
 {{e-table/standard attributesConfig=columns modelName=modelName
                    onCustomAction=(action 'onCustomAction')
                    bindTo=table
-                   persistent=persistent}}
+                   persistent=persistent
+                   staticFilter=staticFilter}}
 
-{{#e-dialog/modal autoClose=false fullscreen=true bindTo=editDialog
+{{#e-dialog/modal autoClose=false bindTo=editDialog
                   action=(action 'onEditDialogAction') as |dialog model|}}
   {{component editorFrame model=model bindTo=editor}}
 {{/e-dialog/modal}}

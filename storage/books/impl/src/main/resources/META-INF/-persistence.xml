@@ -3,12 +3,12 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
     <persistence-unit name="books-unit">
-        <class>com.gitlab.devmix.warehouse.storage.books.api.entitity.Book</class>
-        <class>com.gitlab.devmix.warehouse.storage.books.api.entitity.Author</class>
-        <class>com.gitlab.devmix.warehouse.storage.books.api.entitity.BookForList</class>
-        <class>com.gitlab.devmix.warehouse.storage.books.api.entitity.AuthorForList</class>
+        <!--<class>com.gitlab.devmix.warehouse.storage.books.api.entitity.Book</class>-->
+        <!--<class>com.gitlab.devmix.warehouse.storage.books.api.entitity.Author</class>-->
+        <!--<class>com.gitlab.devmix.warehouse.storage.books.api.entitity.Genre</class>-->
+        <!--<class>com.gitlab.devmix.warehouse.storage.books.api.entitity.Publisher</class>-->
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
-        <properties>
+        <!--<properties>-->
             <!--<property name="hibernate.connection.driver_class"-->
             <!--value="org.hibernate.dialect.H2Dialect" />-->
             <!--<property name="hibernate.connection.url"-->
@@ -16,8 +16,8 @@
             <!--<property name="hibernate.connection.username" value="root" />-->
             <!--<property name="show_sql" value="true" />-->
             <!--<property name="hibernate.connection.datasource" value="datasource"/>-->
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-        </properties>
+            <!--<property name="hibernate.hbm2ddl.auto" value="create-drop"/>-->
+            <!--<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>-->
+        <!--</properties>-->
     </persistence-unit>
 </persistence>

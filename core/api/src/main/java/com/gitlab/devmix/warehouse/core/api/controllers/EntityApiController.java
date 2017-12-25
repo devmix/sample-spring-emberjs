@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author Sergey Grachev
@@ -19,7 +20,7 @@ public interface EntityApiController {
     String API_CORE_ENTITY = "/api/core/entity";
 
     @GetMapping("/**")
-    ResponseEntity<?> get(RestQuery query, HttpServletRequest request);
+    ResponseEntity<?> get(Map<String, Object> query, HttpServletRequest request);
 
     @PostMapping("/**")
     ResponseEntity<?> post(String json, HttpServletRequest request);

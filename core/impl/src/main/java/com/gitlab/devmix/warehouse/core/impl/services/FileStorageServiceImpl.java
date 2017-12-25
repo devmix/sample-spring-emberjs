@@ -1,16 +1,25 @@
 package com.gitlab.devmix.warehouse.core.impl.services;
 
-import com.gitlab.devmix.warehouse.core.api.entity.FileEntity;
 import com.gitlab.devmix.warehouse.core.api.services.FileStorageService;
-import com.gitlab.devmix.warehouse.core.impl.repositories.FileEntityRepository;
-import org.apache.commons.io.IOUtils;
+import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStorageInputStream;
+import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStorageOutputStream;
+import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStreamMeta;
+import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStreamOpenException;
+import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStreamSelector;
+import com.gitlab.devmix.warehouse.core.impl.services.filtestorage.FileStorageInputStreamImpl;
+import com.gitlab.devmix.warehouse.core.impl.services.filtestorage.FileStorageOutputStreamImpl;
+import com.gitlab.devmix.warehouse.core.impl.services.filtestorage.FileStreamMetaInternal;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Nullable;
-import javax.inject.Inject;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @author Sergey Grachev
@@ -18,31 +27,81 @@ import java.io.InputStream;
 @Service
 public class FileStorageServiceImpl implements FileStorageService {
 
-    @Inject
-    private FileEntityRepository repository;
-
-    @Transactional
     @Override
-    public void saveStream(final FileEntity file, final InputStream stream) {
-        final byte[] content;
-        try {
-            content = IOUtils.toByteArray(stream);
-        } catch (final IOException e) {
-            throw new IllegalArgumentException(e);
+    public void removeAll(final FileStreamSelector selector) {
+        final Path actualPath = Paths.get(actualPathOf(selector.getFolder()));
+        if (Files.exists(actualPath)) {
+            try {
+                FileUtils.deleteDirectory(actualPath.toFile());
+            } catch (final IOException e) {
+                throw new IllegalArgumentException(e);
+            }
         }
-        file.setContent(content);
-        repository.save(file);
     }
 
-    @Nullable
     @Override
-    public FileEntity loadFile(final String path) {
-        return repository.findOne(path);
+    public FileStorageInputStream openInputStream(final FileStreamSelector selector) throws FileStreamOpenException {
+        final Path actualPath = Paths.get(actualPathOf(selector.getFolder())).resolve(selector.getFile());
+        if (!Files.exists(actualPath)) {
+            throw new FileStreamOpenException(actualPath.toString());
+        }
+
+        final long size;
+        try {
+            size = Files.size(actualPath);
+        } catch (final IOException e) {
+            throw new FileStreamOpenException(e);
+        }
+
+        final FileInputStream stream;
+        try {
+            stream = new FileInputStream(actualPath.toFile());
+        } catch (final FileNotFoundException e) {
+            throw new FileStreamOpenException(e);
+        }
+
+        final FileStreamMetaInternal metaInternal = FileStreamMetaInternal
+                .deserialize(actualPath.getParent(), selector.getFile());
+
+        return new FileStorageInputStreamImpl(stream, FileStreamMeta.builder()
+                .folder(selector.getFolder())
+                .file(selector.getFile())
+                .name(metaInternal.getName())
+                .size(size)
+                .build());
     }
 
-    @Transactional
     @Override
-    public void removeAll(final String pathPrefix) {
-        repository.deleteAllByIdStartingWith(pathPrefix);
+    public FileStorageOutputStream openOutputStream(final FileStreamSelector selector) throws FileStreamOpenException {
+        final Path folder = Paths.get(actualPathOf(selector.getFolder()));
+        if (!Files.exists(folder)) {
+            try {
+                Files.createDirectories(folder);
+            } catch (final IOException e) {
+                throw new FileStreamOpenException(e);
+            }
+        }
+
+        final Path file = folder.resolve(selector.getFile());
+
+        final FileOutputStream stream;
+        try {
+            stream = new FileOutputStream(file.toFile());
+        } catch (final FileNotFoundException e) {
+            throw new FileStreamOpenException(e);
+        }
+
+        final FileStreamMeta meta = FileStreamMeta.builder()
+                .folder(selector.getFolder())
+                .file(selector.getFile())
+                .name(selector.getName())
+                .build();
+
+        return new FileStorageOutputStreamImpl(stream, file, meta);
+    }
+
+    private String actualPathOf(final String path) {
+        final String actualPath = (path.startsWith("/") ? path.substring(1) : path).replaceAll("/", File.separator);
+        return "files" + File.separator + actualPath;
     }
 }

@@ -25,11 +25,11 @@ public interface BookRepository extends PagingAndSortingRepository<Book, UUID> {
     Iterable<Book> findAll();
 
     // HHH000104: firstResult/maxResults specified with collection fetch; applying in memory!
-    @EntityGraph(value = "booksBook.list")
+//    @EntityGraph(value = "booksBook.list")
     Page<BooksBookList> findPagedProjectedByDeletedFalse(Pageable pageable);
 
     // HHH000104: firstResult/maxResults specified with collection fetch; applying in memory!
-    @EntityGraph(value = "booksBook.list")
+//    @EntityGraph(value = "booksBook.list")
     Page<BooksBookList> findPagedProjectedByTitleContainsIgnoreCaseAndDeletedFalse(String title, Pageable pageable);
 
     @Transactional

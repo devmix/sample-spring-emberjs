@@ -2,7 +2,10 @@ package com.gitlab.devmix.warehouse.core.api.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/api/core/storage/file")
 public interface FileStorageController {
 
-    @GetMapping("/get/**")
-    ResponseEntity get(HttpServletRequest request);
+    @GetMapping("/**")
+    ResponseEntity<StreamingResponseBody> get(HttpServletRequest request);
+
+    @PostMapping("/**")
+    ResponseEntity<?> post(MultipartFile file, HttpServletRequest request);
 }

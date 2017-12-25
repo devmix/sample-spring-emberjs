@@ -1,19 +1,18 @@
 package com.gitlab.devmix.warehouse.core.api.services;
 
-import com.gitlab.devmix.warehouse.core.api.entity.FileEntity;
-
-import javax.annotation.Nullable;
-import java.io.InputStream;
+import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStorageInputStream;
+import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStorageOutputStream;
+import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStreamOpenException;
+import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStreamSelector;
 
 /**
  * @author Sergey Grachev
  */
 public interface FileStorageService {
 
-    void saveStream(FileEntity file, InputStream stream);
+    void removeAll(FileStreamSelector selector);
 
-    @Nullable
-    FileEntity loadFile(String path);
+    FileStorageInputStream openInputStream(FileStreamSelector selector) throws FileStreamOpenException;
 
-    void removeAll(String pathPrefix);
+    FileStorageOutputStream openOutputStream(FileStreamSelector selector) throws FileStreamOpenException;
 }

@@ -2,12 +2,14 @@
 'use strict';
 
 module.exports = function(environment) {
+  const host = 'http://localhost:8080';
+
   let ENV = {
     modulePrefix: 'webui',
     environment,
     rootURL: '/',
     locationType: 'hash',
-    host: 'http://localhost:8080',
+    host: host,
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -22,6 +24,7 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+      fileStorageUrl: (host || '') + '/api/core/storage/file/storage/'
     }
   };
 

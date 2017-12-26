@@ -1,5 +1,5 @@
 import DS from 'ember-data';
-import ENV from '../config/environment';
+import ENV from 'webui/config/environment';
 
 export default DS.RESTAdapter.extend({
 //export default DS.JSONAPIAdapter.extend({

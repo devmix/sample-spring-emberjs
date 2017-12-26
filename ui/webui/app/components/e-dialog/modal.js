@@ -7,11 +7,13 @@ export default UiModal.extend(AutoRegisterMixin, {
 
   title: undefined,
   message: undefined,
-  btnAccept: 'Accept',
-  btnCancel: 'Cancel',
   autoClose: true,
   fullscreen: false,
   size: undefined, // mini, tiny, small, large
+  buttons: [
+    {text: 'Accept', class: 'primary', action: 'e-dialog-modal-accept'},
+    {text: 'Cancel', action: 'e-dialog-modal-cancel'},
+  ],
 
   _visible: false,
   _title: undefined,
@@ -23,8 +25,7 @@ export default UiModal.extend(AutoRegisterMixin, {
     this.setProperties({
       _title: options.title || this.get('title'),
       _message: options.message || this.get('message'),
-      _btnAccept: options.btnAccept || this.get('btnAccept'),
-      _btnCancel: options.btnCancel || this.get('btnCancel'),
+      _buttons: options.buttons || this.get('buttons'),
       _data: options.data
     });
 
@@ -46,12 +47,8 @@ export default UiModal.extend(AutoRegisterMixin, {
   },
 
   actions: {
-    'e-dialog-modal-accept': function () {
-      this.invokeAction('e-dialog-modal-accept');
-    },
-
-    'e-dialog-modal-cancel': function () {
-      this.invokeAction('e-dialog-modal-cancel');
+    onButtonAction: function (action) {
+      this.invokeAction(action);
     }
   }
 });

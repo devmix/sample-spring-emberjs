@@ -11,11 +11,10 @@
     {{/if}}
   </div>
   <div class="actions">
-    {{#e-button/standard class='primary' action=(action 'e-dialog-modal-accept')}}
-      {{_btnAccept}}
-    {{/e-button/standard}}
-    {{#e-button/standard action=(action 'e-dialog-modal-cancel')}}
-      {{_btnCancel}}
-    {{/e-button/standard}}
+    {{#each _buttons as |button|}}
+      {{#e-button/standard class=button.class action=(action 'onButtonAction' button.action)}}
+        {{button.text}}
+      {{/e-button/standard}}
+    {{/each}}
   </div>
 {{/if}}

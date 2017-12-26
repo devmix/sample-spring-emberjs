@@ -1,8 +1,8 @@
 import Ember from 'ember';
-import PageableMixin from '../../mixins/components/e-paging/pageable';
-import SearchableMixin from '../../mixins/components/e-searching/searchable';
-import StyleableMixin from '../../mixins/components/styleable';
-import AutoRegisterMixin from '../../mixins/components/autoregister';
+import PageableMixin from 'webui/mixins/components/e-paging/pageable';
+import SearchableMixin from 'webui/mixins/components/e-searching/searchable';
+import StyleableMixin from 'webui/mixins/components/styleable';
+import AutoRegisterMixin from 'webui/mixins/components/autoregister';
 
 const {computed, on} = Ember;
 

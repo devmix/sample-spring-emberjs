@@ -16,6 +16,7 @@ import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -66,9 +67,9 @@ public class EntityApiManager {
 
     public void init() {
         registry.add(book());
-        registry.add(author());
-        registry.add(genre());
-        registry.add(publisher());
+        registry.add(dictionaryEndpoint("/books/author", Author.class, authorRepository));
+        registry.add(dictionaryEndpoint("/books/genre", Genre.class, genreRepository));
+        registry.add(dictionaryEndpoint("/books/publisher", Publisher.class, publisherRepository));
     }
 
     private Endpoint book() {
@@ -110,63 +111,14 @@ public class EntityApiManager {
         return book;
     }
 
-    private Endpoint author() {
-        return builder("/books/author")
-                .add(list(Author.class)
-                        .run(query -> authorRepository.findPagedByDeletedFalse(query.asPageable())).build())
-
-                .add(create(Author.class)
-                        .run(entity -> authorRepository.save(entity)).build())
-
-                .add(read(Author.class)
-                        .run(id -> authorRepository.findByIdAndDeletedFalse(UUID.fromString(id))).build())
-
-                .add(update(Author.class)
-                        .run((id, entity) -> authorRepository.save(entity)).build())
-
-                .add(delete(Author.class)
-                        .run(id -> authorRepository.delete(UUID.fromString(id))).build())
-
-                .build();
-    }
-
-    private Endpoint genre() {
-        return builder("/books/genre")
-                .add(list(Genre.class)
-                        .run(query -> genreRepository.findPagedByDeletedFalse(query.asPageable())).build())
-
-                .add(create(Genre.class)
-                        .run(entity -> genreRepository.save(entity)).build())
-
-                .add(read(Genre.class)
-                        .run(id -> genreRepository.findByIdAndDeletedFalse(UUID.fromString(id))).build())
-
-                .add(update(Genre.class)
-                        .run((id, entity) -> genreRepository.save(entity)).build())
-
-                .add(delete(Genre.class)
-                        .run(id -> genreRepository.delete(UUID.fromString(id))).build())
-
-                .build();
-    }
-
-    private Endpoint publisher() {
-        return builder("/books/publisher")
-                .add(list(Publisher.class)
-                        .run(query -> publisherRepository.findPagedByDeletedFalse(query.asPageable())).build())
-
-                .add(create(Publisher.class)
-                        .run(entity -> publisherRepository.save(entity)).build())
-
-                .add(read(Publisher.class)
-                        .run(id -> publisherRepository.findByIdAndDeletedFalse(UUID.fromString(id))).build())
-
-                .add(update(Publisher.class)
-                        .run((id, entity) -> publisherRepository.save(entity)).build())
-
-                .add(delete(Publisher.class)
-                        .run(id -> publisherRepository.delete(UUID.fromString(id))).build())
-
+    private static <E> Endpoint dictionaryEndpoint(final String uri, final Class<E> e,
+                                                   final PagingAndSortingRepository<E, UUID> r) {
+        return builder(uri)
+                .add(list(e).run(query -> r.findAll(query.asPageable())).build())
+                .add(create(e).run(r::save).build())
+                .add(read(e).run(id -> r.findOne(UUID.fromString(id))).build())
+                .add(update(e).run((id, entity) -> r.save(entity)).build())
+                .add(delete(e).run(id -> r.delete(UUID.fromString(id))).build())
                 .build();
     }
 

@@ -2,6 +2,13 @@ import Ember from 'ember';
 import AutoRegisterMixin from 'webui/mixins/components/autoregister'
 import StyleableMixin from 'webui/mixins/components/styleable';
 
+const EMPTY_PROMISE = {
+  resolve: () => {
+  },
+  reject: () => {
+  }
+};
+
 export default Ember.Component.extend(AutoRegisterMixin, StyleableMixin, {
 
   classNames: ['e-form-fields', 'ui small form'],
@@ -10,6 +17,7 @@ export default Ember.Component.extend(AutoRegisterMixin, StyleableMixin, {
   fields: {},
   valid: true,
   errors: [],
+  unsavedPromise: EMPTY_PROMISE,
 
   commit() {
     if (this.validate()) {
@@ -51,13 +59,19 @@ export default Ember.Component.extend(AutoRegisterMixin, StyleableMixin, {
     return valid;
   },
 
-  cancel(cancelledCallback) {
-    const model = this.get('model');
-    // TODO SG confirm dialog
-    if (!model.get('isNew')) {
-      model.rollbackAttributes();
-    }
-    return Promise.resolve();
+  cancel() {
+    return this.get('model').get('hasDirtyAttributes') ? new Promise((resolve, reject) => {
+      this.get('unsavedDialog').show({
+        title: 'Confirm',
+        message: 'You have unsaved changes. Do you want to leave and discard your changes?',
+        buttons: [
+          {text: 'Save & Close', action: 'save-changes', class: 'primary'},
+          {text: 'Discard', action: 'discard-changes'},
+          {text: 'Cancel', action: 'discard-cancel'},
+        ]
+      });
+      this.set('unsavedPromise', {resolve, reject});
+    }) : Promise.resolve();
   },
 
   actions: {
@@ -67,6 +81,20 @@ export default Ember.Component.extend(AutoRegisterMixin, StyleableMixin, {
       } else {
         delete this.get('fields')[field.get('elementId')];
       }
+    },
+
+    onUnsavedDialogAction(action) {
+      const model = this.get('model');
+      const promise = this.get('unsavedPromise');
+      if ('save-changes' === action) {
+        this.commit().then(promise.resolve, promise.reject);
+      } else if ('discard-changes' === action) {
+        if (!model.get('isNew')) {
+          model.rollbackAttributes();
+        }
+        promise.resolve();
+      }
+      this.set('unsavedPromise', EMPTY_PROMISE);
     }
   }
 });

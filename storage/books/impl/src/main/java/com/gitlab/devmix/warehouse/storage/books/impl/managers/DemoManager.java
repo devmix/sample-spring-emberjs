@@ -5,6 +5,7 @@ import com.gitlab.devmix.warehouse.core.api.entity.UserRole;
 import com.gitlab.devmix.warehouse.core.api.repositories.UserRepository;
 import com.gitlab.devmix.warehouse.core.api.services.FileStorageService;
 import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStorageOutputStream;
+import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStreamOpenException;
 import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStreamSelector;
 import com.gitlab.devmix.warehouse.storage.books.api.entitity.Author;
 import com.gitlab.devmix.warehouse.storage.books.api.entitity.Book;
@@ -29,6 +30,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
@@ -152,12 +154,12 @@ public class DemoManager {
                         final FileStreamSelector selector = FileStreamSelector.builder()
                                 .folder(STORAGE_BOOKS_BOOK_COVER).file(book.getId().toString())
                                 .name(book.getIsnb13() + ".jpg").build();
-                        try (final FileStorageOutputStream stream = storage.openOutputStream(selector)) {
+                        try (FileStorageOutputStream stream = storage.openOutputStream(selector)) {
                             final String name = "/demo/books/covers/" + selector.getName();
-                            try (final InputStream resource = this.getClass().getResourceAsStream(name)) {
+                            try (InputStream resource = this.getClass().getResourceAsStream(name)) {
                                 IOUtils.copy(resource, stream.getOutputStream());
                             }
-                        } catch (final Exception e) {
+                        } catch (final IOException | FileStreamOpenException e) {
                             LOGGER.error("Fail to upload file", e);
                         }
                     });

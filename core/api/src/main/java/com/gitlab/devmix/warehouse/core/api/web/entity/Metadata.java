@@ -45,6 +45,9 @@ public final class Metadata {
         IGNORE.add("class");
     }
 
+    private Metadata() {
+    }
+
     public static Descriptor of(final Class entityClass) {
         return DESCRIPTORS.computeIfAbsent(entityClass, Metadata::readMetadata);
     }

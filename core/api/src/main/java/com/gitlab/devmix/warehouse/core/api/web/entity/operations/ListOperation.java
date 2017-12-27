@@ -1,7 +1,7 @@
 package com.gitlab.devmix.warehouse.core.api.web.entity.operations;
 
 import com.gitlab.devmix.warehouse.core.api.web.entity.Operation;
-import com.gitlab.devmix.warehouse.core.api.web.entity.RestQuery;
+import com.gitlab.devmix.warehouse.core.api.web.entity.RequestParameters;
 import lombok.Builder;
 import lombok.Singular;
 import lombok.Value;
@@ -14,10 +14,10 @@ import java.util.Set;
  */
 @Builder
 @Value
-public final class ListOperation<E, R extends RestQuery> implements Operation {
+public final class ListOperation<E, R extends RequestParameters> implements Operation {
 
     private final Class<E> entityClass;
-    private final Class<R> queryClass;
+    private final Class<R> parametersClass;
     @Singular
     private final Set<Class<?>> relationships;
     private final Run run;
@@ -28,7 +28,7 @@ public final class ListOperation<E, R extends RestQuery> implements Operation {
     }
 
     @FunctionalInterface
-    public interface Run<E, R extends RestQuery> {
-        Page<E> handle(R query);
+    public interface Run<E, R extends RequestParameters> {
+        Page<E> handle(R parameters);
     }
 }

@@ -23,5 +23,5 @@ public abstract class AbstractEntity implements BaseEntity<UUID>, RecoverableEnt
     private UUID id;
 
     @Column(name = "DELETED", nullable = false)
-    private boolean deleted = false;
+    private boolean deleted;
 }

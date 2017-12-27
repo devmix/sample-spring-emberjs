@@ -24,7 +24,8 @@ public class FileStreamMetaInternal {
             final byte[] bytes = OBJECT_MAPPER.writeValueAsBytes(this);
             Files.write(metaFile, bytes);
         } catch (final IOException e) {
-            throw new RuntimeException(e); // TODO SG correct exception
+            // TODO SG correct exception
+            throw new RuntimeException(e);
         }
     }
 
@@ -34,7 +35,8 @@ public class FileStreamMetaInternal {
             final byte[] bytes = Files.readAllBytes(metaFile);
             return OBJECT_MAPPER.readValue(bytes, FileStreamMetaInternal.class);
         } catch (final IOException e) {
-            throw new RuntimeException(e); // TODO SG correct exception
+            // TODO SG correct exception
+            throw new RuntimeException(e);
         }
     }
 

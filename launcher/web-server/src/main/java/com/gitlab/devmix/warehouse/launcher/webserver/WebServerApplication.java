@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @EnableAutoConfiguration
+@SuppressWarnings("checkstyle:hideutilityclassconstructor")
 public class WebServerApplication {
 
     public static void main(final String[] args) {

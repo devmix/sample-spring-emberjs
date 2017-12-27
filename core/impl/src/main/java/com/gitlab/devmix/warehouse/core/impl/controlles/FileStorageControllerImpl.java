@@ -59,7 +59,7 @@ public class FileStorageControllerImpl implements FileStorageController {
         final FileStreamSelector selector = fileStreamSelectorOf(request)
                 .name(file.getName()).build();
 
-        try (final FileStorageOutputStream stream = storage.openOutputStream(selector)) {
+        try (FileStorageOutputStream stream = storage.openOutputStream(selector)) {
             copy(file.getInputStream(), stream.getOutputStream());
         } catch (final FileStreamOpenException e) {
             return ResponseEntity.notFound().build();

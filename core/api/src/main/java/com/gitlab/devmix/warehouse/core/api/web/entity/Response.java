@@ -53,7 +53,7 @@ public final class Response<E> extends HashMap<String, Object> {
     public static final class Builder<E> {
         private final Class<E> entityClass;
         private Set<Class> inline;
-        private HashSet<Class> include;
+        private Set<Class> include;
         private List<E> entities;
         private PageInfo page;
 
@@ -163,7 +163,7 @@ public final class Response<E> extends HashMap<String, Object> {
 
                 if (attribute.isRelationshipCollection()) {
                     final List<Object> list = new ArrayList<>();
-                    for (final Object o : ((Collection) value)) {
+                    for (final Object o : (Collection) value) {
                         list.add(addRelationship(o, response));
                     }
                     result.put(name, list);

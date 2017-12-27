@@ -43,7 +43,7 @@ public final class EntityUtils {
         }
 
         if (entities.size() == 1) {
-            final HashSet<E> set = new HashSet<>();
+            final Set<E> set = new HashSet<>();
             set.add(em.getReference(entityClass, entities.iterator().next().getId()));
             return set;
         } else {

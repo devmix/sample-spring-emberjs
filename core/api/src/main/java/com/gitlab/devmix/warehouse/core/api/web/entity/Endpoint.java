@@ -27,7 +27,7 @@ public class Endpoint {
         return new Builder<>(rootUri);
     }
 
-    public static <E, R extends RestQuery> ListOperation.ListOperationBuilder<E, R> list(final Class<E> entityClass) {
+    public static <E, R extends RequestParameters> ListOperation.ListOperationBuilder<E, R> list(final Class<E> entityClass) {
         return ListOperation.<E, R>builder().entityClass(entityClass);
     }
 

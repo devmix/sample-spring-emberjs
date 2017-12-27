@@ -6,8 +6,8 @@ import com.gitlab.devmix.warehouse.core.api.services.EntityRestRegistry;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Endpoint;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Payload;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Request;
+import com.gitlab.devmix.warehouse.core.api.web.entity.RequestParameters;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Response;
-import com.gitlab.devmix.warehouse.core.api.web.entity.RestQuery;
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.CreateOperation;
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.DeleteOperation;
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.ListOperation;
@@ -44,11 +44,10 @@ public class EntityApiControllerImpl implements EntityApiController {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityApiControllerImpl.class);
+    private static final Pattern PATTERN_ENTITY_ID = Pattern.compile("/(.*)(?<!/)$");
 
     @Inject
     private EntityRestRegistry apiRegistry;
-
-    private static final Pattern PATTERN_ENTITY_ID = Pattern.compile("/(.*)(?<!/)$");
 
     @SuppressWarnings("unchecked")
     @Override
@@ -65,7 +64,8 @@ public class EntityApiControllerImpl implements EntityApiController {
 
         final String operationUri = requestUri.substring(endpoint.getRootUri().length());
         final Matcher matcher = PATTERN_ENTITY_ID.matcher(operationUri);
-        if (matcher.matches()) { // READ
+        if (matcher.matches()) {
+            // READ
             final String id = matcher.group(1);
             final ReadOperation operation = (ReadOperation) endpoint.findOperation(READ);
             if (operation != null) {
@@ -94,15 +94,18 @@ public class EntityApiControllerImpl implements EntityApiController {
 
                 return response;
             }
-        } else { // LIST
+        } else {
+            // LIST
             final ListOperation operation = (ListOperation) endpoint.findOperation(LIST);
             if (operation != null) {
                 stopWatch.split();
                 LOGGER.trace("get: operation found {}ms", stopWatch.getSplitTime());
 
-                final Class queryClass = operation.getQueryClass() == null ? RestQuery.class : operation.getQueryClass();
-                final RestQuery restQuery = (RestQuery) OBJECT_MAPPER.convertValue(query, queryClass);
-                final Page page = operation.getRun().handle(restQuery);
+                final Class parametersClass = operation.getParametersClass() == null
+                        ? RequestParameters.class : operation.getParametersClass();
+                final RequestParameters requestParameters = (RequestParameters) OBJECT_MAPPER
+                        .convertValue(query, parametersClass);
+                final Page page = operation.getRun().handle(requestParameters);
 
                 stopWatch.split();
                 LOGGER.trace("get: handler finished {}ms", stopWatch.getSplitTime());

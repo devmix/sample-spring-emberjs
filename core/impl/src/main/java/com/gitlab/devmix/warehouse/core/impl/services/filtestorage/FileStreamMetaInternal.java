@@ -1,6 +1,5 @@
 package com.gitlab.devmix.warehouse.core.impl.services.filtestorage;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStreamMeta;
 import lombok.Data;

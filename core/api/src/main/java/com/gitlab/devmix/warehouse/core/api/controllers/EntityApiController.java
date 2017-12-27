@@ -1,6 +1,5 @@
 package com.gitlab.devmix.warehouse.core.api.controllers;
 
-import com.gitlab.devmix.warehouse.core.api.web.entity.RestQuery;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

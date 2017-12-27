@@ -17,7 +17,7 @@ import static org.apache.commons.collections4.MapUtils.isNotEmpty;
  * @author Sergey Grachev
  */
 @Data
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestQuery {
 
     private int page = 0;

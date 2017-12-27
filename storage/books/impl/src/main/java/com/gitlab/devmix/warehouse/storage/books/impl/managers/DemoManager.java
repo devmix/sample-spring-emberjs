@@ -1,5 +1,8 @@
 package com.gitlab.devmix.warehouse.storage.books.impl.managers;
 
+import com.gitlab.devmix.warehouse.core.api.entity.User;
+import com.gitlab.devmix.warehouse.core.api.entity.UserRole;
+import com.gitlab.devmix.warehouse.core.api.repositories.UserRepository;
 import com.gitlab.devmix.warehouse.core.api.services.FileStorageService;
 import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStorageOutputStream;
 import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStreamSelector;
@@ -18,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.yaml.snakeyaml.Yaml;
@@ -26,6 +30,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.io.InputStream;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -33,6 +38,7 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.StreamSupport;
 
+import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
@@ -64,7 +70,13 @@ public class DemoManager {
     private FileStorageService storage;
 
     @Inject
+    private UserRepository userRepository;
+
+    @Inject
     private EntityManager em;
+
+    @Inject
+    private PasswordEncoder passwordEncoder;
 
     @Value("${demo.forceInit:false}")
     private boolean foreceDemoInit;
@@ -78,6 +90,8 @@ public class DemoManager {
         if (bookRepository.count() > 0 && !foreceDemoInit) {
             return;
         }
+
+        initUser();
 
         bookRepository.deleteAll();
         authorRepository.deleteAll();
@@ -148,6 +162,25 @@ public class DemoManager {
                         }
                     });
         }
+    }
+
+    private void initUser() {
+        userRepository.deleteAll();
+
+        User user = new User();
+        user.setIdentity("admin");
+        user.setPassword(passwordEncoder.encode("admin"));
+        user = userRepository.save(user);
+
+        user.setRoles(new HashSet<>(asList(createRole("USER", user), createRole("ADMIN", user))));
+        userRepository.save(user);
+    }
+
+    private static UserRole createRole(final String type, final User user) {
+        final UserRole role = new UserRole();
+        role.setType(type);
+        role.setUser(user);
+        return role;
     }
 
     @SuppressWarnings("WeakerAccess")

@@ -1,5 +1,9 @@
 <div class="content top">
-  <div class="right floated meta"><i class="remove icon link"></i></div>
+  <div class="right floated meta">
+    {{#link-to "storage.books.book.edit" cell.model.id}}
+      <i class="edit icon link"></i>
+    {{/link-to}}
+  </div>
   {{cell.model.title}}
 </div>
 <div class="image">

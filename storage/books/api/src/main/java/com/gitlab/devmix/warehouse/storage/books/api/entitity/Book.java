@@ -25,7 +25,7 @@ import java.util.Set;
 @Entity(name = Book.ENTITY)
 @Table(name = "BOOKS_BOOK")
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"authors", "genres", "publisher"})
 @ToString(callSuper = true)
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "booksBook.list",

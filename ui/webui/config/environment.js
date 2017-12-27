@@ -8,7 +8,7 @@ module.exports = function(environment) {
     modulePrefix: 'webui',
     environment,
     rootURL: '/',
-    locationType: 'hash',
+    locationType: 'auto',
     host: host,
     EmberENV: {
       FEATURES: {

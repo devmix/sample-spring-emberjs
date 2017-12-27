@@ -71,7 +71,7 @@ export default Ember.Component.extend(StyleableMixin, PageableMixin, SearchableM
       const data = this.get('persistence').get(key);
       if (data) {
         this.setProperties({
-          page: data.page,
+          page: data.page <= 0 ? 0 : data.page,
           pageSize: data.pageSize,
           search: data.search,
           sort: data.sort

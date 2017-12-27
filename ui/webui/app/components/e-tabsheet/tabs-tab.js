@@ -2,10 +2,10 @@ import Component from '@ember/component';
 
 export default Component.extend({
   tagName: 'a',
-  classNames: ['e-tabsheet-tabs-tab','item'],
+  classNames: ['e-tabsheet-tabs-tab', 'item'],
   classNameBindings: ['active:active'],
 
-  observeId: Ember.observer('id', function() {
+  observeId: Ember.observer('id', function () {
     const content = this.get('id');
     if (content) {
       content.set('active', this.get('active'));

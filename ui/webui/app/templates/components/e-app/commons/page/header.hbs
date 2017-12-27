@@ -1,6 +1,6 @@
 <div class="ui fixed menu">
   <div class="ui container">
-    <a href="#" class="header item">
+    <a href="/" class="header item">
       Warehouse
     </a>
     {{#each menu as |button|}}
@@ -11,5 +11,17 @@
         </div>
       </div>
     {{/each}}
+
+    {{#unless hideUser}}
+      <div class="ui simple dropdown item right">
+        <i class="user icon"></i> User
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <div class="item" {{action 'toggleAuth'}}>
+            {{authorizationAction}}
+          </div>
+        </div>
+      </div>
+    {{/unless}}
   </div>
 </div>

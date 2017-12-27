@@ -7,6 +7,8 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function () {
+  this.route('login');
+
   this.route('storage', function () {
     this.route('books', function () {
       this.route('book', function () {
@@ -17,10 +19,6 @@ Router.map(function () {
       this.route('genre');
       this.route('publisher');
     });
-  });
-
-  this.route('core', function() {
-    this.route('login');
   });
 });
 

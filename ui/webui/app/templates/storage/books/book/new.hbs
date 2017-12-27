@@ -1,18 +1,29 @@
-{{#e-layout/top-center-bottom class='storage-books-edit' as |layout|}}
-  {{#layout.top class='ui segment'}}
-    <div class="ui breadcrumb">
+{{#e-tabsheet/standard class='storage-books-edit' style=(hash flexGrow=1) as |ts|}}
+
+  {{#ts.navigation as |nav|}}
+    {{#nav.controls class="ui breadcrumb small"}}
       {{#link-to 'storage.books.book' class="section"}}Books{{/link-to}}
       <span class="divider">/</span>
       <div class="active section">{{model.title}}</div>
+    {{/nav.controls}}
+    {{#nav.tabs right=true as |tabs|}}
+      {{#tabs.tab id=tabGeneral active=true}}General{{/tabs.tab}}
+      {{#tabs.tab id=tabMisc}}Misc{{/tabs.tab}}
+    {{/nav.tabs}}
+  {{/ts.navigation}}
+
+  {{#ts.tab bindTo=tabGeneral}}
+    <div class="commons grow scroll">
+      {{e-app/books/book/edit-frame model=model bindTo=editFrame}}
     </div>
-  {{/layout.top}}
+    <div class='ui segment page-bottom'>
+      {{#e-button/standard icon='plus' action='commit'}}Save{{/e-button/standard}}
+      {{#e-button/standard icon='remove' action='cancel'}}Close{{/e-button/standard}}
+    </div>
+  {{/ts.tab}}
 
-  {{#layout.center}}
-    {{e-app/books/book/edit-frame model=model bindTo=editFrame}}
-  {{/layout.center}}
+  {{#ts.tab bindTo=tabMisc}}
+    Misc
+  {{/ts.tab}}
 
-  {{#layout.bottom class='ui segment page-bottom'}}
-    {{#e-button/standard icon='plus' action='commit'}}Save{{/e-button/standard}}
-    {{#e-button/standard icon='remove' action='cancel'}}Close{{/e-button/standard}}
-  {{/layout.bottom}}
-{{/e-layout/top-center-bottom}}
+{{/e-tabsheet/standard}}

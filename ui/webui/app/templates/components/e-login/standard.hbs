@@ -1,0 +1,35 @@
+<div class="form">
+  <h2 class="ui teal header">
+    <div class="content">
+      Log-in to your account
+    </div>
+  </h2>
+
+  <form class="ui large form {{if errorMessage 'error'}}" {{action 'authenticate' on='submit'}}>
+    <div class="ui stacked segment">
+      <div class="field">
+        <div class="ui left icon input">
+          <i class="user icon"></i>
+          <input type="text" name="user" placeholder="User name" value="{{user}}">
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui left icon input">
+          <i class="lock icon"></i>
+          <input type="password" name="password" placeholder="Password" value="{{password}}">
+        </div>
+      </div>
+      <button type="submit" class="ui fluid large teal primary button">
+        Login
+      </button>
+    </div>
+    {{status}}
+    <div class="ui error message">
+      {{errorMessage}}
+    </div>
+  </form>
+
+  <!--<div class="ui message">-->
+  <!--New to us? <a href="#">Sign Up</a>-->
+  <!--</div>-->
+</div>

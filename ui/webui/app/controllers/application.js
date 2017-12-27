@@ -9,6 +9,8 @@ const L = Ember.Object.extend({
 
 export default Ember.Controller.extend({
 
+  session: Ember.inject.service('session'),
+
   menu: [
     L.create({
       name: 'Storage', route: 'storage', menu: [

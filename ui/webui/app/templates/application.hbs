@@ -1,4 +1,8 @@
-{{e-app/commons/page/header menu=menu}}
+{{#if session.isAuthenticated}}
+  {{e-app/commons/page/header menu=menu}}
+{{ else }}
+  {{e-app/commons/page/header hideUser=true}}
+{{/if}}
 
 <div class="container-fluid application-viewport">
   {{outlet}}

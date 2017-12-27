@@ -13,7 +13,7 @@ export default Ember.Mixin.create({
       if (newPages !== this.get('pages')) {
         this.setProperties({
           pages: newPages,
-          page: Math.min(page.page, newPages - 1),
+          page: Math.min(page.page, Math.max(0, newPages - 1)),
           pageSize: page.size
         });
       }

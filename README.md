@@ -10,6 +10,22 @@
 mvn clean install -Pui
 ```
 
+### Checkstyle
+
+```
+mvn clean install -Pcheckstyle
+```
+
+### Docker
+
+```
+mvn clean install -Pdocker
+```
+
+```
+docker run -p 8080:8080 -t warehouse/webserver
+```
+
 ## Run
 ```
 java -jar launcher/web-server/target/launcher-web-server-1.0-SNAPSHOT.jar

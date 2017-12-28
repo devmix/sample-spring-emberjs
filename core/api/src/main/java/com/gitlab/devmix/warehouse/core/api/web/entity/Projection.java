@@ -89,7 +89,7 @@ public final class Projection implements ProjectionProperty {
         private final boolean isAny;
         private Map<String, ExpressionProperty> properties;
 
-        public ExpressionProperty(final boolean isAny) {
+        private ExpressionProperty(final boolean isAny) {
             this.isAny = isAny;
         }
 

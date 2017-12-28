@@ -14,9 +14,9 @@
     <packaging>pom</packaging>
 
     <name>Warehouse :: Launcher</name>
+
     <modules>
         <module>web-server</module>
     </modules>
-
 
 </project>

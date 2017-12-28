@@ -15,6 +15,12 @@ mvn clean install -Pui
 java -jar launcher/web-server/target/launcher-web-server-1.0-SNAPSHOT.jar
 ```
 
+The application will be available at http://localhost:8080
+
+Default user:
+- name: admin
+- pass: admin
+
 ## EmberJS
  
 ### Debug mode
@@ -49,9 +55,12 @@ gulp watch --gulpfile vendor/semantic-ui/gulpfile.js
 
 ## H2 Console
 
-- url: http://localhost:8080/console
-- user: sa
-- pass:
+- http://localhost:8080/console
+  - user: admin
+  - pass: admin
+- databse credentials:
+  - user: sa
+  - pass:
 
 ## Screenshots
 

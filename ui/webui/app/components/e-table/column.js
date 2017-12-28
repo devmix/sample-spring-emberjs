@@ -1,8 +1,9 @@
 import Ember from 'ember';
+import AttributeMixin from 'webui/mixins/components/e-table/attribute';
 
 const {computed} = Ember;
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(AttributeMixin, {
 
   tagName: 'th',
   attributeBindings: ['width'],
@@ -23,19 +24,6 @@ export default Ember.Component.extend({
     }
   }),
 
-  sortIcon: computed('direction', function () {
-    const direction = this.get('direction');
-    return direction === 'asc' ? 'sort content ascending'
-      : (direction === 'desc' ? 'sort content descending' : undefined) || 'sort';
-  }),
-
-  applySortConfig(result) {
-    if (this.sortable && this.direction) {
-      result[this.id] = this.direction;
-      return true;
-    }
-  },
-
   didInsertElement() {
     this._super(...arguments);
     const parent = this.get('parent');
@@ -54,8 +42,7 @@ export default Ember.Component.extend({
 
   actions: {
     onSortClick() {
-      const oldDir = this.get('direction');
-      this.set('direction', oldDir === 'asc' ? 'desc' : (oldDir === 'desc' ? undefined : 'asc'));
+      this.sortToggle();
     }
   }
 });

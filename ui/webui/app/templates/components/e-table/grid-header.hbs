@@ -1,0 +1,11 @@
+<div class="ui simple dropdown item ">
+  <i class="icon settings"></i>
+  <div class="left menu">
+    {{#each attributes as |attribute|}}
+      <div class="item" {{action 'onSortClick' attribute}}>
+        {{attribute.title}}
+        <i class="icon {{attribute.sortIcon}}"></i>
+      </div>
+    {{/each}}
+  </div>
+</div>

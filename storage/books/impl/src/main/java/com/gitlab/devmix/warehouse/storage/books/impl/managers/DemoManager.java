@@ -1,5 +1,6 @@
 package com.gitlab.devmix.warehouse.storage.books.impl.managers;
 
+import com.gitlab.devmix.warehouse.core.api.entity.AbstractEntity;
 import com.gitlab.devmix.warehouse.core.api.entity.User;
 import com.gitlab.devmix.warehouse.core.api.entity.UserRole;
 import com.gitlab.devmix.warehouse.core.api.repositories.UserRepository;
@@ -131,19 +132,27 @@ public class DemoManager {
 
             demo.books.forEach(book -> {
                 book.setGenres(book.getGenres().stream()
-                        .map(genres::get)
+                        .map(genre -> genres.keySet().stream()
+                                .filter(e -> Objects.equals(genre.getName(), e.getName()))
+                                .findFirst().orElse(null))
                         .filter(Objects::nonNull)
+                        .map(Genre::getId)
                         .map(id -> em.getReference(Genre.class, id))
                         .collect(toSet()));
 
                 book.setAuthors(book.getAuthors().stream()
-                        .map(authors::get)
+                        .map(author -> authors.keySet().stream()
+                                .filter(e -> Objects.equals(author.getFirstName(), e.getFirstName())
+                                        && Objects.equals(author.getMiddleName(), e.getFirstName())
+                                        && Objects.equals(author.getLastName(), e.getLastName()))
+                                .findFirst().orElse(null))
                         .filter(Objects::nonNull)
+                        .map(AbstractEntity::getId)
                         .map(id -> em.getReference(Author.class, id))
                         .collect(toSet()));
 
                 book.setPublisher(em.getReference(Publisher.class, publishers.keySet().stream()
-                        .filter(e -> e.getName().equals(book.getPublisher().getName()))
+                        .filter(e -> Objects.equals(e.getName(), book.getPublisher().getName()))
                         .map(Publisher::getId)
                         .findFirst().orElse(null)));
             });

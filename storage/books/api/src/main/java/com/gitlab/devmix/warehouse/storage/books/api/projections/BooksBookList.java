@@ -17,7 +17,7 @@ public interface BooksBookList {
 
     String getTitle();
 
-    @Metadata.RelationshipMany
+    @Metadata.Many
     List<Author> getAuthors();
 
     @Metadata.Name(com.gitlab.devmix.warehouse.storage.books.api.entitity.Author.ENTITY)

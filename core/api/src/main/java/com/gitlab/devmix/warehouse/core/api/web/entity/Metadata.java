@@ -79,10 +79,10 @@ public final class Metadata {
             final Class type = property.getPropertyType();
 
             final boolean isRelationshipCollection = hasAnyAnnotation(
-                    field, getter, ManyToMany.class, OneToMany.class, RelationshipMany.class);
+                    field, getter, ManyToMany.class, OneToMany.class, Many.class);
 
             final boolean isRelationshipSingle = hasAnyAnnotation(
-                    field, getter, ManyToOne.class, OneToOne.class, Relationship.class);
+                    field, getter, ManyToOne.class, OneToOne.class, One.class);
 
             final boolean isId = hasAnyAnnotation(
                     field, getter, javax.persistence.Id.class, Id.class);
@@ -151,7 +151,7 @@ public final class Metadata {
 
             next = next.getSuperclass();
         }
-        return null;
+        return entityClass.getSimpleName();
     }
 
     @Value
@@ -225,6 +225,10 @@ public final class Metadata {
                     // ignore
                 }
             }
+
+            public boolean isRelationship() {
+                return isRelationshipCollection || isRelationshipSingle;
+            }
         }
     }
 
@@ -236,12 +240,12 @@ public final class Metadata {
 
     @Target(FIELD)
     @Retention(RUNTIME)
-    public @interface Relationship {
+    public @interface One {
     }
 
     @Target({FIELD, METHOD})
     @Retention(RUNTIME)
-    public @interface RelationshipMany {
+    public @interface Many {
     }
 
     @Target({FIELD, METHOD})

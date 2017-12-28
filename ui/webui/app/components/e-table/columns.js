@@ -18,14 +18,11 @@ export default Ember.Component.extend({
     const result = {};
     let hasSorting = false;
     this.get('list').forEach((column) => {
-      hasSorting |= column.applySortConfig(result);
+      hasSorting |= column.sortApplyConfig(result);
     });
 
     if (this.hasSorting || hasSorting) {
-      const component = this.get('table.component');
-      if (component) {
-        component.set('sort', result);
-      }
+      this.set('table.component.sort', result);
       this.hasSorting = hasSorting;
     }
   }),

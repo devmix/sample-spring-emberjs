@@ -13,6 +13,7 @@ import com.gitlab.devmix.warehouse.core.api.web.entity.operations.DeleteOperatio
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.ListOperation;
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.ReadOperation;
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.UpdateOperation;
+import com.gitlab.devmix.warehouse.core.api.web.entity.utils.RequestParametersUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,14 +105,17 @@ public class EntityApiControllerImpl implements EntityApiController {
                 final Class parametersClass = operation.getParametersClass() == null
                         ? RequestParameters.class : operation.getParametersClass();
                 final RequestParameters requestParameters = (RequestParameters) OBJECT_MAPPER
-                        .convertValue(query, parametersClass);
-                final Page page = operation.getRun().handle(requestParameters);
+                        .convertValue(RequestParametersUtils.queryToMap(query), parametersClass);
+                final Page page = operation.getRun().handle(operation, requestParameters);
 
                 stopWatch.split();
                 LOGGER.trace("get: handler finished {}ms", stopWatch.getSplitTime());
 
                 final Response list = Response.of(operation.getEntityClass())
-                        .include(operation.getRelationships()).add(page).list();
+                        .include(operation.getRelationships())
+                        .projection(operation.getProjection())
+                        .add(page)
+                        .list();
 
                 stopWatch.split();
                 LOGGER.trace("get: list created {}ms", stopWatch.getSplitTime());

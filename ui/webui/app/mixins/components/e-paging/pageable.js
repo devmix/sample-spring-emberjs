@@ -12,8 +12,8 @@ export default Ember.Mixin.create({
       const newPages = Math.ceil(page.total / page.size);
       if (newPages !== this.get('pages')) {
         this.setProperties({
-          pages: newPages,
-          page: Math.min(page.page, Math.max(0, newPages - 1)),
+          pages: newPages || 0,
+          page: Math.min(page.page || 0, Math.max(0, newPages - 1)),
           pageSize: page.size
         });
       }

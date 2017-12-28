@@ -56,6 +56,7 @@ public final class Response<E> extends HashMap<String, Object> {
         private Set<Class> include;
         private List<E> entities;
         private PageInfo page;
+        private Projection projection = Projection.full();
 
         private Builder(final Class<E> entityClass) {
             this.entityClass = entityClass;
@@ -114,11 +115,21 @@ public final class Response<E> extends HashMap<String, Object> {
             return this;
         }
 
+        public Builder<E> projection(final String... properties) {
+            this.projection = Projection.of(properties);
+            return this;
+        }
+
+        public Builder<E> projection(@Nullable final Projection projection) {
+            this.projection = projection == null ? Projection.full() : projection;
+            return this;
+        }
+
         public Response<E> single() {
             final Metadata.Descriptor descriptor = Metadata.of(entityClass);
             final Response<E> payload = new Response<>();
             payload.put(descriptor.getEntityName(), entities == null || entities.isEmpty() ? EMPTY
-                    : addEntity(entities.get(0), descriptor, payload));
+                    : addEntity(entities.get(0), descriptor, payload, projection));
             putPageInformation(payload);
             return payload;
         }
@@ -127,7 +138,7 @@ public final class Response<E> extends HashMap<String, Object> {
             final Metadata.Descriptor descriptor = Metadata.of(entityClass);
             final Response<E> payload = new Response<>();
             payload.put(descriptor.getEntityName(), entities == null || entities.isEmpty() ? emptyList()
-                    : entities.stream().map(e -> addEntity(e, descriptor, payload)).collect(toList()));
+                    : entities.stream().map(e -> addEntity(e, descriptor, payload, projection)).collect(toList()));
             putPageInformation(payload);
             return payload;
         }
@@ -147,12 +158,19 @@ public final class Response<E> extends HashMap<String, Object> {
         }
 
         @SuppressWarnings("ConstantConditions")
-        private Payload addEntity(final Object entity, final Metadata.Descriptor descriptor, final Response<E> response) {
+        private Payload addEntity(final Object entity, final Metadata.Descriptor descriptor, final Response<E> response,
+                                  final ProjectionProperty projectionProperty) {
+
             final Payload result = new Payload();
             for (final Map.Entry<String, Metadata.Descriptor.Attribute> entry : descriptor.getAttributes().entrySet()) {
                 final String name = entry.getKey();
                 final Metadata.Descriptor.Attribute attribute = entry.getValue();
                 if (!attribute.hasGetter()) {
+                    continue;
+                }
+
+                final ProjectionProperty attrProjection = projectionProperty.next(name);
+                if (attrProjection == null) {
                     continue;
                 }
 
@@ -164,11 +182,11 @@ public final class Response<E> extends HashMap<String, Object> {
                 if (attribute.isRelationshipCollection()) {
                     final List<Object> list = new ArrayList<>();
                     for (final Object o : (Collection) value) {
-                        list.add(addRelationship(o, response));
+                        list.add(addRelationship(o, response, attrProjection));
                     }
                     result.put(name, list);
                 } else if (attribute.isRelationshipSingle()) {
-                    result.put(name, addRelationship(value, response));
+                    result.put(name, addRelationship(value, response, attrProjection));
                 } else if (value != null) {
                     result.put(name, value);
                 }
@@ -177,10 +195,10 @@ public final class Response<E> extends HashMap<String, Object> {
             return result;
         }
 
-        private Object addRelationship(final Object e, final Response<E> response) {
+        private Object addRelationship(final Object e, final Response<E> response, final ProjectionProperty projectionProperty) {
             final Class entityClass = findActualClass(e);
             final Metadata.Descriptor descriptor = Metadata.of(entityClass);
-            final Payload entity = addEntity(e, descriptor, response);
+            final Payload entity = addEntity(e, descriptor, response, projectionProperty);
             if (inline != null && inline.contains(entityClass)) {
                 return entity;
             }

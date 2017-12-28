@@ -1,0 +1,42 @@
+{
+  "search": "1",
+  "sort": {
+    "title": "asc"
+  },
+  "sort2": {
+    "title": {
+      "nullable": "false",
+      "direction": "desc"
+    }
+  },
+  "sort3": [
+    {
+      "nullable": "asc",
+      "direction": "false"
+    },
+    {
+      "nullable": "false",
+      "direction": "true"
+    }
+  ],
+  "sort4": [
+    {
+      "direction": [
+        {
+          "test": "true"
+        },
+        {
+          "test2": "true",
+          "test": "true"
+        }
+      ]
+    },
+    {
+      "direction": [
+        {
+          "test": "true"
+        }
+      ]
+    }
+  ]
+}

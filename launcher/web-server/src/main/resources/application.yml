@@ -9,6 +9,7 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
 #    org.hibernate.type.descriptor.sql: TRACE
+    com.gitlab.devmix.warehouse.core.impl.controlles.EntityApiControllerImpl: TRACE
 
 spring:
   jpa:

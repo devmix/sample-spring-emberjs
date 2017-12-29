@@ -27,24 +27,24 @@ public class Endpoint {
         return new Builder<>(rootUri);
     }
 
-    public static <E, R extends RequestParameters> ListOperation.ListOperationBuilder<E, R> list(final Class<E> entityClass) {
+    public static <E, R extends Request> ListOperation.ListOperationBuilder<E, R> list(final Class<E> entityClass) {
         return ListOperation.<E, R>builder().entityClass(entityClass);
     }
 
-    public static <E> CreateOperation.CreateOperationBuilder<E> create(final Class<E> entityClass) {
-        return CreateOperation.<E>builder().entityClass(entityClass);
+    public static <E, R extends Request> CreateOperation.CreateOperationBuilder<E, R> create(final Class<E> entityClass) {
+        return CreateOperation.<E, R>builder().entityClass(entityClass);
     }
 
-    public static <E> ReadOperation.ReadOperationBuilder<E> read(final Class<E> entityClass) {
-        return ReadOperation.<E>builder().entityClass(entityClass);
+    public static <E, R extends Request> ReadOperation.ReadOperationBuilder<E, R> read(final Class<E> entityClass) {
+        return ReadOperation.<E, R>builder().entityClass(entityClass);
     }
 
-    public static <E> UpdateOperation.UpdateOperationBuilder<E> update(final Class<E> entityClass) {
-        return UpdateOperation.<E>builder().entityClass(entityClass);
+    public static <E, R extends Request> UpdateOperation.UpdateOperationBuilder<E, R> update(final Class<E> entityClass) {
+        return UpdateOperation.<E, R>builder().entityClass(entityClass);
     }
 
-    public static <E> DeleteOperation.DeleteOperationBuilder<E> delete(final Class<E> entityClass) {
-        return DeleteOperation.<E>builder().entityClass(entityClass);
+    public static <E, R extends Request> DeleteOperation.DeleteOperationBuilder<E, R> delete(final Class<E> entityClass) {
+        return DeleteOperation.<E, R>builder().entityClass(entityClass);
     }
 
     @Nullable

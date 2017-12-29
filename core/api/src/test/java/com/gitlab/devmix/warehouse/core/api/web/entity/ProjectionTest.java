@@ -17,36 +17,36 @@ public class ProjectionTest {
 
         // id
 
-        final ProjectionProperty id = projection.next("id");
+        final ProjectionProperty id = projection.find("id");
         assertThat(id).isNotNull();
         assertThat(id.isAny()).isFalse();
-        assertThat(id.next("")).isNull();
+        assertThat(id.find("")).isNull();
 
         // name
 
-        assertThat(projection.next("name")).isNotNull();
+        assertThat(projection.find("name")).isNotNull();
 
         // bars
 
-        final ProjectionProperty bars = projection.next("bars");
+        final ProjectionProperty bars = projection.find("bars");
         assertThat(bars).isNotNull();
         assertThat(bars.isAny()).isFalse();
 
-        final ProjectionProperty barsId = bars.next("id");
+        final ProjectionProperty barsId = bars.find("id");
         assertThat(barsId).isNotNull();
         assertThat(barsId.isAny()).isFalse();
 
-        final ProjectionProperty barsName = bars.next("name");
+        final ProjectionProperty barsName = bars.find("name");
         assertThat(barsName).isNotNull();
         assertThat(barsName.isAny()).isFalse();
 
         // baz
 
-        final ProjectionProperty baz = projection.next("baz");
+        final ProjectionProperty baz = projection.find("baz");
         assertThat(baz).isNotNull();
         assertThat(baz.isAny()).isFalse();
 
-        final ProjectionProperty bazAnyId = baz.next("id");
+        final ProjectionProperty bazAnyId = baz.find("id");
         assertThat(bazAnyId).isNotNull();
         assertThat(bazAnyId.isAny()).isTrue();
     }

@@ -15,10 +15,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Sergey Grachev
  */
 @Test
-public class ResponseTest {
+public class ResponseDataTest {
 
     public void testProjection() throws IOException {
-        final Response<Foo> response = Response.of(Foo.class).include(Bar.class).include(Baz.class)
+        final ResponseData<Foo> responseData = ResponseData.of(Foo.class).include(Bar.class).include(Baz.class)
                 .add(Foo.builder()
                         .id("1").name("n1").secret("s1")
                         .bars(asList(
@@ -30,10 +30,10 @@ public class ResponseTest {
                 .projection("id", "name", "bars.id", "bars.name", "baz.*")
                 .single();
 
-        @SuppressWarnings("unchecked") final Response<Foo> expected = new ObjectMapper()
-                .readValue(this.getClass().getResourceAsStream("/response-with-projection.json"), Response.class);
+        @SuppressWarnings("unchecked") final ResponseData<Foo> expected = new ObjectMapper()
+                .readValue(this.getClass().getResourceAsStream("/response-with-projection.json"), ResponseData.class);
 
-        assertThat(response).isEqualTo(expected);
+        assertThat(responseData).isEqualTo(expected);
     }
 
     @Builder

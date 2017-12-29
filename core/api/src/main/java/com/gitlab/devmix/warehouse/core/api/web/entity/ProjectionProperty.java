@@ -7,5 +7,5 @@ public interface ProjectionProperty {
 
     boolean isAny();
 
-    ProjectionProperty next(String property);
+    ProjectionProperty find(String property);
 }

@@ -2,13 +2,13 @@ package com.gitlab.devmix.warehouse.core.api.web.entity.operations;
 
 import com.gitlab.devmix.warehouse.core.api.web.entity.Operation;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Projection;
-import com.gitlab.devmix.warehouse.core.api.web.entity.RequestParameters;
+import com.gitlab.devmix.warehouse.core.api.web.entity.Request;
+import com.gitlab.devmix.warehouse.core.api.web.entity.handlers.ReadListHandler;
 import lombok.Builder;
-import lombok.Singular;
 import lombok.Value;
-import org.springframework.data.domain.Page;
 
-import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -16,34 +16,30 @@ import java.util.Set;
  */
 @Builder
 @Value
-public final class ListOperation<E, R extends RequestParameters> implements Operation {
+public final class ListOperation<E, R extends Request> implements Operation<E, R> {
 
     private final Class<E> entityClass;
-
     private final Class<R> parametersClass;
-
-    @Singular
-    private final Set<Class<?>> relationships;
-
-    private final Run<E, R> run;
-
-    @Nullable
     private final Projection projection;
+    private final ReadListHandler<E, R> handler;
+    private final Set<Class<?>> includes;
 
     @Override
     public Type getType() {
         return Type.LIST;
     }
 
-    @FunctionalInterface
-    public interface Run<E, R extends RequestParameters> {
-        Page<E> handle(ListOperation<E, R> operation, R parameters);
-    }
-
-    public static final class ListOperationBuilder<E, R extends RequestParameters> {
-
+    public static final class ListOperationBuilder<E, R extends Request> {
         public ListOperationBuilder<E, R> projection(final String... properties) {
-            projection = Projection.of(properties);
+            projection = properties.length == 0 ? Projection.full() : Projection.of(properties);
+            return this;
+        }
+
+        public ListOperationBuilder<E, R> include(final Class<?>... classes) {
+            if (includes == null) {
+                includes = new HashSet<>();
+            }
+            Collections.addAll(includes, classes);
             return this;
         }
     }

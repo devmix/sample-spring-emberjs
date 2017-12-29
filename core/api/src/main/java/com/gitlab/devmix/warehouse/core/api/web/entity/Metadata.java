@@ -20,8 +20,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -98,7 +101,7 @@ public final class Metadata {
                     type, genericType, isRelationshipCollection, isRelationshipSingle, isId, getter, setter));
         }
 
-        return new Descriptor(entityName, fields, idAttributeName);
+        return new Descriptor(entityClass, entityName, fields, idAttributeName);
     }
 
     @SuppressWarnings("unchecked")
@@ -157,6 +160,7 @@ public final class Metadata {
     @Value
     public static final class Descriptor {
 
+        private final Class entityClass;
         private final String entityName;
         private final Map<String, Attribute> attributes;
         @Nullable
@@ -164,24 +168,47 @@ public final class Metadata {
 
         @SuppressWarnings("unchecked")
         @Nullable
-        public <T> T readId(final Object e) {
+        public <T> T getId(final Object source) {
             if (isNotBlank(idAttributeName)) {
                 final Attribute id = attributes.get(idAttributeName);
                 if (id != null) {
-                    return (T) id.readValue(e);
+                    return (T) id.readValue(source);
                 }
             }
             return null;
+        }
+
+        public void setId(final Object target, final Object value) {
+            if (isNotBlank(idAttributeName)) {
+                final Attribute id = attributes.get(idAttributeName);
+                if (id != null) {
+                    id.writeValue(target, value);
+                }
+            }
         }
 
         public boolean isEntity() {
             return entityName != null;
         }
 
+        public Object newInstance() {
+            try {
+                return entityClass.newInstance();
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+
+        public Object newInstanceWithId(final Object id) {
+            final Object result = newInstance();
+            setId(result, id);
+            return result;
+        }
+
         @Value
         public static class Attribute {
 
-            private final Class type;
+            private final Class fieldType;
 
             @Nullable
             private final Class genericType;
@@ -228,6 +255,19 @@ public final class Metadata {
 
             public boolean isRelationship() {
                 return isRelationshipCollection || isRelationshipSingle;
+            }
+
+            public Class<?> getEntityType() {
+                return isRelationshipSingle ? fieldType : genericType;
+            }
+
+            public <T> Collection<T> newCollection() {
+                if (Set.class.isAssignableFrom(fieldType)) {
+                    return new HashSet<>();
+                } else if (List.class.isAssignableFrom(fieldType)) {
+                    return new ArrayList<>();
+                }
+                throw new UnsupportedOperationException("Unsupported type of collection " + fieldType);
             }
         }
     }

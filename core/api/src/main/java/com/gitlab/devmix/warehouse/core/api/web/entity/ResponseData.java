@@ -21,14 +21,14 @@ import static java.util.stream.Collectors.toList;
 /**
  * @author Sergey Grachev
  */
-public final class Response<E> extends HashMap<String, Object> {
+public final class ResponseData<E> extends HashMap<String, Object> {
 
     private static final long serialVersionUID = -550468192552101123L;
 
     private static final Payload EMPTY = new Payload();
     private static final String META_SECTION = "meta";
 
-    private Response() {
+    private ResponseData() {
         put(META_SECTION, new HashMap<>());
     }
 
@@ -43,11 +43,11 @@ public final class Response<E> extends HashMap<String, Object> {
     }
 
     public static <E> Builder<E> of(final Class<E> entityClass) {
-        return new Response.Builder<>(entityClass);
+        return new ResponseData.Builder<>(entityClass);
     }
 
-    public static <E> Response<E> delete(final Class<E> entityClass) {
-        return new Response<>();
+    public static <E> ResponseData<E> delete(final Class<E> entityClass) {
+        return new ResponseData<>();
     }
 
     public static final class Builder<E> {
@@ -106,8 +106,10 @@ public final class Response<E> extends HashMap<String, Object> {
             return this;
         }
 
-
-        public Builder<E> include(final Collection<Class> include) {
+        public Builder<E> include(@Nullable final Collection<Class> include) {
+            if (include == null) {
+                return this;
+            }
             if (this.include == null) {
                 this.include = new HashSet<>();
             }
@@ -125,25 +127,25 @@ public final class Response<E> extends HashMap<String, Object> {
             return this;
         }
 
-        public Response<E> single() {
+        public ResponseData<E> single() {
             final Metadata.Descriptor descriptor = Metadata.of(entityClass);
-            final Response<E> payload = new Response<>();
+            final ResponseData<E> payload = new ResponseData<>();
             payload.put(descriptor.getEntityName(), entities == null || entities.isEmpty() ? EMPTY
                     : addEntity(entities.get(0), descriptor, payload, projection));
             putPageInformation(payload);
             return payload;
         }
 
-        public Response<E> list() {
+        public ResponseData<E> list() {
             final Metadata.Descriptor descriptor = Metadata.of(entityClass);
-            final Response<E> payload = new Response<>();
+            final ResponseData<E> payload = new ResponseData<>();
             payload.put(descriptor.getEntityName(), entities == null || entities.isEmpty() ? emptyList()
                     : entities.stream().map(e -> addEntity(e, descriptor, payload, projection)).collect(toList()));
             putPageInformation(payload);
             return payload;
         }
 
-        private void putPageInformation(final Response<E> payload) {
+        private void putPageInformation(final ResponseData<E> payload) {
             if (page == null) {
                 return;
             }
@@ -158,7 +160,7 @@ public final class Response<E> extends HashMap<String, Object> {
         }
 
         @SuppressWarnings("ConstantConditions")
-        private Payload addEntity(final Object entity, final Metadata.Descriptor descriptor, final Response<E> response,
+        private Payload addEntity(final Object entity, final Metadata.Descriptor descriptor, final ResponseData<E> responseData,
                                   final ProjectionProperty projectionProperty) {
 
             final Payload result = new Payload();
@@ -169,7 +171,7 @@ public final class Response<E> extends HashMap<String, Object> {
                     continue;
                 }
 
-                final ProjectionProperty attrProjection = projectionProperty.next(name);
+                final ProjectionProperty attrProjection = projectionProperty.find(name);
                 if (attrProjection == null) {
                     continue;
                 }
@@ -182,11 +184,11 @@ public final class Response<E> extends HashMap<String, Object> {
                 if (attribute.isRelationshipCollection()) {
                     final List<Object> list = new ArrayList<>();
                     for (final Object o : (Collection) value) {
-                        list.add(addRelationship(o, response, attrProjection));
+                        list.add(addRelationship(o, responseData, attrProjection));
                     }
                     result.put(name, list);
                 } else if (attribute.isRelationshipSingle()) {
-                    result.put(name, addRelationship(value, response, attrProjection));
+                    result.put(name, addRelationship(value, responseData, attrProjection));
                 } else if (value != null) {
                     result.put(name, value);
                 }
@@ -195,19 +197,19 @@ public final class Response<E> extends HashMap<String, Object> {
             return result;
         }
 
-        private Object addRelationship(final Object e, final Response<E> response, final ProjectionProperty projectionProperty) {
+        private Object addRelationship(final Object e, final ResponseData<E> responseData, final ProjectionProperty projectionProperty) {
             final Class entityClass = findActualClass(e);
             final Metadata.Descriptor descriptor = Metadata.of(entityClass);
-            final Payload entity = addEntity(e, descriptor, response, projectionProperty);
+            final Payload entity = addEntity(e, descriptor, responseData, projectionProperty);
             if (inline != null && inline.contains(entityClass)) {
                 return entity;
             }
 
             if (include != null && include.contains(entityClass)) {
-                ensureEntitiesOf(entityClass, response).add(entity);
+                ensureEntitiesOf(entityClass, responseData).add(entity);
             }
 
-            return descriptor.readId(e);
+            return descriptor.getId(e);
         }
 
         private Class findActualClass(final Object o) {
@@ -222,13 +224,13 @@ public final class Response<E> extends HashMap<String, Object> {
             return actualClass;
         }
 
-        private List<Payload> ensureEntitiesOf(final Class<?> entityClass, final Response<E> response) {
+        private List<Payload> ensureEntitiesOf(final Class<?> entityClass, final ResponseData<E> responseData) {
             final String name = Objects.requireNonNull(Metadata.of(entityClass).getEntityName());
             @SuppressWarnings("unchecked")
-            List<Payload> entities = (List<Payload>) response.get(name);
+            List<Payload> entities = (List<Payload>) responseData.get(name);
             if (entities == null) {
                 entities = new ArrayList<>();
-                response.put(name, entities);
+                responseData.put(name, entities);
             }
             return entities;
         }

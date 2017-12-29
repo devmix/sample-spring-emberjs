@@ -8,6 +8,8 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * @author Sergey Grachev
@@ -21,12 +23,17 @@ public class Author extends AbstractEntity {
 
     public static final String ENTITY = "booksAuthor";
 
-    @Column(name = "FIRST_NAME", length = Byte.MAX_VALUE)
+    @Column(name = "FIRST_NAME")
+    @Size(max = 255)
+    @NotNull
     private String firstName;
 
-    @Column(name = "LAST_NAME", length = Byte.MAX_VALUE)
-    private String lastName;
-
-    @Column(name = "MIDDLE_NAME", length = Byte.MAX_VALUE)
+    @Column(name = "MIDDLE_NAME")
+    @Size(max = 255)
     private String middleName;
+
+    @Column(name = "LAST_NAME")
+    @Size(max = 255)
+    @NotNull
+    private String lastName;
 }

@@ -1,6 +1,8 @@
 package com.gitlab.devmix.warehouse.storage.books.api.entitity;
 
 import com.gitlab.devmix.warehouse.core.api.entity.AbstractEntity;
+import com.gitlab.devmix.warehouse.core.api.web.entity.Request;
+import com.gitlab.devmix.warehouse.core.api.web.entity.jpa.JpaQuery;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -10,12 +12,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
 import javax.persistence.Table;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Set;
 
@@ -26,7 +33,7 @@ import java.util.Set;
 @Table(name = "BOOKS_BOOK")
 @Data
 @EqualsAndHashCode(callSuper = true, exclude = {"authors", "genres", "publisher"})
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"authors", "genres", "publisher"})
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "booksBook.list",
                 attributeNodes = {
@@ -43,19 +50,46 @@ public class Book extends AbstractEntity {
 
     public static final String ENTITY = "booksBook";
 
-    @Column(name = "TITLE", length = Short.MAX_VALUE)
+    public static final String[] PROJECTION_LIST = {
+            "id", "title", "description",
+            "authors.id", "authors.firstName", "authors.middleName", "authors.lastName",
+            "publisher.id", "publisher.name"
+    };
+
+    public static final JpaQuery.SearchBuilder<Book, Request> SEARCH_LIST = (q, c, e) -> {
+        if (q.hasSearch()) {
+            final String search = "%" + q.getSearch().toLowerCase() + "%";
+            final Join<Object, Object> authors = e.join("authors", JoinType.LEFT);
+            return c.or(
+                    c.like(c.lower(e.get("title")), search),
+                    c.like(c.lower(e.get("isnb13")), search),
+                    c.like(c.lower(authors.get("firstName")), search),
+                    c.like(c.lower(authors.get("middleName")), search),
+                    c.like(c.lower(authors.get("lastName")), search));
+        }
+        return null;
+    };
+
+    @Column(name = "TITLE")
+    @Size(max = 255)
+    @NotNull
     private String title;
 
     @Column(name = "LANGUAGE", length = 3)
+    @Size(max = 3)
     private String language;
 
     @Column(name = "PUBLISH_DATE")
     private Date publishDate;
 
     @Column(name = "ISBN13", length = 14)
+    @Size(max = 14)
+    @NotNull
     private String isnb13;
 
+    @Lob
     @Column(name = "DESCRIPTION", length = Short.MAX_VALUE)
+    @Size(max = Short.MAX_VALUE)
     private String description;
 
     @ManyToMany(fetch = FetchType.LAZY)

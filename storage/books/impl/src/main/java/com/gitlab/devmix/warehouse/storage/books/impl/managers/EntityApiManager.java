@@ -23,8 +23,9 @@ import static com.gitlab.devmix.warehouse.core.api.web.entity.Endpoint.delete;
 import static com.gitlab.devmix.warehouse.core.api.web.entity.Endpoint.list;
 import static com.gitlab.devmix.warehouse.core.api.web.entity.Endpoint.read;
 import static com.gitlab.devmix.warehouse.core.api.web.entity.Endpoint.update;
-import static com.gitlab.devmix.warehouse.core.api.web.entity.EntityUtils.getReferenceSet;
-import static com.gitlab.devmix.warehouse.storage.books.impl.managers.EntityQueryUtils.listOfEntities;
+import static com.gitlab.devmix.warehouse.core.api.web.entity.handlers.OperationHandlers.jpaRead;
+import static com.gitlab.devmix.warehouse.core.api.web.entity.handlers.OperationHandlers.jpaReadList;
+import static com.gitlab.devmix.warehouse.core.api.web.entity.jpa.JpaUtils.getReferenceSet;
 
 /**
  * @author Sergey Grachev
@@ -59,28 +60,24 @@ public class EntityApiManager {
 
     private Endpoint book() {
         return builder("/books/book")
-                .add(list(Book.class).relationship(Author.class)
-                        .projection(
-                                "id", "title", "description",
-                                "authors.id", "authors.firstName", "authors.middleName", "authors.lastName",
-                                "publishers.id", "publishers.name")
-                        .run((op, query) -> listOfEntities(Book.class, em, op, query, (parameters, cb, e) ->
-                                cb.like(cb.lower(e.get("title")), "%" + parameters.getSearch().toLowerCase() + "%"))).build())
+                .add(list(Book.class).include(Author.class)
+                        .projection(Book.PROJECTION_LIST)
+                        .handler(jpaReadList(Book.class).searchPredicate(Book.SEARCH_LIST).build())
+                        .build())
 
                 .add(create(Book.class)
-                        .run(book -> updateBookRelationships(bookRepository.save(book))).build())
+                        .handler(book -> updateBookRelationships(bookRepository.save(book))).build())
 
                 .add(read(Book.class)
-                        .relationship(Author.class)
-                        .relationship(Genre.class)
-                        .relationship(Publisher.class)
-                        .run(id -> bookRepository.findByIdAndDeletedFalse(UUID.fromString(id))).build())
+                        .include(Author.class, Genre.class, Publisher.class)
+                        .handler(jpaRead(Book.class).id(UUID::fromString).build())
+                        .build())
 
                 .add(update(Book.class)
-                        .run((id, book) -> updateBookRelationships(bookRepository.save(book))).build())
+                        .handler((id, book) -> updateBookRelationships(bookRepository.save(book))).build())
 
                 .add(delete(Book.class)
-                        .run(id -> bookRepository.recoverableDelete(UUID.fromString(id))).build())
+                        .handler(id -> bookRepository.recoverableDelete(UUID.fromString(id))).build())
 
                 .build();
     }
@@ -97,11 +94,11 @@ public class EntityApiManager {
     private static <E> Endpoint dictionaryEndpoint(final String uri, final Class<E> e,
                                                    final PagingAndSortingRepository<E, UUID> r) {
         return builder(uri)
-                .add(list(e).run((operation, query) -> r.findAll(query.asPageable())).build())
-                .add(create(e).run(r::save).build())
-                .add(read(e).run(id -> r.findOne(UUID.fromString(id))).build())
-                .add(update(e).run((id, entity) -> r.save(entity)).build())
-                .add(delete(e).run(id -> r.delete(UUID.fromString(id))).build())
+                .add(list(e).handler(jpaReadList(e).build()).build())
+                .add(create(e).handler(r::save).build())
+                .add(read(e).handler(jpaRead(e).id(UUID::fromString).build()).build())
+                .add(update(e).handler((id, entity) -> r.save(entity)).build())
+                .add(delete(e).handler(id -> r.delete(UUID.fromString(id))).build())
                 .build();
     }
 }

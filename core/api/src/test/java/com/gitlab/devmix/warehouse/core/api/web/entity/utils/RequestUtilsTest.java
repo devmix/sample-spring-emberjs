@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Sergey Grachev
  */
 @Test
-public class RequestParametersUtilsTest {
+public class RequestUtilsTest {
 
     public void testQueryToMap() throws IOException {
         final Map<String, Object> query = new LinkedHashMap<>();
@@ -33,6 +33,6 @@ public class RequestParametersUtilsTest {
         @SuppressWarnings("unchecked") final Map<String, Object> expected = new ObjectMapper()
                 .readValue(this.getClass().getResourceAsStream("/request-normalized.json"), Map.class);
 
-        assertThat(RequestParametersUtils.queryToMap(query)).isEqualTo(expected);
+        assertThat(RequestUtils.queryToMap(query)).isEqualTo(expected);
     }
 }

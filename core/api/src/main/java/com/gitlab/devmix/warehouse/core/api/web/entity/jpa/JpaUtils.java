@@ -1,4 +1,4 @@
-package com.gitlab.devmix.warehouse.core.api.web.entity;
+package com.gitlab.devmix.warehouse.core.api.web.entity.jpa;
 
 import com.gitlab.devmix.warehouse.core.api.entity.BaseEntity;
 
@@ -15,8 +15,9 @@ import static java.util.Collections.singletonList;
 /**
  * @author Sergey Grachev
  */
-public final class EntityUtils {
-    private EntityUtils() {
+public final class JpaUtils {
+
+    private JpaUtils() {
     }
 
     public static <E extends BaseEntity> List<E> getReferenceList(@Nullable final Collection<E> entities,

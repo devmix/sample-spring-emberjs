@@ -17,13 +17,13 @@ public final class Projection implements ProjectionProperty {
 
     private static final Projection FULL = new Projection(true);
 
-    private final ProjectionProperty nodes;
+    private final ProjectionProperty pproperties;
 
     private Projection(final boolean full) {
         if (full) {
-            nodes = new AnyProperty();
+            pproperties = new AnyProperty();
         } else {
-            nodes = new ExpressionProperty(false);
+            pproperties = new ExpressionProperty(false);
         }
     }
 
@@ -40,18 +40,18 @@ public final class Projection implements ProjectionProperty {
     }
 
     private Projection add(final String property) {
-        if (isBlank(property) || nodes == FULL) {
+        if (isBlank(property) || pproperties == FULL) {
             return this;
         }
 
         final String[] parts = property.split("\\.");
         if (parts.length > 0) {
-            ExpressionProperty node = ((ExpressionProperty) nodes).add(parts[0]);
+            ExpressionProperty node = ((ExpressionProperty) pproperties).add(parts[0]);
             for (int i = 1; i < parts.length; i++) {
                 node = node.add(parts[i]);
             }
         } else {
-            ((ExpressionProperty) nodes).add(property);
+            ((ExpressionProperty) pproperties).add(property);
         }
 
         return this;
@@ -64,8 +64,8 @@ public final class Projection implements ProjectionProperty {
 
     @Nullable
     @Override
-    public ProjectionProperty next(final String property) {
-        return nodes.next(property);
+    public ProjectionProperty find(final String property) {
+        return pproperties.find(property);
     }
 
     @ToString
@@ -77,7 +77,7 @@ public final class Projection implements ProjectionProperty {
         }
 
         @Override
-        public ProjectionProperty next(final String property) {
+        public ProjectionProperty find(final String property) {
             return this;
         }
     }
@@ -102,7 +102,7 @@ public final class Projection implements ProjectionProperty {
 
         @Nullable
         @Override
-        public ExpressionProperty next(final String property) {
+        public ExpressionProperty find(final String property) {
             ExpressionProperty result = null;
             if (properties != null) {
                 result = properties.get(property);

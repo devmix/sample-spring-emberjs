@@ -10,9 +10,9 @@ import java.util.function.Supplier;
 /**
  * @author Sergey Grachev
  */
-public final class RequestParametersUtils {
+public final class RequestUtils {
 
-    private RequestParametersUtils() {
+    private RequestUtils() {
     }
 
     @SuppressWarnings("unchecked")

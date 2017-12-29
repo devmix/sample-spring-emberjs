@@ -1,10 +1,6 @@
 server:
   port: 8080
 
-management:
-  security:
-    enabled: false
-
 logging:
   level:
     org.hibernate.SQL: DEBUG
@@ -30,3 +26,31 @@ spring:
       settings:
         trace: false
         web-allow-others: false
+
+---
+
+spring:
+  profiles: postgres
+  jpa:
+    generate-ddl: true
+    hibernate.ddl-auto: update
+#    hibernate.ddl-auto: create-drop
+  datasource:
+    url: jdbc:postgresql://localhost:5432/warehouse
+    username: root
+    password: root
+    driverClassName: org.postgresql.Driver
+---
+
+spring:
+  profiles: mariadb
+  jpa:
+    generate-ddl: true
+    hibernate.ddl-auto: update
+#    hibernate.ddl-auto: create-drop
+    properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  datasource:
+    url: jdbc:mariadb://localhost:3306/warehouse
+    username: root
+    password: root
+    driverClassName: org.mariadb.jdbc.Driver

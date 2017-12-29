@@ -143,7 +143,7 @@ public class DemoManager {
                 book.setAuthors(book.getAuthors().stream()
                         .map(author -> authors.keySet().stream()
                                 .filter(e -> Objects.equals(author.getFirstName(), e.getFirstName())
-                                        && Objects.equals(author.getMiddleName(), e.getFirstName())
+                                        && Objects.equals(author.getMiddleName(), e.getMiddleName())
                                         && Objects.equals(author.getLastName(), e.getLastName()))
                                 .findFirst().orElse(null))
                         .filter(Objects::nonNull)

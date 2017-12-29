@@ -8,6 +8,8 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * @author Sergey Grachev
@@ -21,6 +23,8 @@ public class Genre extends AbstractEntity {
 
     public static final String ENTITY = "booksGenre";
 
-    @Column(name = "NAME", length = Byte.MAX_VALUE)
+    @Column(name = "NAME")
+    @Size(max = 255)
+    @NotNull
     private String name;
 }

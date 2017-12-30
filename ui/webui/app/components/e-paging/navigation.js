@@ -9,7 +9,7 @@ export default Ember.Component.extend({
   pageSizeVariants: '5 10 20 40 80', // selectable variants of page size
 
   noPrev: computed('target.page', function () {
-    return this.get('target.page') == 0;
+    return this.get('target.page') === 0;
   }),
 
   noNext: computed('target.page', 'pages', function () {
@@ -39,7 +39,7 @@ export default Ember.Component.extend({
     variants.split(' ').forEach((variant) => {
       result.push(Ember.Object.create({
         value: variant,
-        checked: variant == value
+        checked: variant === value
       }));
     });
 
@@ -47,6 +47,12 @@ export default Ember.Component.extend({
   }),
 
   actions: {
+    first() {
+      if (this.get('target.page') !== 0) {
+        this.set('target.page', 0);
+      }
+    },
+
     prev() {
       if (!this.get('noPrev')) {
         this.set('target.page', this.get('target.page') - 1);
@@ -56,6 +62,13 @@ export default Ember.Component.extend({
     next() {
       if (!this.get('noNext')) {
         this.set('target.page', this.get('target.page') + 1);
+      }
+    },
+
+    last() {
+      const page = this.get('target.page'), pages = this.get('target.pages');
+      if (page < pages - 1) {
+        this.set('target.page', pages - 1);
       }
     },
 

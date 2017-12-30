@@ -1,3 +1,8 @@
-- TESTS!
-- OAuth2 JWT tokens
-- localization
+- [ ] TESTS!
+- [ ] localization
+- [ ] integration with a services that provides an information about a subject area, e.g. Google Books API, Open Library Books API, ISBNdb
+- [ ] support of MariaDB
+- [ ] OAuth2 JWT tokens
+- [ ] JCR 2.x (Jackrabbit / Apache Oak/ Modeshape) as back-end for the file storage
+- [ ] UI for users and roles (role based security?)
+- [ ] tenants?

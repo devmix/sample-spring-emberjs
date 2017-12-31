@@ -1,6 +1,11 @@
 {{e-table/standard persistent='storate-books-book-index'
-                   modelName='books-book'
+                   modelName=modelName
                    type='grid' gridCellFrame='e-app/books/book/book-card'
                    attributesConfig=attributes
+                   footerConfig=(hash buttons=config.entityTableButtons)
                    onCustomAction=(action 'onCustomAction')
                    style=(hash flexGrow=1)}}
+
+{{#e-dialog/modal fixedHeight=true noMargins=true bindTo=exportDialog as |dialog data|}}
+  {{e-app/core/entity/export-frame modelName=data.modelName}}
+{{/e-dialog/modal}}

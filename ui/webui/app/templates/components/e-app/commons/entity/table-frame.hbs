@@ -1,4 +1,5 @@
 {{e-table/standard attributesConfig=columns modelName=modelName
+                   footerConfig=(hash buttons=config.entityTableButtons)
                    onCustomAction=(action 'onCustomAction')
                    bindTo=table
                    persistent=persistent
@@ -7,6 +8,10 @@
 {{#e-dialog/modal autoClose=false bindTo=editDialog
                   action=(action 'onEditDialogAction') as |dialog model|}}
   {{component editorFrame model=model bindTo=editor}}
+{{/e-dialog/modal}}
+
+{{#e-dialog/modal fixedHeight=true noMargins=true bindTo=exportDialog as |dialog data|}}
+  {{e-app/core/entity/export-frame modelName=data.modelName}}
 {{/e-dialog/modal}}
 
 {{e-dialog/modal title='Confirm' message='Are you sure?' size='tiny' bindTo=removeDialog

@@ -1,9 +1,9 @@
 package com.gitlab.devmix.warehouse.core.api.web.entity.jpa;
 
-import com.gitlab.devmix.warehouse.core.api.web.entity.Metadata;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Operation;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Request;
 import com.gitlab.devmix.warehouse.core.api.web.entity.handlers.ReadHandler;
+import com.gitlab.devmix.warehouse.core.api.web.entity.metadata.EntityMetadata;
 import lombok.Builder;
 import lombok.Value;
 
@@ -39,7 +39,7 @@ public class JpaReadHandler<E, R extends Request> implements ReadHandler<E, R> {
 
     private Predicate mergePredicates(final Operation<E, R> operation, final String entityId, final R parameters,
                                       final CriteriaBuilder c, final Root<E> e) {
-        final Metadata.Descriptor meta = Metadata.of(operation.getEntityClass());
+        final EntityMetadata.Descriptor meta = EntityMetadata.of(operation.getEntityClass());
         final Predicate predicate = searchPredicate != null ? searchPredicate.build(parameters, c, e) : null;
         final Predicate byId = c.equal(e.get(meta.getIdAttributeName()), id == null ? entityId : id.apply(entityId));
         return predicate == null ? byId : c.and(predicate, byId);

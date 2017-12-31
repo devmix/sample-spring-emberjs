@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
@@ -17,13 +16,15 @@ import java.util.concurrent.Executor;
  */
 @Configuration
 @EnableAsync
-@EnableScheduling
 public class AsyncConfiguration implements AsyncConfigurer {
 
-    @Bean("core_asyncTaskExecutor")
+    public static final String SYS_EXPORT_ENTITY_TASK_EXECUTOR = "sysExportEntityTaskExecutor";
+    public static final String SYS_ASYNC_TASK_EXECUTOR = "sysAsyncTaskExecutor";
+
+    @Bean(SYS_ASYNC_TASK_EXECUTOR)
     public AsyncTaskExecutor asyncTaskExecutor() {
         final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setThreadNamePrefix("async");
+        executor.setThreadNamePrefix("async-");
         return executor;
     }
 
@@ -35,5 +36,12 @@ public class AsyncConfiguration implements AsyncConfigurer {
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
         return new SimpleAsyncUncaughtExceptionHandler();
+    }
+
+    @Bean(SYS_EXPORT_ENTITY_TASK_EXECUTOR)
+    public ThreadPoolTaskExecutor sysExportEntityTaskExecutor() {
+        final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setThreadNamePrefix("entity-export-");
+        return executor;
     }
 }

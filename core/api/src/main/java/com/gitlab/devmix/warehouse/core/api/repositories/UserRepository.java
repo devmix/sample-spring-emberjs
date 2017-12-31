@@ -1,6 +1,6 @@
 package com.gitlab.devmix.warehouse.core.api.repositories;
 
-import com.gitlab.devmix.warehouse.core.api.entity.User;
+import com.gitlab.devmix.warehouse.core.api.entity.security.User;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

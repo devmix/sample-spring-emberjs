@@ -12,14 +12,26 @@ export default Ember.Component.extend(StyleableMixin, {
   editDialog: undefined,
 
   store: Ember.inject.service(),
+  config: Ember.inject.service('app/config'),
 
   actions: {
     onCustomAction(action, data) {
       switch (action) {
-        case 'e-paging-controls-add':
+        case 'e-table-create-new-item':
           this.get('editDialog').show({
             title: 'Create',
             data: this.get('store').createRecord(this.get('modelName'))
+          });
+          break;
+
+        case 'e-table-export-items':
+          this.get('exportDialog').show({
+            title: 'Export',
+            buttons: [{text: 'Close', class: 'primary'}],
+            data: {
+              modelName: this.get('modelName'),
+              filter: this.get('table.filter')
+            }
           });
           break;
 

@@ -3,12 +3,14 @@ package com.gitlab.devmix.warehouse.core.impl.controlles;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gitlab.devmix.warehouse.core.api.controllers.EntityApiController;
 import com.gitlab.devmix.warehouse.core.api.services.EntityApiService;
+import com.gitlab.devmix.warehouse.core.api.services.EntityExportApiService;
 import com.gitlab.devmix.warehouse.core.api.services.EntityRestRegistry;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Endpoint;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Payload;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Request;
 import com.gitlab.devmix.warehouse.core.api.web.entity.RequestData;
 import com.gitlab.devmix.warehouse.core.api.web.entity.ResponseData;
+import com.gitlab.devmix.warehouse.core.api.web.entity.export.ExportOptions;
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.CreateOperation;
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.DeleteOperation;
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.ListOperation;
@@ -55,6 +57,9 @@ public class EntityApiControllerImpl implements EntityApiController {
 
     @Inject
     private EntityApiService apiService;
+
+    @Inject
+    private EntityExportApiService exportApiService;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -201,7 +206,12 @@ public class EntityApiControllerImpl implements EntityApiController {
         return ok(ResponseData.delete(operation.getEntityClass()));
     }
 
+    @Override
+    public ResponseEntity<?> export(@RequestBody final ExportOptions options, final HttpServletRequest request) {
+        return ok(exportApiService.create(options));
+    }
+
     private String parseRequestUri(final HttpServletRequest request) {
-        return request.getRequestURI().substring(EntityApiController.API_CORE_ENTITY.length());
+        return request.getRequestURI().substring(EntityApiController.URI.length());
     }
 }

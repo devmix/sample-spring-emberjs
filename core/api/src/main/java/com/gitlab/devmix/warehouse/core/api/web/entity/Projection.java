@@ -5,6 +5,7 @@ import lombok.ToString;
 
 import javax.annotation.Nullable;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -17,17 +18,25 @@ public final class Projection implements ProjectionProperty {
 
     private static final Projection FULL = new Projection(true);
 
-    private final ProjectionProperty pproperties;
+    private final ProjectionProperty properties;
 
     private Projection(final boolean full) {
         if (full) {
-            pproperties = new AnyProperty();
+            properties = new AnyProperty();
         } else {
-            pproperties = new ExpressionProperty(false);
+            properties = new ExpressionProperty(false);
         }
     }
 
     public static Projection of(final String... properties) {
+        final Projection projection = new Projection(false);
+        for (final String property : properties) {
+            projection.add(property);
+        }
+        return projection;
+    }
+
+    public static Projection of(final Set<String> properties) {
         final Projection projection = new Projection(false);
         for (final String property : properties) {
             projection.add(property);
@@ -40,18 +49,18 @@ public final class Projection implements ProjectionProperty {
     }
 
     private Projection add(final String property) {
-        if (isBlank(property) || pproperties == FULL) {
+        if (isBlank(property) || properties == FULL) {
             return this;
         }
 
         final String[] parts = property.split("\\.");
         if (parts.length > 0) {
-            ExpressionProperty node = ((ExpressionProperty) pproperties).add(parts[0]);
+            ExpressionProperty node = ((ExpressionProperty) properties).add(parts[0]);
             for (int i = 1; i < parts.length; i++) {
                 node = node.add(parts[i]);
             }
         } else {
-            ((ExpressionProperty) pproperties).add(property);
+            ((ExpressionProperty) properties).add(property);
         }
 
         return this;
@@ -65,7 +74,7 @@ public final class Projection implements ProjectionProperty {
     @Nullable
     @Override
     public ProjectionProperty find(final String property) {
-        return pproperties.find(property);
+        return properties.find(property);
     }
 
     @ToString

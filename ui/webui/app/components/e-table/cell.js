@@ -16,7 +16,7 @@ export default Ember.Component.extend({
     if (cellRenderer) {
       const model = this.get('row.model');
       this.value = Ember.computed('row.model.*', function () {
-        return cellRenderer(this.get('column'), this.get('row'), model);
+        return cellRenderer(model.get(id), model, this.get('column'), this.get('row'));
       }).readOnly();
     } else {
       this.value = Ember.computed('row.model.{' + id + '}', function () {

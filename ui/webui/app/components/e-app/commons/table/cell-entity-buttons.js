@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 
-  classNames: ['e-app-commons-table-cell-entity-buttons', 'btn-group', 'btn-group-sm'],
+  classNames: ['e-app-commons-table-cell-entity-buttons'],
 
   actions: {
     edit() {

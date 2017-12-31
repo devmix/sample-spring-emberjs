@@ -12,6 +12,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import static com.gitlab.devmix.warehouse.core.impl.config.AsyncConfiguration.SYS_ASYNC_TASK_EXECUTOR;
+
 /**
  * @author Sergey Grachev
  */
@@ -23,7 +25,7 @@ import javax.inject.Named;
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Inject
-    @Named("core_asyncTaskExecutor")
+    @Named(SYS_ASYNC_TASK_EXECUTOR)
     private AsyncTaskExecutor asyncTaskExecutor;
 
     @Override

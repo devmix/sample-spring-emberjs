@@ -1,4 +1,6 @@
 - [ ] TESTS!
+- [x] export
+- [ ] import
 - [ ] localization
 - [ ] integration with a services that provides an information about a subject area, e.g. Google Books API, Open Library Books API, ISBNdb
 - [ ] support of MariaDB

@@ -1,6 +1,6 @@
 package com.gitlab.devmix.warehouse.storage.books.api.repository;
 
-import com.gitlab.devmix.warehouse.storage.books.api.entitity.Author;
+import com.gitlab.devmix.warehouse.storage.books.api.entity.Author;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

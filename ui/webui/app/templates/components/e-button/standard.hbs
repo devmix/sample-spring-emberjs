@@ -1,4 +1,20 @@
-{{#if icon}}
-  <i class="{{icon}} icon"></i>
+{{#if hint}}
+  {{#ui-popup content=hint tagName='span'}}
+    <button class="ui small button {{class}} {{readonly hiddenClass}} {{readonly iconClass}}" {{action 'click'}}
+            tabindex={{tabIndex}}>
+      {{#if icon}}
+        <i class="{{icon}} icon"></i>
+      {{/if}}
+      {{yield}}
+    </button>
+  {{/ui-popup}}
+{{else}}
+  <button class="ui small button {{class}} {{readonly hiddenClass}} {{readonly iconClass}}" {{action 'click'}}
+          tabindex={{tabIndex}}>
+    {{#if icon}}
+      <i class="{{icon}} icon"></i>
+    {{/if}}
+    {{yield}}
+  </button>
 {{/if}}
-{{yield}}
+

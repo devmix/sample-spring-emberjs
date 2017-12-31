@@ -1,6 +1,6 @@
 package com.gitlab.devmix.warehouse.storage.books.api.repository;
 
-import com.gitlab.devmix.warehouse.storage.books.api.entitity.Book;
+import com.gitlab.devmix.warehouse.storage.books.api.entity.Book;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

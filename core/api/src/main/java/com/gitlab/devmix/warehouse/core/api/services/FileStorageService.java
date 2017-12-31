@@ -10,6 +10,8 @@ import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStreamSelec
  */
 public interface FileStorageService {
 
+    void remove(FileStreamSelector selector);
+
     void removeAll(FileStreamSelector selector);
 
     FileStorageInputStream openInputStream(FileStreamSelector selector) throws FileStreamOpenException;

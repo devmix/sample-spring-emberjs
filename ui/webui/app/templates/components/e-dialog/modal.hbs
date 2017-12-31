@@ -1,15 +1,19 @@
 {{#if _visible}}
-  <i class="close icon" {{action 'e-dialog-modal-cancel'}}></i>
+  <i class="close icon" {{action 'onButtonAction' 'e-dialog-modal-cancel'}}></i>
   <div class="header">
     {{_title}}
   </div>
-  <div class="content scrolling">
-    {{#if hasBlock}}
+
+  {{#if hasBlock}}
+    <div class="content scrolling {{if fixedHeight 'fixed-height'}} {{if noMargins 'no-margins'}}">
       {{yield this _data}}
-    {{else}}
+    </div>
+  {{else}}
+    <div class="content scrolling">
       {{_message}}
-    {{/if}}
-  </div>
+    </div>
+  {{/if}}
+
   <div class="actions">
     {{#each _buttons as |button|}}
       {{#e-button/standard class=button.class action=(action 'onButtonAction' button.action)}}

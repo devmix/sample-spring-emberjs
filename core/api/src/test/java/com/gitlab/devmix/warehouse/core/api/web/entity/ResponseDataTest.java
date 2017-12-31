@@ -5,6 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import org.testng.annotations.Test;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.io.IOException;
 import java.util.List;
 
@@ -37,26 +41,28 @@ public class ResponseDataTest {
     }
 
     @Builder
+    @Entity
     @Data
-    private static final class Foo {
-        @Metadata.Id
+    public static final class Foo {
+        @Id
         public String id;
 
         public String name;
 
         public String secret;
 
-        @Metadata.Many
+        @OneToMany
         public List<Bar> bars;
 
-        @Metadata.One
+        @OneToOne
         public Baz baz;
     }
 
     @Builder
+    @Entity
     @Data
-    private static final class Bar {
-        @Metadata.Id
+    public static final class Bar {
+        @Id
         public String id;
 
         public String name;
@@ -64,11 +70,11 @@ public class ResponseDataTest {
         public String secret;
     }
 
-
     @Builder
+    @Entity
     @Data
-    private static final class Baz {
-        @Metadata.Id
+    public static final class Baz {
+        @Id
         public String id;
 
         public String name;

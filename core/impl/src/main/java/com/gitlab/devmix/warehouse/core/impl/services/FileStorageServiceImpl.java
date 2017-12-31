@@ -28,6 +28,17 @@ import java.nio.file.Paths;
 public class FileStorageServiceImpl implements FileStorageService {
 
     @Override
+    public void remove(final FileStreamSelector selector) {
+        final Path actualPath = Paths.get(actualPathOf(selector.getFolder()), selector.getFile());
+        try {
+            Files.deleteIfExists(actualPath);
+            Files.deleteIfExists(Paths.get(actualPath.toString() + ".meta"));
+        } catch (final IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
     public void removeAll(final FileStreamSelector selector) {
         final Path actualPath = Paths.get(actualPathOf(selector.getFolder()));
         if (Files.exists(actualPath)) {

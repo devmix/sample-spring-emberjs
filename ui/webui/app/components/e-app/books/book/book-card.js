@@ -8,6 +8,6 @@ export default Ember.Component.extend(MixinComponentBase, {
 
   classNames: ['ui card', 'e-app-books-book-card'],
 
-  fileStorageUrl: ENV.APP.fileStorageUrl + 'books/book/cover/'
+  fileStorageUrl: ENV.APP.fileStorageUrl + 'storage/books/book/cover/'
 
 });

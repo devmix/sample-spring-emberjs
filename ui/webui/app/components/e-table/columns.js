@@ -6,7 +6,12 @@ export default Ember.Component.extend({
 
   tagName: 'thead',
 
-  list: [],
+  list: undefined,
+
+  init() {
+    this._super(...arguments);
+    this.list = [];
+  },
 
   count: computed('list', function () {
     return this.get('list').length;

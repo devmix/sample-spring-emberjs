@@ -24,7 +24,8 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-      fileStorageUrl: (host || '') + '/api/core/storage/file/storage/'
+      fileStorageUrl: (host || '') + '/api/core/storage/file/',
+      entityApiUrl: (host || '') + '/api/core/entity/'
     }
   };
 

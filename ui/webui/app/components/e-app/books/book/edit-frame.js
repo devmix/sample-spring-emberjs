@@ -4,7 +4,7 @@ import ENV from 'webui/config/environment';
 
 export default Ember.Component.extend(EditFrameMixin, {
 
-  fileStorageUrl: ENV.APP.fileStorageUrl + 'books/book/cover/',
+  fileStorageUrl: ENV.APP.fileStorageUrl + 'storage/books/book/cover/',
   imgVersion: 0,
 
   actions: {

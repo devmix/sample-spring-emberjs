@@ -2,9 +2,9 @@ package com.gitlab.devmix.warehouse.core.api.web.entity.jpa;
 
 import com.gitlab.devmix.warehouse.core.api.App;
 import com.gitlab.devmix.warehouse.core.api.entity.RecoverableEntity;
-import com.gitlab.devmix.warehouse.core.api.web.entity.Metadata;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Projection;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Request;
+import com.gitlab.devmix.warehouse.core.api.web.entity.metadata.EntityMetadata;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -46,7 +46,7 @@ public final class JpaQuery<E, R extends Request> {
     private final EntityManager em;
     private final R parameters;
     private final SearchBuilder<E, R> searchBuilder;
-    private final Metadata.Descriptor entityMeta;
+    private final EntityMetadata.Descriptor entityMeta;
     private final CriteriaBuilder cb;
 
     private JpaQuery(
@@ -59,7 +59,7 @@ public final class JpaQuery<E, R extends Request> {
         this.parameters = parameters;
         this.searchBuilder = searchBuilder;
 
-        this.entityMeta = Metadata.of(entityClass);
+        this.entityMeta = EntityMetadata.of(entityClass);
         this.cb = this.em.getCriteriaBuilder();
     }
 
@@ -155,14 +155,14 @@ public final class JpaQuery<E, R extends Request> {
             return;
         }
 
-        final Metadata.Descriptor meta = Metadata.of(entityClass);
-        for (final Map.Entry<String, Metadata.Descriptor.Attribute> entry : meta.getAttributes().entrySet()) {
-            final Metadata.Descriptor.Attribute attribute = entry.getValue();
-            if (attribute.isRelationshipCollection()) {
+        final EntityMetadata.Descriptor meta = EntityMetadata.of(entityClass);
+        for (final Map.Entry<String, EntityMetadata.Descriptor.Attribute> entry : meta.getAttributes().entrySet()) {
+            final EntityMetadata.Descriptor.Attribute attribute = entry.getValue();
+            if (attribute.isAssociationMany()) {
                 if (fetchEntities.contains(attribute.getGenericType())) {
                     e.fetch(entry.getKey(), JoinType.LEFT);
                 }
-            } else if (attribute.isRelationshipSingle()) {
+            } else if (attribute.isAssociationOne()) {
                 if (fetchEntities.contains(attribute.getFieldType())) {
                     e.fetch(entry.getKey(), JoinType.LEFT);
                 }
@@ -189,16 +189,16 @@ public final class JpaQuery<E, R extends Request> {
         }
 
         final Set<Object> ids = resultList.stream()
-                .map(entityMeta::getId).filter(Objects::nonNull).collect(toSet());
+                .map(entityMeta::readId).filter(Objects::nonNull).collect(toSet());
 
-        for (final Map.Entry<String, Metadata.Descriptor.Attribute> entry : entityMeta.getAttributes().entrySet()) {
+        for (final Map.Entry<String, EntityMetadata.Descriptor.Attribute> entry : entityMeta.getAttributes().entrySet()) {
             final String relationName = entry.getKey();
-            final Metadata.Descriptor.Attribute attribute = entry.getValue();
-            if (!attribute.isRelationship() || !isInProjection(projection, relationName)) {
+            final EntityMetadata.Descriptor.Attribute attribute = entry.getValue();
+            if (!attribute.isAssociation() || !isInProjection(projection, relationName)) {
                 continue;
             }
 
-            final Metadata.Descriptor relationMeta = Metadata.of(attribute.getEntityType());
+            final EntityMetadata.Descriptor relationMeta = EntityMetadata.of(attribute.getEntityType());
             final CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
             final Root<E> e = query.from(entityClass);
             query
@@ -225,18 +225,18 @@ public final class JpaQuery<E, R extends Request> {
             }
 
             for (final E entity : resultList) {
-                attribute.writeValue(entity, parentToRelation.get(entityMeta.getId(entity)));
+                attribute.writeValue(entity, parentToRelation.get(entityMeta.readId(entity)));
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    private void addRelation(final Metadata.Descriptor.Attribute attribute, final List<Object[]> links,
+    private void addRelation(final EntityMetadata.Descriptor.Attribute attribute, final List<Object[]> links,
                              final Map<Object, Object> parentToRelation, final Function<Object, Object> relationSupplier) {
         for (final Object[] link : links) {
             final Object parentId = link[0];
             final Object relation = relationSupplier.apply(link[1]);
-            if (attribute.isRelationshipSingle()) {
+            if (attribute.isAssociationOne()) {
                 parentToRelation.put(parentId, relation);
             } else {
                 ((Collection<Object>) parentToRelation.computeIfAbsent(parentId, k -> attribute.newCollection()))
@@ -246,7 +246,7 @@ public final class JpaQuery<E, R extends Request> {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<Object, Object> fetchFullRelations(final Metadata.Descriptor meta, final Set<Object> ids) {
+    private Map<Object, Object> fetchFullRelations(final EntityMetadata.Descriptor meta, final Set<Object> ids) {
         final CriteriaQuery query = cb.createQuery(meta.getEntityClass());
         final Root e = query.from(meta.getEntityClass());
 
@@ -259,7 +259,7 @@ public final class JpaQuery<E, R extends Request> {
 
         final Map<Object, Object> result = new HashMap<>(list.size());
         for (final Object entity : list) {
-            result.put(meta.getId(entity), entity);
+            result.put(meta.readId(entity), entity);
         }
 
         return result;

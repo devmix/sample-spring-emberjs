@@ -12,6 +12,7 @@ export default Ember.Component.extend(StyleableMixin, PageableMixin, SearchableM
 
   // properties
   attributesConfig: [],
+  footerConfig: {},
   items: [],
   modelName: undefined,
   type: 'table',
@@ -57,9 +58,9 @@ export default Ember.Component.extend(StyleableMixin, PageableMixin, SearchableM
     return this.get('type') === 'grid';
   }),
 
-  onRefreshEvent: on('refresh', function () {
+  refresh() {
     this.notifyPropertyChange('filter');
-  }),
+  },
 
   persistState(key, data) {
     key && this.get('persistence').set(key, data);
@@ -90,5 +91,9 @@ export default Ember.Component.extend(StyleableMixin, PageableMixin, SearchableM
 
   unregisterTableComponent() {
     this.set('table', undefined);
-  }
+  },
+
+  _onRefreshEvent: on('refresh', function () {
+    this.refresh();
+  })
 });

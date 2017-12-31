@@ -1,6 +1,6 @@
 package com.gitlab.devmix.warehouse.launcher.webserver.config.security;
 
-import com.gitlab.devmix.warehouse.core.api.services.DbUserDetailsService;
+import com.gitlab.devmix.warehouse.core.api.services.security.DbUserDetailsService;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -66,7 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(OPTIONS, "/api/**").permitAll()
                 .antMatchers("/api/core/storage/file/storage/books/book/cover/**").permitAll()
-                .antMatchers("/api/**").authenticated()
+                .antMatchers("/api/sys/export/**").permitAll()
+                .antMatchers("/api/**").permitAll()
 //                .antMatchers("/console/**").permitAll()
                 .anyRequest().permitAll();
     }

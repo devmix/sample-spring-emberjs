@@ -5,6 +5,7 @@ export default UiModal.extend(AutoRegisterMixin, {
 
   classNameBindings: ['fullscreen:fullscreen', 'size'],
 
+  class: undefined,
   title: undefined,
   message: undefined,
   autoClose: true,

@@ -4,8 +4,6 @@ export default Ember.Component.extend({
 
   classNames: ['e-paging-bar', 'ui segment'],
 
-  target: undefined,
-
-  actions: {}
+  target: undefined
 
 });

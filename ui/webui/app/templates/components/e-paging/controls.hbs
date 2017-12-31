@@ -1,2 +1,8 @@
-{{e-button/standard icon='plus' action=(action 'invoke' 'e-paging-controls-add')}}
+<!--<div class="ui small basic icon buttons">-->
+{{#each buttons as |b|}}
+  {{#e-button/standard icon=b.icon hint=b.hint action=(action 'invoke' b.action)}}
+    {{button.text}}
+  {{/e-button/standard}}
+{{/each}}
 {{yield this}}
+<!--</div>-->

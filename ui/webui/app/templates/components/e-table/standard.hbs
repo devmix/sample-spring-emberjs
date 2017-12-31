@@ -1,17 +1,42 @@
 {{#if hasBlock}}
   {{yield (hash
-            header=(component 'e-searching/bar' target=this)
-            table=(component 'e-table/table' attributesConfig=attributesConfig rows=computedItems component=this)
-            grid=(component 'e-table/grid' attributesConfig=attributesConfig cells=computedItems component=this)
-            footer=(component 'e-paging/bar' target=this)
+            header=(component 'e-searching/bar'
+              target=this)
+
+            table=(component 'e-table/table'
+              attributesConfig=attributesConfig
+              rows=computedItems
+              component=this)
+
+            grid=(component 'e-table/grid'
+              attributesConfig=attributesConfig
+              cells=computedItems
+              component=this)
+
+            footer=(component 'e-paging/bar'
+              buttonsConfig=footerConfig.buttons
+              target=this)
           ) this}}
 {{else}}
-  {{component 'e-searching/bar' target=this}}
+  {{#unless headerConfig.hide}}
+    {{component 'e-searching/bar' target=this}}
+  {{/unless}}
+
   {{#if isTable}}
-    {{component 'e-table/table' attributesConfig=attributesConfig rows=computedItems component=this}}
+    {{component 'e-table/table'
+                attributesConfig=attributesConfig
+                rows=computedItems
+                component=this}}
   {{/if}}
+
   {{#if isGrid}}
-    {{component 'e-table/grid' attributesConfig=attributesConfig cells=computedItems component=this}}
+    {{component 'e-table/grid'
+                attributesConfig=attributesConfig
+                cells=computedItems
+                component=this}}
   {{/if}}
-  {{component 'e-paging/bar' target=this}}
+
+  {{component 'e-paging/bar'
+              buttonsConfig=footerConfig.buttons
+              target=this}}
 {{/if}}

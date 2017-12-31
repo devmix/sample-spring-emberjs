@@ -1,5 +1,6 @@
 package com.gitlab.devmix.warehouse.core.api.web.entity;
 
+import com.gitlab.devmix.warehouse.core.api.web.entity.metadata.EntityMetadata;
 import lombok.Value;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
@@ -57,6 +58,8 @@ public final class ResponseData<E> extends HashMap<String, Object> {
         private List<E> entities;
         private PageInfo page;
         private Projection projection = Projection.full();
+
+        private final Map<Class<Object>, Set<Object>> visitedEntities = new HashMap<>();
 
         private Builder(final Class<E> entityClass) {
             this.entityClass = entityClass;
@@ -128,7 +131,8 @@ public final class ResponseData<E> extends HashMap<String, Object> {
         }
 
         public ResponseData<E> single() {
-            final Metadata.Descriptor descriptor = Metadata.of(entityClass);
+            visitedEntities.clear();
+            final EntityMetadata.Descriptor descriptor = EntityMetadata.of(entityClass);
             final ResponseData<E> payload = new ResponseData<>();
             payload.put(descriptor.getEntityName(), entities == null || entities.isEmpty() ? EMPTY
                     : addEntity(entities.get(0), descriptor, payload, projection));
@@ -137,7 +141,8 @@ public final class ResponseData<E> extends HashMap<String, Object> {
         }
 
         public ResponseData<E> list() {
-            final Metadata.Descriptor descriptor = Metadata.of(entityClass);
+            visitedEntities.clear();
+            final EntityMetadata.Descriptor descriptor = EntityMetadata.of(entityClass);
             final ResponseData<E> payload = new ResponseData<>();
             payload.put(descriptor.getEntityName(), entities == null || entities.isEmpty() ? emptyList()
                     : entities.stream().map(e -> addEntity(e, descriptor, payload, projection)).collect(toList()));
@@ -160,13 +165,24 @@ public final class ResponseData<E> extends HashMap<String, Object> {
         }
 
         @SuppressWarnings("ConstantConditions")
-        private Payload addEntity(final Object entity, final Metadata.Descriptor descriptor, final ResponseData<E> responseData,
+        private Payload addEntity(final Object entity, final EntityMetadata.Descriptor meta, final ResponseData<E> responseData,
                                   final ProjectionProperty projectionProperty) {
 
             final Payload result = new Payload();
-            for (final Map.Entry<String, Metadata.Descriptor.Attribute> entry : descriptor.getAttributes().entrySet()) {
+
+            final Object id = meta.readId(entity);
+            if (id != null) {
+                final Set<Object> visitedIds = visitedEntities.computeIfAbsent(meta.getEntityClass(), c -> new HashSet<>());
+                if (visitedIds.contains(id)) {
+                    result.put(meta.getIdAttributeName(), id);
+                    return result;
+                }
+                visitedIds.add(id);
+            }
+
+            for (final Map.Entry<String, EntityMetadata.Descriptor.Attribute> entry : meta.getAttributes().entrySet()) {
                 final String name = entry.getKey();
-                final Metadata.Descriptor.Attribute attribute = entry.getValue();
+                final EntityMetadata.Descriptor.Attribute attribute = entry.getValue();
                 if (!attribute.hasGetter()) {
                     continue;
                 }
@@ -181,13 +197,13 @@ public final class ResponseData<E> extends HashMap<String, Object> {
                     continue;
                 }
 
-                if (attribute.isRelationshipCollection()) {
+                if (attribute.isAssociationMany()) {
                     final List<Object> list = new ArrayList<>();
                     for (final Object o : (Collection) value) {
                         list.add(addRelationship(o, responseData, attrProjection));
                     }
                     result.put(name, list);
-                } else if (attribute.isRelationshipSingle()) {
+                } else if (attribute.isAssociationOne()) {
                     result.put(name, addRelationship(value, responseData, attrProjection));
                 } else if (value != null) {
                     result.put(name, value);
@@ -199,7 +215,7 @@ public final class ResponseData<E> extends HashMap<String, Object> {
 
         private Object addRelationship(final Object e, final ResponseData<E> responseData, final ProjectionProperty projectionProperty) {
             final Class entityClass = findActualClass(e);
-            final Metadata.Descriptor descriptor = Metadata.of(entityClass);
+            final EntityMetadata.Descriptor descriptor = EntityMetadata.of(entityClass);
             final Payload entity = addEntity(e, descriptor, responseData, projectionProperty);
             if (inline != null && inline.contains(entityClass)) {
                 return entity;
@@ -209,14 +225,14 @@ public final class ResponseData<E> extends HashMap<String, Object> {
                 ensureEntitiesOf(entityClass, responseData).add(entity);
             }
 
-            return descriptor.getId(e);
+            return descriptor.readId(e);
         }
 
         private Class findActualClass(final Object o) {
             final Class actualClass = Hibernate.getClass(o);
             if (Proxy.isProxyClass(actualClass)) {
                 for (final Class i : o.getClass().getInterfaces()) {
-                    if (Metadata.of(i).isEntity()) {
+                    if (EntityMetadata.of(i).isEntity()) {
                         return i;
                     }
                 }
@@ -225,7 +241,7 @@ public final class ResponseData<E> extends HashMap<String, Object> {
         }
 
         private List<Payload> ensureEntitiesOf(final Class<?> entityClass, final ResponseData<E> responseData) {
-            final String name = Objects.requireNonNull(Metadata.of(entityClass).getEntityName());
+            final String name = Objects.requireNonNull(EntityMetadata.of(entityClass).getEntityName());
             @SuppressWarnings("unchecked")
             List<Payload> entities = (List<Payload>) responseData.get(name);
             if (entities == null) {

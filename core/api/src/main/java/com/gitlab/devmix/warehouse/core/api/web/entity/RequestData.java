@@ -1,6 +1,7 @@
 package com.gitlab.devmix.warehouse.core.api.web.entity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gitlab.devmix.warehouse.core.api.web.entity.metadata.EntityMetadata;
 import lombok.ToString;
 
 import javax.annotation.Nullable;
@@ -47,7 +48,7 @@ public final class RequestData<E> {
 
         @SuppressWarnings("unchecked")
         private E readEntity() {
-            final Metadata.Descriptor descriptor = Metadata.of(entityClass);
+            final EntityMetadata.Descriptor descriptor = EntityMetadata.of(entityClass);
             final Object value = payload.get(descriptor.getEntityName());
             if (value != null) {
                 if (value instanceof Map && isNotBlank(id) && isNotBlank(descriptor.getIdAttributeName())) {
@@ -62,10 +63,10 @@ public final class RequestData<E> {
         @SuppressWarnings("unchecked")
         private Object readRelationship(final Object data, final Class entityClass) {
             final Map<String, Object> result = new HashMap<>();
-            final Metadata.Descriptor descriptor = Metadata.of(entityClass);
+            final EntityMetadata.Descriptor descriptor = EntityMetadata.of(entityClass);
             if (data instanceof Map) {
-                for (final Map.Entry<String, Metadata.Descriptor.Attribute> entry : descriptor.getAttributes().entrySet()) {
-                    final Metadata.Descriptor.Attribute attribute = entry.getValue();
+                for (final Map.Entry<String, EntityMetadata.Descriptor.Attribute> entry : descriptor.getAttributes().entrySet()) {
+                    final EntityMetadata.Descriptor.Attribute attribute = entry.getValue();
                     if (!attribute.hasSetter()) {
                         continue;
                     }
@@ -74,13 +75,13 @@ public final class RequestData<E> {
                     if (value == null) {
                         continue;
                     }
-                    if (attribute.isRelationshipCollection()) {
+                    if (attribute.isAssociationMany()) {
                         final List<Object> collection = new ArrayList<>();
                         for (final Object entity : (Collection<Object>) value) {
                             collection.add(readRelationship(entity, attribute.getGenericType()));
                         }
                         result.put(name, collection);
-                    } else if (attribute.isRelationshipSingle()) {
+                    } else if (attribute.isAssociationOne()) {
                         result.put(name, readRelationship(value, attribute.getFieldType()));
                     } else {
                         result.put(name, value);

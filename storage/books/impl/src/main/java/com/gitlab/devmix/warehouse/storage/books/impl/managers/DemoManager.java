@@ -1,17 +1,17 @@
 package com.gitlab.devmix.warehouse.storage.books.impl.managers;
 
-import com.gitlab.devmix.warehouse.core.api.entity.AbstractEntity;
-import com.gitlab.devmix.warehouse.core.api.entity.User;
-import com.gitlab.devmix.warehouse.core.api.entity.UserRole;
+import com.gitlab.devmix.warehouse.core.api.entity.AbstractRecoverableEntity;
+import com.gitlab.devmix.warehouse.core.api.entity.security.User;
+import com.gitlab.devmix.warehouse.core.api.entity.security.UserRole;
 import com.gitlab.devmix.warehouse.core.api.repositories.UserRepository;
 import com.gitlab.devmix.warehouse.core.api.services.FileStorageService;
 import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStorageOutputStream;
 import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStreamOpenException;
 import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStreamSelector;
-import com.gitlab.devmix.warehouse.storage.books.api.entitity.Author;
-import com.gitlab.devmix.warehouse.storage.books.api.entitity.Book;
-import com.gitlab.devmix.warehouse.storage.books.api.entitity.Genre;
-import com.gitlab.devmix.warehouse.storage.books.api.entitity.Publisher;
+import com.gitlab.devmix.warehouse.storage.books.api.entity.Author;
+import com.gitlab.devmix.warehouse.storage.books.api.entity.Book;
+import com.gitlab.devmix.warehouse.storage.books.api.entity.Genre;
+import com.gitlab.devmix.warehouse.storage.books.api.entity.Publisher;
 import com.gitlab.devmix.warehouse.storage.books.api.repository.AuthorRepository;
 import com.gitlab.devmix.warehouse.storage.books.api.repository.BookRepository;
 import com.gitlab.devmix.warehouse.storage.books.api.repository.GenreRepository;
@@ -147,7 +147,7 @@ public class DemoManager {
                                         && Objects.equals(author.getLastName(), e.getLastName()))
                                 .findFirst().orElse(null))
                         .filter(Objects::nonNull)
-                        .map(AbstractEntity::getId)
+                        .map(AbstractRecoverableEntity::getId)
                         .map(id -> em.getReference(Author.class, id))
                         .collect(toSet()));
 

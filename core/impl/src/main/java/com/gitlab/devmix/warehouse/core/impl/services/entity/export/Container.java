@@ -1,6 +1,6 @@
-package com.gitlab.devmix.warehouse.core.impl.services.export;
+package com.gitlab.devmix.warehouse.core.impl.services.entity.export;
 
-import com.gitlab.devmix.warehouse.core.api.web.entity.export.ExportOptions;
+import com.gitlab.devmix.warehouse.core.api.services.entity.importexport.ExportOptions;
 
 import java.io.IOException;
 import java.util.Map;

@@ -1,8 +1,8 @@
-package com.gitlab.devmix.warehouse.core.impl.services.export;
+package com.gitlab.devmix.warehouse.core.impl.services.entity.export;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gitlab.devmix.warehouse.core.api.web.entity.export.ExportOptions;
-import com.gitlab.devmix.warehouse.core.api.web.entity.export.FormatType;
+import com.gitlab.devmix.warehouse.core.api.services.entity.importexport.ExportOptions;
+import com.gitlab.devmix.warehouse.core.api.services.entity.importexport.FormatType;
 import lombok.Builder;
 
 import java.io.IOException;

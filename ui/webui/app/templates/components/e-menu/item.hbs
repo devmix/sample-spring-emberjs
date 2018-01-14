@@ -3,7 +3,7 @@
     <div class="item">
       <i class="dropdown icon"></i> {{item.name}}
       <div class="menu">
-        {{e-menu/item menu=item.menu}}
+        {{e-menu/item menu=item.menu onAction=onAction}}
       </div>
     </div>
   {{else if item.separator}}
@@ -14,6 +14,8 @@
     {{#link-to item.route class='item'}}{{item.name}}{{/link-to}}
   {{else if item.link}}
     <a class='item' href="{{item.link}}">{{item.name}}</a>
+  {{else if item.action}}
+    <a class='item' href="#" {{action 'onClick' item.action}}>{{item.name}}</a>
   {{else}}
     <a class='item' href="#" onclick="e.preventDefault()">{{item.name}}</a>
   {{/if}}

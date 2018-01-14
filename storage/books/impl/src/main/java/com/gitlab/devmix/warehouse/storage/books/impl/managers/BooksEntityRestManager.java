@@ -1,6 +1,6 @@
 package com.gitlab.devmix.warehouse.storage.books.impl.managers;
 
-import com.gitlab.devmix.warehouse.core.api.services.EntityRestRegistry;
+import com.gitlab.devmix.warehouse.core.api.services.entity.EntityRestRegistry;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Endpoint;
 import com.gitlab.devmix.warehouse.storage.books.api.entity.Author;
 import com.gitlab.devmix.warehouse.storage.books.api.entity.Book;
@@ -31,7 +31,7 @@ import static com.gitlab.devmix.warehouse.core.api.web.entity.jpa.JpaUtils.getRe
  * @author Sergey Grachev
  */
 @Component
-public class BooksEntityApiManager {
+public class BooksEntityRestManager {
 
     @Inject
     private BookRepository bookRepository;

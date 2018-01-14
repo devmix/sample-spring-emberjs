@@ -1,15 +1,15 @@
-package com.gitlab.devmix.warehouse.core.impl.services.export;
+package com.gitlab.devmix.warehouse.core.impl.services.entity.export;
 
-import com.gitlab.devmix.warehouse.core.api.entity.export.ExportProcess;
+import com.gitlab.devmix.warehouse.core.api.entity.importexport.ExportProcess;
 import com.gitlab.devmix.warehouse.core.api.repositories.ExportProcessRepository;
 import com.gitlab.devmix.warehouse.core.api.services.FileStorageService;
+import com.gitlab.devmix.warehouse.core.api.services.entity.importexport.Entity;
+import com.gitlab.devmix.warehouse.core.api.services.entity.importexport.ExportOptions;
+import com.gitlab.devmix.warehouse.core.api.services.entity.importexport.FormatType;
 import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStorageOutputStream;
 import com.gitlab.devmix.warehouse.core.api.services.filestorage.FileStreamSelector;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Projection;
 import com.gitlab.devmix.warehouse.core.api.web.entity.ProjectionProperty;
-import com.gitlab.devmix.warehouse.core.api.web.entity.export.Entity;
-import com.gitlab.devmix.warehouse.core.api.web.entity.export.ExportOptions;
-import com.gitlab.devmix.warehouse.core.api.web.entity.export.FormatType;
 import com.gitlab.devmix.warehouse.core.api.web.entity.metadata.EntityMetadata;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -30,10 +30,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static com.gitlab.devmix.warehouse.core.api.entity.export.ExportProcess.State.FAILED;
-import static com.gitlab.devmix.warehouse.core.api.entity.export.ExportProcess.State.FINISHED;
-import static com.gitlab.devmix.warehouse.core.api.entity.export.ExportProcess.State.PROCESSING;
-import static com.gitlab.devmix.warehouse.core.api.entity.export.ExportProcess.State.WAITING;
+import static com.gitlab.devmix.warehouse.core.api.entity.importexport.AbstractProcess.State.FAILED;
+import static com.gitlab.devmix.warehouse.core.api.entity.importexport.AbstractProcess.State.FINISHED;
+import static com.gitlab.devmix.warehouse.core.api.entity.importexport.AbstractProcess.State.PROCESSING;
+import static com.gitlab.devmix.warehouse.core.api.entity.importexport.AbstractProcess.State.WAITING;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
@@ -44,7 +44,7 @@ import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
  */
 @Component
 @Slf4j
-public class EntityExportTask implements Runnable {
+class ExportTask implements Runnable {
 
     private static final String FOLDER_EXPORT = "sys/export";
     private static final int BATCH_SIZE = 100;

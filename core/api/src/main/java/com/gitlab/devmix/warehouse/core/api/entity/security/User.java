@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Set;
@@ -17,7 +18,9 @@ import java.util.Set;
  * @author Sergey Grachev
  */
 @Entity(name = User.ENTITY)
-@Table(name = "SYS_USER")
+@Table(name = "SYS_USER", indexes = {
+        @Index(name = "SYS_USER_IDENTITY_IDX", columnList = "identity")
+})
 @Data
 @EqualsAndHashCode(callSuper = true, exclude = {"roles"})
 @ToString(callSuper = true)

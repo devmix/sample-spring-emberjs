@@ -1,4 +1,4 @@
-package com.gitlab.devmix.warehouse.core.api.web.entity.export;
+package com.gitlab.devmix.warehouse.core.api.services.entity.importexport;
 
 import lombok.Data;
 

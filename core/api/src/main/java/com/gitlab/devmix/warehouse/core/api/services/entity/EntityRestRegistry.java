@@ -1,4 +1,4 @@
-package com.gitlab.devmix.warehouse.core.api.services;
+package com.gitlab.devmix.warehouse.core.api.services.entity;
 
 import com.gitlab.devmix.warehouse.core.api.web.entity.Endpoint;
 

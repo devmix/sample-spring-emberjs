@@ -1,6 +1,7 @@
 - [ ] TESTS!
 - [x] export
 - [ ] import
+- [ ] Hazelcast or Infinispan for caching
 - [ ] localization
 - [ ] integration with a services that provides an information about a subject area, e.g. Google Books API, Open Library Books API, ISBNdb
 - [ ] support of MariaDB

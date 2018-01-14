@@ -19,6 +19,7 @@ import java.util.concurrent.Executor;
 public class AsyncConfiguration implements AsyncConfigurer {
 
     public static final String SYS_EXPORT_ENTITY_TASK_EXECUTOR = "sysExportEntityTaskExecutor";
+    public static final String SYS_IMPORT_ENTITY_TASK_EXECUTOR = "sysImportEntityTaskExecutor";
     public static final String SYS_ASYNC_TASK_EXECUTOR = "sysAsyncTaskExecutor";
 
     @Bean(SYS_ASYNC_TASK_EXECUTOR)
@@ -42,6 +43,13 @@ public class AsyncConfiguration implements AsyncConfigurer {
     public ThreadPoolTaskExecutor sysExportEntityTaskExecutor() {
         final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setThreadNamePrefix("entity-export-");
+        return executor;
+    }
+
+    @Bean(SYS_IMPORT_ENTITY_TASK_EXECUTOR)
+    public ThreadPoolTaskExecutor sysImportEntityTaskExecutor() {
+        final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setThreadNamePrefix("entity-import-");
         return executor;
     }
 }

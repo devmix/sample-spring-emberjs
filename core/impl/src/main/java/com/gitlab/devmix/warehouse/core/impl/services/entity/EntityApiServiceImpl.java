@@ -1,6 +1,6 @@
-package com.gitlab.devmix.warehouse.core.impl.services;
+package com.gitlab.devmix.warehouse.core.impl.services.entity;
 
-import com.gitlab.devmix.warehouse.core.api.services.EntityApiService;
+import com.gitlab.devmix.warehouse.core.api.services.entity.EntityApiService;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Request;
 import com.gitlab.devmix.warehouse.core.api.web.entity.ResponseData;
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.CreateOperation;

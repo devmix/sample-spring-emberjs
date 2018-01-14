@@ -1,8 +1,12 @@
 {{#if session.isAuthenticated}}
-  {{e-app/commons/page/header menu=menu}}
+  {{e-app/commons/page/header menu=menu onAction=(action 'onAction')}}
 {{ else }}
   {{e-app/commons/page/header hideUser=true}}
 {{/if}}
+
+{{#e-dialog/modal fixedHeight=true noMargins=true bindTo=importDialog as |dialog data|}}
+  {{e-app/core/entity/import-frame}}
+{{/e-dialog/modal}}
 
 <div class="container-fluid application-viewport">
   {{outlet}}

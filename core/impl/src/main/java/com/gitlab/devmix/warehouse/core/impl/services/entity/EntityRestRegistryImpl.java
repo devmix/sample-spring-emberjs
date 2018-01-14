@@ -1,6 +1,6 @@
-package com.gitlab.devmix.warehouse.core.impl.services;
+package com.gitlab.devmix.warehouse.core.impl.services.entity;
 
-import com.gitlab.devmix.warehouse.core.api.services.EntityRestRegistry;
+import com.gitlab.devmix.warehouse.core.api.services.entity.EntityRestRegistry;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Endpoint;
 import org.springframework.stereotype.Service;
 

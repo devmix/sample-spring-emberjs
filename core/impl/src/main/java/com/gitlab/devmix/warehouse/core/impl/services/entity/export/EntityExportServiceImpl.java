@@ -1,11 +1,11 @@
-package com.gitlab.devmix.warehouse.core.impl.services.export;
+package com.gitlab.devmix.warehouse.core.impl.services.entity.export;
 
-import com.gitlab.devmix.warehouse.core.api.entity.export.ExportProcess;
+import com.gitlab.devmix.warehouse.core.api.entity.importexport.ExportProcess;
 import com.gitlab.devmix.warehouse.core.api.entity.security.User;
 import com.gitlab.devmix.warehouse.core.api.repositories.ExportProcessRepository;
-import com.gitlab.devmix.warehouse.core.api.services.EntityExportApiService;
-import com.gitlab.devmix.warehouse.core.api.web.entity.export.Entity;
-import com.gitlab.devmix.warehouse.core.api.web.entity.export.ExportOptions;
+import com.gitlab.devmix.warehouse.core.api.services.entity.importexport.Entity;
+import com.gitlab.devmix.warehouse.core.api.services.entity.importexport.EntityExportService;
+import com.gitlab.devmix.warehouse.core.api.services.entity.importexport.ExportOptions;
 import com.gitlab.devmix.warehouse.core.impl.utils.SecurityUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,8 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import java.util.stream.Collectors;
 
-import static com.gitlab.devmix.warehouse.core.api.entity.export.ExportProcess.State.PROCESSING;
-import static com.gitlab.devmix.warehouse.core.api.entity.export.ExportProcess.State.WAITING;
+import static com.gitlab.devmix.warehouse.core.api.entity.importexport.AbstractProcess.State.PROCESSING;
+import static com.gitlab.devmix.warehouse.core.api.entity.importexport.AbstractProcess.State.WAITING;
 import static com.gitlab.devmix.warehouse.core.impl.config.AsyncConfiguration.SYS_EXPORT_ENTITY_TASK_EXECUTOR;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
@@ -28,32 +28,32 @@ import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORT
  * @author Sergey Grachev
  */
 @Service
-public class EntityExportApiServiceImpl implements EntityExportApiService {
+@Transactional(propagation = NOT_SUPPORTED)
+public class EntityExportServiceImpl implements EntityExportService {
 
     @Inject
     @Named(SYS_EXPORT_ENTITY_TASK_EXECUTOR)
-    private ThreadPoolTaskExecutor taskExecutor;
+    private ThreadPoolTaskExecutor executor;
 
     @Inject
     private ExportProcessRepository repository;
 
     @Inject
-    private EntityExportTask exportTask;
+    private ExportTask task;
 
     @Inject
     private EntityManager em;
 
     @PostConstruct
     private void onCreate() {
-        taskExecutor.execute(exportTask);
+        executor.execute(task);
     }
 
     @PreDestroy
     private void onDestroy() {
-        taskExecutor.shutdown();
+        executor.shutdown();
     }
 
-    @Transactional(propagation = NOT_SUPPORTED)
     @Override
     public ExportProcess create(final ExportOptions options) {
         final ExportProcess entity = new ExportProcess();
@@ -68,17 +68,16 @@ public class EntityExportApiServiceImpl implements EntityExportApiService {
 
         final ExportProcess merge = repository.save(entity);
 
-        exportTask.trigger();
+        task.trigger();
 
         return merge;
     }
 
-    @Transactional(propagation = NOT_SUPPORTED)
     @Override
     public void active(final boolean active) {
-        if (!exportTask.isActive() && active) {
+        if (!task.isActive() && active) {
             repository.switchState(PROCESSING, WAITING);
         }
-        exportTask.active(active);
+        task.active(active);
     }
 }

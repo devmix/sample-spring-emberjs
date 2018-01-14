@@ -1,4 +1,4 @@
-package com.gitlab.devmix.warehouse.core.api.entity.export;
+package com.gitlab.devmix.warehouse.core.api.entity.importexport;
 
 import com.gitlab.devmix.warehouse.core.api.entity.AbstractIdEntity;
 import com.gitlab.devmix.warehouse.core.api.entity.security.User;
@@ -7,36 +7,31 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
  * @author Sergey Grachev
  */
-@Entity(name = ExportProcess.ENTITY)
-@Table(name = "SYS_EXPORT_PROCESS", indexes = {
-        @Index(name = "state", columnList = "state")
-})
+@MappedSuperclass
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ExportProcess extends AbstractIdEntity {
+public abstract class AbstractProcess extends AbstractIdEntity {
 
-    public static final String ENTITY = "sysExportProcess";
+    public static final String ENTITY = "sysImportProcess";
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATE", nullable = false)
     @NotNull
-    private State state = State.WAITING;
+    private AbstractProcess.State state = AbstractProcess.State.WAITING;
 
     @Column(name = "CREATE_DATE", nullable = false)
     @NotNull

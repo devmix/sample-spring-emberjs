@@ -15,24 +15,6 @@ export default Service.extend({
     // window.open(url, '_blank');
   },
 
-  _optionsToQueryParams(options) {
-    if (!options) {
-      return;
-    }
-
-    const query = [];
-    for (let param in options) {
-      if (options.hasOwnProperty(param)) {
-        const value = options[param];
-        if (param) {
-          query.push(`${param} = ${value}`);
-        }
-      }
-    }
-
-    return query.length > 0 ? encodeURI(query.join('&')) : undefined;
-  },
-
   _ajax(method, request) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.$.ajax({

@@ -14,6 +14,7 @@ export default Ember.Controller.extend({
   menu: [
     L.create({
       name: 'Storage', route: 'storage', menu: [
+        L.create({name: 'Spaces', header: true}),
         L.create({
           name: 'Books', route: 'storage.books.book', menu: [
             L.create({name: 'Browse', route: 'storage.books.book'}),
@@ -21,10 +22,13 @@ export default Ember.Controller.extend({
             L.create({name: 'Dictionaries', header: true}),
             L.create({name: 'Author', route: 'storage.books.author'}),
             L.create({name: 'Genre', route: 'storage.books.genre'}),
-            L.create({name: 'Publisher', route: 'storage.books.publisher'})
+            L.create({name: 'Publisher', route: 'storage.books.publisher'}),
+            L.create({name: 'Dictionaries', header: true})
           ]
         }),
         L.create({name: 'Software (not implemented)'}),
+        L.create({name: 'Tools', header: true}),
+        L.create({name: 'Import...', action: 'global-entity-import'})
       ]
     }),
     L.create({
@@ -32,5 +36,13 @@ export default Ember.Controller.extend({
         L.create({name: 'Swagger API', link: 'http://localhost:8080/swagger-ui.html'}),
       ]
     })
-  ]
+  ],
+
+  actions: {
+    onAction(action) {
+      if ('global-entity-import' === action) {
+        this.get('importDialog').show({title: 'Import', buttons: [{text: 'Close', class: 'primary'}]});
+      }
+    }
+  }
 });

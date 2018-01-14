@@ -1,6 +1,6 @@
 package com.gitlab.devmix.warehouse.core.impl.listeners;
 
-import com.gitlab.devmix.warehouse.core.api.services.EntityExportApiService;
+import com.gitlab.devmix.warehouse.core.api.services.entity.importexport.EntityExportService;
 import com.gitlab.devmix.warehouse.core.api.web.entity.metadata.EntityMetadata;
 import com.gitlab.devmix.warehouse.core.api.web.entity.metadata.EntityMetadataProvider;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -19,7 +19,7 @@ import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 public class SysStartupListener implements ApplicationListener<ApplicationReadyEvent> {
 
     @Inject
-    private EntityExportApiService entityExportApiService;
+    private EntityExportService entityExportService;
 
     @Inject
     private List<EntityMetadataProvider> metadataProviders;
@@ -27,7 +27,7 @@ public class SysStartupListener implements ApplicationListener<ApplicationReadyE
     @Override
     public void onApplicationEvent(final ApplicationReadyEvent event) {
         readMetadata();
-        entityExportApiService.active(true);
+        entityExportService.active(true);
     }
 
     private void readMetadata() {

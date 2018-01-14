@@ -1,6 +1,6 @@
 package com.gitlab.devmix.warehouse.storage.books.impl.listeners;
 
-import com.gitlab.devmix.warehouse.storage.books.impl.managers.BooksEntityApiManager;
+import com.gitlab.devmix.warehouse.storage.books.impl.managers.BooksEntityRestManager;
 import com.gitlab.devmix.warehouse.storage.books.impl.managers.DemoManager;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
@@ -15,7 +15,7 @@ import javax.inject.Inject;
 public class StorageBooksStartupListener implements ApplicationListener<ApplicationReadyEvent> {
 
     @Inject
-    private BooksEntityApiManager apiManager;
+    private BooksEntityRestManager apiManager;
 
     @Inject
     private DemoManager demoManager;

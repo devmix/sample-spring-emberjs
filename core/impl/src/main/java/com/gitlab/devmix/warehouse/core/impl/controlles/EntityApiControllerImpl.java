@@ -2,15 +2,15 @@ package com.gitlab.devmix.warehouse.core.impl.controlles;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gitlab.devmix.warehouse.core.api.controllers.EntityApiController;
-import com.gitlab.devmix.warehouse.core.api.services.EntityApiService;
-import com.gitlab.devmix.warehouse.core.api.services.EntityExportApiService;
-import com.gitlab.devmix.warehouse.core.api.services.EntityRestRegistry;
+import com.gitlab.devmix.warehouse.core.api.services.entity.EntityApiService;
+import com.gitlab.devmix.warehouse.core.api.services.entity.EntityRestRegistry;
+import com.gitlab.devmix.warehouse.core.api.services.entity.importexport.EntityExportService;
+import com.gitlab.devmix.warehouse.core.api.services.entity.importexport.ExportOptions;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Endpoint;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Payload;
 import com.gitlab.devmix.warehouse.core.api.web.entity.Request;
 import com.gitlab.devmix.warehouse.core.api.web.entity.RequestData;
 import com.gitlab.devmix.warehouse.core.api.web.entity.ResponseData;
-import com.gitlab.devmix.warehouse.core.api.web.entity.export.ExportOptions;
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.CreateOperation;
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.DeleteOperation;
 import com.gitlab.devmix.warehouse.core.api.web.entity.operations.ListOperation;
@@ -59,7 +59,7 @@ public class EntityApiControllerImpl implements EntityApiController {
     private EntityApiService apiService;
 
     @Inject
-    private EntityExportApiService exportApiService;
+    private EntityExportService exportApiService;
 
     @SuppressWarnings("unchecked")
     @Override

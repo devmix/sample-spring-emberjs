@@ -1,6 +1,6 @@
 package com.gitlab.devmix.warehouse.core.api.controllers;
 
-import com.gitlab.devmix.warehouse.core.api.web.entity.export.ExportOptions;
+import com.gitlab.devmix.warehouse.core.api.services.entity.importexport.ExportOptions;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

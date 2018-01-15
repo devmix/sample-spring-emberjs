@@ -23,7 +23,6 @@ export default Ember.Controller.extend({
             L.create({name: 'Author', route: 'storage.books.author'}),
             L.create({name: 'Genre', route: 'storage.books.genre'}),
             L.create({name: 'Publisher', route: 'storage.books.publisher'}),
-            L.create({name: 'Dictionaries', header: true})
           ]
         }),
         L.create({name: 'Software (not implemented)'}),

@@ -1,0 +1,6 @@
+<input type="file" style="display: none;" accept={{accept}} multiple={{multiple}}
+       onchange={{action "change" value="target.files"}}/>
+
+{{#e-button/standard icon=icon hint=hint action=(action 'onClick')}}
+  {{text}}
+{{/e-button/standard}}
